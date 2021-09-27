@@ -57,8 +57,11 @@ public class RoomApi {
             boolean isFriend = false; // check bạn bè hay không
             if(message != null && message.getUser().getUsername().equals(username)){
                 if(message.getStatus().equals("SEND")){
+                    System.out.println("đã gửi");
                     statusMessage = "SEND";
                 } else if(message.getStatus().equals("READ")){
+                    System.out.println(message.getStatus());
+                    System.out.println("Đã xem");
                     statusMessage = "READ";
                 }
             } else {
@@ -66,7 +69,9 @@ public class RoomApi {
                     message.setStatus("READ");
                     messageService.saveMessage(message);
                 }
+                System.out.println("là của người khác gửi");
             }
+            System.out.println(statusMessage);
             if(user1.getUsername().equals(username)){
                 isFriend = SystemUtil.isFriend(user2, friends);
                 System.out.println("là bạn bè " + isFriend);

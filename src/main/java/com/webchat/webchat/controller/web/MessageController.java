@@ -79,7 +79,7 @@ public class MessageController {
         message.setContent("Bắt đầu trò chuyện");
         message.setUser(user);
         message.setId(String.valueOf(messageId));
-        message.setStatus("READ");
+        message.setStatus("CREATE");
         messageService.saveMessage(message);
         return "redirect:/message_direct?room=" + room.getId();
     }
