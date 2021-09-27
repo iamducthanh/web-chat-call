@@ -1,5 +1,6 @@
 package com.webchat.webchat.intercepter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webchat.webchat.constant.ListConstant;
 import com.webchat.webchat.constant.PropertiesConstant;
 import com.webchat.webchat.entities.Friend;
@@ -13,6 +14,7 @@ import com.webchat.webchat.service.impl.MessageService;
 import com.webchat.webchat.service.impl.RoomDetailService;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.SessionUtil;
+import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -62,7 +64,7 @@ public class DataIntercepter implements HandlerInterceptor {
                 List<User> userInRoom = userService.findInRoom(user.getId(), roomDetail.getRoom().getId());
                 if (userInRoom.size() == 1) {
                     name = userInRoom.get(0).getFullname();
-                    isFriend = isFriend(userInRoom.get(0), friends); // check bạn bè
+                    isFriend = SystemUtil.isFriend(userInRoom.get(0), friends); // check bạn bè
 
                 } else {
                     name = roomDetail.getRoom().getName();
@@ -93,9 +95,15 @@ public class DataIntercepter implements HandlerInterceptor {
                     active = true;
                 }
                 messageUsers.add(new MessageUser(roomDetail, name, userInRoom, messageLast.getContent(), countMess, status, time, roomDetail.getRoom().getId(), active, messageLast.getTime(), isFriend));
-                messageUsers.sort((o1, o2) -> {
-                    return o2.getTimeDate().compareTo(o1.getTimeDate());
-                });
+                if(messageUsers != null){
+                    messageUsers.sort((o1, o2) -> {
+                        if(o2.getTimeDate() != null && o1.getTimeDate() != null){
+                            return o2.getTimeDate().compareTo(o1.getTimeDate());
+                        } else {
+                            return 0;
+                        }
+                    });
+                }
             }
         }
         req.setAttribute("messageUsers", messageUsers);
@@ -106,31 +114,26 @@ public class DataIntercepter implements HandlerInterceptor {
         List<User> friends = new ArrayList<>();
         List<Friend> listFriend = friendService.getFriendByUser(user.getUsername());
         List<NotificationPojo> notifications = new ArrayList<>();
+        List<Integer> idUserList = new ArrayList<>();
         if (listFriend != null) {
             for (Friend friend : listFriend) {
                 if (friend.getStatus().equals("FRIEND")) {
                     if (friend.getUser().getUsername().equals(user.getUsername())) {
                         friends.add(friend.getFriend());
+                        idUserList.add(friend.getFriend().getId());
                     } else {
                         friends.add(friend.getUser());
+                        idUserList.add(friend.getUser().getId());
                     }
                 } else if (friend.getStatus().equals("WAIT") && friend.getFriend().getUsername().equals(user.getUsername())) {
                     notifications.add(new NotificationPojo(friend.getUser(), friend.getDay()));
                 }
             }
+            sessionUtil.addObject("FRIENDS", friends);
         }
         req.setAttribute("friend", friends);
         req.setAttribute("notifications", notifications);
         getMessageUser(req, user, friends);
-    }
-
-    public boolean isFriend(User user, List<User> friends) {
-        for (User user1 : friends) {
-            if (user1.getUsername().equals(user.getUsername())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

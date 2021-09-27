@@ -44,12 +44,13 @@ public class MessageDirectController {
     private SessionUtil sessionUtil;
 
     @RequestMapping(value = "/message_direct", method = RequestMethod.GET)
-
     public String messageDirectPage(Model model) {
         String view = "redirect:/trang-chu";
         User user = (User) sessionUtil.getObject("USER");
         model.addAttribute("username", user.getUsername());
         String roomId = req.getParameter("room");
+        List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
+        System.out.println("so lương bạn bè: " + friends.size());
         if(roomId != null){
             RoomDetail roomDetail = roomDetailService.findRoomDetailByUserAndRoom(user.getId(), roomId);
             Room room = roomDetail.getRoom();
@@ -82,27 +83,27 @@ public class MessageDirectController {
 
     @PostMapping("/removeImage")
     @ResponseBody
-    public void removeImageTemp(@RequestParam("fileName") String fileName, @RequestParam("room") String room){
+    public void removeImageTemp(@RequestParam("fileName") String fileName, @RequestParam("userId") String userId){
         System.out.println(fileName);
-        System.out.println(room);
-        FilesAttack filesAttack = AttackFile.messageAttackHashMap.get(room);
+        System.out.println(userId);
+        FilesAttack filesAttack = AttackFile.messageAttackHashMap.get(userId);
         filesAttack.getFilesAttack().remove(fileName);
     }
 
 
     @PostMapping("/uploadImage")
     @ResponseBody
-    public void uploadImage(@RequestPart("file") MultipartFile file, @RequestParam("roomId") String roomId) throws IOException {
+    public void uploadImage(@RequestPart("file") MultipartFile file, @RequestParam("userId") String userId) throws IOException {
         String fileName = file.getOriginalFilename();
         byte[] fileContent = file.getBytes();
         String encodedString = Base64.getEncoder().encodeToString(fileContent);
-        System.out.println(encodedString);
+
         System.out.println(fileName);
-        FilesAttack filesAttack = AttackFile.messageAttackHashMap.get(roomId);
+        FilesAttack filesAttack = AttackFile.messageAttackHashMap.get(userId);
         if(filesAttack == null){
             FilesAttack filesAttackNew = new FilesAttack();
             filesAttackNew.getFilesAttack().put(fileName, encodedString);
-            AttackFile.messageAttackHashMap.put(roomId, filesAttackNew);
+            AttackFile.messageAttackHashMap.put(userId, filesAttackNew);
         } else {
             filesAttack.getFilesAttack().put(fileName, encodedString);
         }

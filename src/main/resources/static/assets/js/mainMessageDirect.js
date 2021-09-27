@@ -46,7 +46,7 @@ function onConnected() {
     )
 }
 
-connect();
+// connect();
 
 function onError() {
     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
@@ -191,8 +191,7 @@ async function onMessageReceived(payload) {
         let username = document.querySelector('#name').value.trim();
         let names = 'messUser' + username + userInRoom;
         if (username == message.sender) {
-            let elem = document.getElementById('statusMessageSend');
-            elem.parentNode.removeChild(elem);
+            document.getElementById("statusMessage").innerHTML = message.statusMessage;
             messageArea.innerHTML +=
                 "<div class='message message-out'><a href='#' data-bs-toggle='modal' data-bs-target='#modal-profile' class='avatar avatar-responsive'>" +
                 "<img class='avatar-img' src='" + document.getElementById("imageUserLogin").value + "'" + " alt=''>" +
@@ -243,15 +242,6 @@ async function onMessageReceived(payload) {
                 "<div class='message-footer'>" +
                 "<span class='extra-small text-muted'>" + timeChat + "</span>" + "</div>" + "</div>" + "</div>";
 
-
-            messageArea.innerHTML +=
-                "<div class='message message-out' style='margin: 0px' id='statusMessageSend'>" +
-                "<a data-bs-toggle='modal' data-bs-target='#modal-profile' style='height: 0px'" +
-                "class='avatar avatar-responsive'>" + "</a>" +
-                "<div class='message-inner'>" + "<div class='message-body'>" + "</div>" +
-                "<div class='message-footer'>" +
-                "<span class='extra-small text-muted' id='statusMessage'>" + message.statusMessage + "</span><br/>" +
-                "</div>" + "</div>" + "</div>";
             let classRe = document.getElementsByName(names);
             if (classRe != null) {
                 document.getElementsByName(names)[2].innerText = message.content.substring(0, 100);
@@ -491,7 +481,6 @@ function loadImage(){
             });
     }
 }
-loadImage();
 messageForm.addEventListener('submit', sendMessage, true)
 
 function callVideo(){
@@ -561,3 +550,4 @@ function showImage(index){
     console.log(index)
     document.getElementById("modal-media-preview").style.display='block'
 }
+

@@ -65,23 +65,6 @@ function onError4() {
     console.log("error ------ stompClientRoom")
 }
 
-function onOnlined() {
-    // console.log("User online login " + userOnline)
-    //
-    // stompClientSystem.subscribe('/topic/system.adduser', onMessageReceivedOnline);
-    //
-    // stompClientRoom.subscribe('/topic/system/' + userOnline, onAddRoom);
-    //
-    // stompClientCall.subscribe('/topic/call/' + userOnline, onCall);
-    //
-    // stompClientMessageListen.subscribe('/topic/system.onmessage/' + userOnline, onMessageRealtime);
-
-    // stompClientSystem.send("/app/system.adduser",
-    //     {},
-    //     JSON.stringify({username: userOnline, type: 'ONLINE'})
-    // );
-}
-
 function onAddRoom(payload) {
     let messageUser = JSON.parse(payload.body);
     let contentUserMessage = document.getElementById("contentUserMessage");
@@ -207,18 +190,13 @@ function onMessageReceivedOnline(payload) {
 
 online();
 
-// function onError1(error) {
-//     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-//     connectingElement.style.color = 'red';
-// }
-
 function deleteAttack(aa) {
     console.log(aa)
     $.ajax({
         url: 'removeImage',
         data: {
             fileName: aa,
-            room: document.querySelector("#room").value,
+            userId: userOnline,
         },
         error: function () {
             console.log("error")

@@ -50,9 +50,9 @@ public class WebSocketEventListener {
                 UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(room);
                 if(userConnectPojo.getUser1() == null || userConnectPojo.getUser2() == null){
                     UsersOnline.userConnectPojo.remove(room);
-                    AttackFile.messageAttackHashMap.remove(room);
+                    AttackFile.messageAttackHashMap.remove(username);
                     System.out.println("attackkk size: "+ AttackFile.messageAttackHashMap.size());
-                    System.out.println("remove");
+                    System.out.println("remove connect room");
                 } else {
                     System.out.println(username);
                     if(userConnectPojo.getUser1().equals(username)){

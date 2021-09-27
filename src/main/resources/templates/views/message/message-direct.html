@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/weblayout"
 >
-<head>
-    <meta charset="UTF-8">
-    <title layout:fragment="title">Web Chat - By IamDucThanh</title>
-</head>
-<body layout:fragment="content">
-<div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>
+<body th:fragment="message-direct">
+<!--<div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>-->
 
-<main class="main is-visible" data-dropzone-area="">
+<main class="main is-visible" data-dropzone-area="" id="message-direct" style="display: none;">
     <div class="container h-100">
         <div class="d-flex flex-column h-100 position-relative">
             <!-- Chat: Header -->
@@ -18,7 +13,7 @@
                 <div class="row align-items-center">
 
                     <!-- Mobile: close -->
-                    <div class="col-2 d-xl-none">
+                    <div class="col-2 d-xl-none" onclick="closeRoomMessage()">
                         <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -37,14 +32,13 @@
                                 <div class="row align-items-center gx-5">
                                     <div class="col-auto">
                                         <div class="avatar d-none d-xl-inline-block">
-                                            <img id="userImageRoom" class="avatar-img" th:src="@{${userInRoom.image}}" alt="">
+                                            <img id="userImageRoom" class="avatar-img" th:src="@{/assets/image/avt.png}" alt="">
                                         </div>
                                     </div>
 
                                     <div class="col overflow-hidden">
-                                        <h5 class="text-truncate" id="userNameRoom">[[${userInRoom.getFullname()}]]</h5>
-                                        <p class="text-truncate" id="statusOn" th:class="${userInRoom.username}"
-                                           th:text="${userInRoom.isOnline() ? 'Đang hoạt động' : 'Không hoạt động'}"></p>
+                                        <h5 class="text-truncate" id="userNameRoom">Đặng Tiến Quang</h5>
+                                        <p class="text-truncate" id="statusOn">Người lạ</p>
                                     </div>
                                 </div>
                             </div>
@@ -79,12 +73,12 @@
                                         <div class="avatar-group">
                                             <a href="#" class="avatar avatar-sm" data-bs-toggle="modal"
                                                data-bs-target="#modal-user-profile">
-                                                <img class="avatar-img" th:src="@{${userInRoom.image}}" alt="#">
+                                                <img class="avatar-img" th:src="@{/assets/image/avt.png}" alt="#">
                                             </a>
 
                                             <a href="#" class="avatar avatar-sm" data-bs-toggle="modal"
                                                data-bs-target="#modal-profile">
-                                                <img class="avatar-img" id="avtMyUser" th:src="@{${user.image}}" alt="#">
+                                                <img class="avatar-img" id="avtMyUser" th:src="@{/assets/image/avt.png}" alt="#">
                                             </a>
                                         </div>
                                     </div>
@@ -122,149 +116,15 @@
 
             <!-- Chat: Content -->
             <div class="chat-body hide-scrollbar flex-1 h-100" id="messForm">
-                <input type="hidden" th:value="${userInRoom.username}" id="userInRoomDirect">
-                <input type="hidden" th:value="${user.image}" id="imageUserLogin">
-                <input type="hidden" th:value="${userInRoom.image}" id="imageUserInRoom">
+                <input type="hidden" value="quang" id="userInRoomDirect">
+                <input type="hidden" value="https://github.com/phonghotkgd2k1/image_public/blob/main/avt.png?raw=true" id="imageUserLogin">
+                <input type="hidden" value="https://github.com/phonghotkgd2k1/image_public/blob/main/avt.png?raw=true" id="imageUserInRoom">
                 <div class="chat-body-inner">
-                    <div class="py-6 py-lg-10 " id="messageArea">
-                        <th:block th:each="message:${messages}">
-                            <div class="message message-out" th:if="${message.user.username == username}">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#modal-profile"
-                                   class="avatar avatar-responsive">
-                                    <img class='avatar-img' th:src="@{${message.user.image}}" alt=''>
-                                </a>
-                                <div class="message-inner">
-                                    <div class="message-body">
-                                        <div class="message-content">
-                                            <div class="message-text">
-                                                <p>[[${message.content}]]</p>
-                                            </div>
-                                            <div class="message-action">
-                                                <div class="dropdown">
-                                                    <a class="icon text-muted" href="#" role="button"
-                                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round"
-                                                             stroke-linejoin="round"
-                                                             class="feather feather-more-vertical">
-                                                            <circle cx="12" cy="12" r="1"></circle>
-                                                            <circle cx="12" cy="5" r="1"></circle>
-                                                            <circle cx="12" cy="19" r="1"></circle>
-                                                        </svg>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                                                <span class="me-auto">Edit</span>
-                                                                <div class="icon">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                         height="24" viewBox="0 0 24 24" fill="none"
-                                                                         stroke="currentColor" stroke-width="2"
-                                                                         stroke-linecap="round" stroke-linejoin="round"
-                                                                         class="feather feather-edit-3">
-                                                                        <path d="M12 20h9"></path>
-                                                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                                                                    </svg>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                                                <span class="me-auto">Reply</span>
-                                                                <div class="icon">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                         height="24" viewBox="0 0 24 24" fill="none"
-                                                                         stroke="currentColor" stroke-width="2"
-                                                                         stroke-linecap="round" stroke-linejoin="round"
-                                                                         class="feather feather-corner-up-left">
-                                                                        <polyline points="9 14 4 9 9 4"></polyline>
-                                                                        <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
-                                                                    </svg>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <hr class="dropdown-divider">
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center text-danger"
-                                                               href="#">
-                                                                <span class="me-auto">Delete</span>
-                                                                <div class="icon">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                         height="24" viewBox="0 0 24 24" fill="none"
-                                                                         stroke="currentColor" stroke-width="2"
-                                                                         stroke-linecap="round" stroke-linejoin="round"
-                                                                         class="feather feather-trash-2">
-                                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                                    </svg>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="message-content">
-                                            <div class="message-gallery">
-                                                <div class="row gx-3">
-                                                    <th:block th:each="attach:${message.attachList}">
-                                                        <div class="col">
-                                                            <img class="img-fluid rounded imageMessage"
-                                                                 th:name="@{${attach.filename}}"
-                                                                 src=""
-                                                                 data-action="zoom" alt="">
-                                                        </div>
-                                                    </th:block>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message-footer">
-                                        <span class='extra-small text-muted'>[[${message.getTimeChat()}]]</span><br/>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="py-6 py-lg-10 ">
+                        <div id="messageArea">
 
-                            <div class='message' th:if="${message.user.username != username}">
-                                <a data-bs-toggle='modal' data-bs-target='#modal-user-profile'
-                                   class='avatar avatar-responsive'>
-                                    <img class='avatar-img' th:src="@{${message.user.image}}" alt=''>
-                                </a>
-                                <div class='message-inner'>
-                                    <div class='message-body'>
-                                        <div class='message-content'>
-                                            <div class='message-text'>
-                                                <p>[[${message.content}]]</p>
-                                            </div>
-                                        </div>
-                                        <div class="message-content">
-                                            <div class="message-gallery">
-                                                <div class="row gx-3">
-                                                    <th:block th:each="attach:${message.attachList}">
-                                                        <div class="col">
-                                                            <img class="img-fluid rounded imageMessage"
-                                                                 th:name="@{${attach.filename}}"
-                                                                 src=""
-                                                                 data-action="zoom" alt="">
-                                                        </div>
-                                                    </th:block>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class='message-footer'>
-                                        <span class='extra-small text-muted'>[[${message.getTimeChat()}]]</span>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
 
-
-                        </th:block>
                         <div class='message message-out' style="margin: 0px" id="statusMessageSend">
                             <a data-bs-toggle='modal' data-bs-target='#modal-profile' style="height: 0px"
                                class='avatar avatar-responsive'>
@@ -273,7 +133,7 @@
                                 <div class='message-body'>
                                 </div>
                                 <div class='message-footer'>
-                                    <span class='extra-small text-muted' id="statusMessage">[[${statusMessage}]]</span><br/>
+                                    <span class='extra-small text-muted' id="statusMessage"></span><br/>
                                 </div>
                             </div>
                         </div>
@@ -337,7 +197,6 @@
     </div>
 </main>
 <!-- Chat -->
-
 <!-- Chat: Info -->
 <div class="offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
      id="offcanvas-more">
@@ -352,7 +211,7 @@
         </a>
 
         <div class="visibility-xl-invisible overflow-hidden text-center">
-            <h5 class="text-truncate">[[${userInRoom.getFullname()}]]</h5>
+            <h5 class="text-truncate">Đặng tiến quang</h5>
             <p class="text-truncate">last seen 5 minutes ago</p>
         </div>
 
@@ -424,12 +283,12 @@
             <div class="row gy-6">
                 <div class="col-12">
                     <div class="avatar avatar-xl mx-auto">
-                        <img th:src="@{${userInRoom.image}}" alt="#" class="avatar-img">
+                        <img th:src="@{/assets/image/avt.png}" alt="#" class="avatar-img">
                     </div>
                 </div>
 
                 <div class="col-12">
-                    <h5 class="text-truncate">[[${userInRoom.getFullname()}]]</h5>
+                    <h5 class="text-truncate">Đặng tiến quang</h5>
                 </div>
             </div>
         </div>
@@ -469,7 +328,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>E-mail</h5>
-                                <p>[[${userInRoom.email}]]</p>
+                                <p>quang@gmail.com</p>
                             </div>
 
                             <div class="col-auto">
@@ -484,7 +343,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>Số điện thoại</h5>
-                                <p>[[${userInRoom.phone}]]</p>
+                                <p>0944485574</p>
                             </div>
 
                             <div class="col-auto">
@@ -502,7 +361,7 @@
                                         <h5>Ngày sinh</h5>
                                     </div>
                                     <div class="col-9">
-                                        <input class="w-100" style="border: none" type="date" th:value="${userInRoom.getBirthDayString()}">
+                                        <input class="w-100" style="border: none" type="date" value="2020-2-2">
                                     </div>
                                 </div>
                             </div>
@@ -516,8 +375,7 @@
                                         <h5>Giới tính</h5>
                                     </div>
                                     <div class="col-9">
-                                        <p th:if="${userInRoom.gender}">Nam</p>
-                                        <p th:if="${!userInRoom.gender}">Nữ</p>
+                                        <p>Nam</p>
                                     </div>
                                 </div>
                             </div>
@@ -1166,21 +1024,17 @@
                 </ul>
             </div>
             <!-- Files -->
-            <div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>
+<!--            <div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>-->
         </div>
         <!-- Tabs: Content -->
     </div>
     <!-- Offcanvas Body -->
-    <input type="hidden" th:value="${room}" id="room">
-    <input type="hidden" th:value="${username}" id="name">
-    <input type="hidden" th:value="${user.getFullname()}" id="fullname">
-    <input type="hidden" th:value="0" id="pageIndex">
-    <input type="hidden" th:value="${first}" id="first">
+    <input type="hidden" value="a9cf354e-3c24-45b8-85f4-8a46197a15cd" id="room">
+    <input type="hidden" value="admin" id="name">
+    <input type="hidden" value="Nguyễn Đức Thành" id="fullname">
+    <input type="hidden" value="-1" id="pageIndex">
+    <input type="hidden" value="" id="first">
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="./assets/js/mainMessageDirect.js"></script>
 </body>
 </html>

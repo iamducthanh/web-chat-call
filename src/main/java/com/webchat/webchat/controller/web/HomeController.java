@@ -27,7 +27,7 @@ public class HomeController {
 
     @GetMapping(value = "/trang-chu")
     public String homePage() {
-        return "views/trangchu";
+        return "layout/weblayout";
     }
 
     @GetMapping(value = "/call")

@@ -7873,8 +7873,8 @@
         })).observe(e)
     }
     if (document.querySelector("[data-dropzone-area]")) {
-        const e = new s.Dropzone("[data-dropzone-area]", {
-            url: "uploadImage?roomId=" + document.querySelector("#room").value,
+        let e = new s.Dropzone("[data-dropzone-area]", {
+            url: "uploadImage?userId=" + userOnline,
             clickable: "#dz-btn",
             previewsContainer: "#dz-preview-row",
             previewTemplate: '\n<div class="theme-file-preview position-relative mx-2">\n    ' +

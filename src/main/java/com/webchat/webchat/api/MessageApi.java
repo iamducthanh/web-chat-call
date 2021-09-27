@@ -60,7 +60,11 @@ public class MessageApi {
 
     @PostMapping("/message_direct/save")
     @ResponseBody
-    public List<FileAttackDto> saveMessage(@RequestParam("content") String content, @RequestParam("room") String roomId, @RequestParam("sendto") String sendTo, @RequestParam("attack") String attack) throws IOException {
+    public List<FileAttackDto> saveMessage(
+            @RequestParam("content") String content,
+            @RequestParam("room") String roomId,
+            @RequestParam("sendto") String sendTo,
+            @RequestParam("attack") String attack) throws IOException {
         Message message = new Message();
         User user = (User) sessionUtil.getObject("USER");
         Room room = new Room(roomId, 0, "","");
@@ -84,14 +88,18 @@ public class MessageApi {
             ObjectMapper objectMapper = new ObjectMapper();
             List<String> listAttack = new ArrayList<>();
             attack = attack.replace("'", "\"");
+            System.out.println(attack.toString());
+            System.out.println("size attack " + attack.length());
             listAttack = Arrays.asList(objectMapper.readValue(attack, String[].class));
             for (String file : listAttack) {
+                System.out.println(listAttack.size());
                 String type = file.substring(file.lastIndexOf("."), file.length());
                 String id = String.valueOf(UUID.randomUUID());
-                String mulFile = AttackFile.messageAttackHashMap.get(roomId).getFilesAttack().get(file);
+                System.out.println(AttackFile.messageAttackHashMap.get(user.getUsername()).getFilesAttack().get("file"));
+                String mulFile = AttackFile.messageAttackHashMap.get(user.getUsername()).getFilesAttack().get(file);
                 dataFile.add(new FileAttackDto(String.valueOf(uuid),id+type,mulFile));
                 attaches.add(new Attach(message, id+type));
-                AttackFile.messageAttackHashMap.get(roomId).getFilesAttack().remove(file);
+                AttackFile.messageAttackHashMap.get(user.getUsername()).getFilesAttack().remove(file);
                 System.out.println("file attach: " + attaches.get(0).getFilename());
             }
             System.out.println("Lưu thành công");

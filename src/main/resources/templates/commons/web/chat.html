@@ -31,9 +31,9 @@
                 <div class="card-list" id="contentUserMessage">
                     <!-- Card -->
                     <th:block th:each="messageUser: ${messageUsers}">
-                        <a th:if="${messageUser.active}"
-                           th:href="@{'/message_direct?room=' + ${messageUser.roomCode}}"
-                           class="card border-0 text-reset"
+                        <div th:if="${messageUser.active}"
+                             th:attr="onclick=|onRoomMessage('${messageUser.roomCode}')|"
+                             class="card border-0 text-reset"
                            th:id="'messUser' + ${userOnline + messageUser.users.get(0).username}">
                             <div class="card-body">
                                 <div class="row gx-5">
@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                             </div><!-- .card-body -->
-                        </a>
+                        </div>
                     </th:block>
                     <!-- Card -->
 

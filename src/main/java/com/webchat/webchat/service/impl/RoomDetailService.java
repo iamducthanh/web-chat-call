@@ -26,6 +26,12 @@ public class RoomDetailService implements IRoomDetailService {
     }
 
     @Override
+    public List<RoomDetail> findByRoomId(String roomId) {
+        List<RoomDetail> list = roomDetailRepo.findRoomDetailByRoomId(roomId);
+        return list.isEmpty() ? null : list;
+    }
+
+    @Override
     public RoomDetail findRoomDetailBy2User(Integer userId1, Integer userId2) {
         List<RoomDetail> list = roomDetailRepo.findRoomDetailBy2User(userId1, userId2);
         return list.isEmpty() ? null : list.get(0);
