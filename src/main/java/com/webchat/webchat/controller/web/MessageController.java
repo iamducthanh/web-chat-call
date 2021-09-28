@@ -47,14 +47,14 @@ public class MessageController {
         UUID roomId = UUID.randomUUID();
         UUID messageId = UUID.randomUUID();
         Room room = new Room(String.valueOf(roomId), 0, "",user.getUsername());
-//        roomService.saveRoom(room);
+        roomService.saveRoom(room);
 
         // tạo room detail
         User user2 = userService.findById(Integer.parseInt(userId));
         List<RoomDetail> roomDetails = new ArrayList<>();
         roomDetails.add(new RoomDetail(user,room));
         roomDetails.add(new RoomDetail(user2,room));
-//        roomDetailService.saveRoomDetail(roomDetails);
+        roomDetailService.saveRoomDetail(roomDetails);
 
         // tạo tin nhắn đầu tiên
         Message message = new Message();
@@ -65,7 +65,7 @@ public class MessageController {
         message.setUser(user);
         message.setId(String.valueOf(messageId));
         message.setStatus("CREATE");
-//        messageService.saveMessage(message);
+        messageService.saveMessage(message);
 
         messageUser.setName(user2.getFullname());
         messageUser.setUsername(user2.getUsername());

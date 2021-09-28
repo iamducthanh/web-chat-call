@@ -121,13 +121,25 @@
                         console.log(data)
                         let contentUserMessage = document.getElementById("contentUserMessage");
                         let name = 'messUser' + document.querySelector("#userOnline").value + data.username;
+                        let idUsername = data.username + "NotFriend";
+                        let statusOnline = "avatar";
+                        if(data.friend){
+                            idUsername = data.username;
+                            if(data.online){
+                                statusOnline = "avatar avatar-online";
+                            } else {
+                                statusOnline = "avatar avatar-offline";
+                            }
+                        }
+
+
                         contentUserMessage.innerHTML =
-                            "<a href='message_direct?room=" + data.roomCode + "'" +
-                            "class='card border-0 text-reset'>" +
+                            "<div onclick='onRoomMessage(\""+data.roomCode+"\")' " +
+                            "class='card border-0 text-reset' id='"+name+"'>" +
                             "<div class='card-body'>" +
                             "<div class='row gx-5'>" +
                             "<div class='col-auto'>" +
-                            "<div class='avatar avatar-online' id='" + data.username + "'>" +
+                            "<div class='"+statusOnline+"' id='" + idUsername + "'>" +
                             "<img src='" + data.image + "' alt='#' class='avatar-img'>" +
                             "</div>" +
                             "</div>" +
@@ -149,7 +161,9 @@
                             "</div>" +
                             "</div>" +
                             "</div>" +
-                            "</a>" + contentUserMessage.innerHTML;
+                            "</div>" + contentUserMessage.innerHTML;
+
+                        document.getElementById(name).click();
                     },
                     type: 'POST'
                 });
