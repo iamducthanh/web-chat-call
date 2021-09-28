@@ -195,7 +195,6 @@ async function onMessageReceived(payload) {
         let userMessageChat = document.getElementById(names);
         let divAdd = document.createElement("div");
         divAdd.appendChild(userMessageChat);
-        // contentUserMessage.removeChild(userMessageChat);
         contentUserMessage.innerHTML = divAdd.innerHTML + contentUserMessage.innerHTML;
         if (username == message.sender) {
             document.getElementById("statusMessage").innerHTML = message.statusMessage;

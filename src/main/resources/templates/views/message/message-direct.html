@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <body th:fragment="message-direct">
-<!--<div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>-->
+<div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>
 
 <main class="main is-visible" data-dropzone-area="" id="message-direct" style="display: none;">
     <div class="container h-100">
@@ -31,7 +31,7 @@
                             <div class="col-12 col-xl-6">
                                 <div class="row align-items-center gx-5">
                                     <div class="col-auto">
-                                        <div class="avatar d-none d-xl-inline-block">
+                                        <div class="avatar d-none d-xl-inline-block" data-bs-toggle="modal" data-bs-target="#modal-user-profile">
                                             <img id="userImageRoom" class="avatar-img" th:src="@{/assets/image/avt.png}" alt="">
                                         </div>
                                     </div>
@@ -211,8 +211,7 @@
         </a>
 
         <div class="visibility-xl-invisible overflow-hidden text-center">
-            <h5 class="text-truncate">Đặng tiến quang</h5>
-            <p class="text-truncate">last seen 5 minutes ago</p>
+            <h5 class="text-truncate" id="fullnameTask"></h5>
         </div>
 
         <!-- Dropdown -->
@@ -283,12 +282,12 @@
             <div class="row gy-6">
                 <div class="col-12">
                     <div class="avatar avatar-xl mx-auto">
-                        <img th:src="@{/assets/image/avt.png}" alt="#" class="avatar-img">
+                        <img src="" alt="#" id="avtDetail" class="avatar-img">
                     </div>
                 </div>
 
                 <div class="col-12">
-                    <h5 class="text-truncate">Đặng tiến quang</h5>
+                    <h5 class="text-truncate" id="fullnameDetail"></h5>
                 </div>
             </div>
         </div>
@@ -328,7 +327,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>E-mail</h5>
-                                <p>quang@gmail.com</p>
+                                <p id="emailDetail"></p>
                             </div>
 
                             <div class="col-auto">
@@ -343,7 +342,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>Số điện thoại</h5>
-                                <p>0944485574</p>
+                                <p id="sdtDetail"></p>
                             </div>
 
                             <div class="col-auto">
@@ -361,7 +360,7 @@
                                         <h5>Ngày sinh</h5>
                                     </div>
                                     <div class="col-9">
-                                        <input class="w-100" style="border: none" type="date" value="2020-2-2">
+                                        <input class="w-100" style="border: none" type="date" value="" id="birthDayDetail">
                                     </div>
                                 </div>
                             </div>
@@ -375,7 +374,7 @@
                                         <h5>Giới tính</h5>
                                     </div>
                                     <div class="col-9">
-                                        <p>Nam</p>
+                                        <p id="genderDetail"></p>
                                     </div>
                                 </div>
                             </div>
@@ -1024,7 +1023,6 @@
                 </ul>
             </div>
             <!-- Files -->
-<!--            <div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>-->
         </div>
         <!-- Tabs: Content -->
     </div>

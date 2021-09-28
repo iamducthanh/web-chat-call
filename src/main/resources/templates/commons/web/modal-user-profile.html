@@ -18,12 +18,12 @@
 
                     <div class="profile-body">
                         <div class="avatar avatar-xl">
-                            <img class="avatar-img" th:src="@{${userInRoom.image}}"
+                            <img class="avatar-img" id="avtDetailModal" src=""
                                  alt="#">
                         </div>
 
-                        <h4 class="mb-1">[[${userInRoom.getFullname()}]]</h4>
-                        <p>[[${userInRoom.description}]]</p>
+                        <h4 class="mb-1" id="fullnameDetailModal"></h4>
+                        <p id="descriptionModal"></p>
                     </div>
                 </div>
                 <!-- Header -->
@@ -36,7 +36,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>Tên người dùng</h5>
-                                <p>[[${userInRoom.username}]]</p>
+                                <p id="usernameDetailModal"></p>
                             </div>
 
                             <div class="col-auto">
@@ -51,7 +51,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>E-mail</h5>
-                                <p>[[${userInRoom.email}]]</p>
+                                <p id="emailDetailModal"></p>
                             </div>
 
                             <div class="col-auto">
@@ -66,7 +66,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>Số điện thoại</h5>
-                                <p>[[${userInRoom.phone}]]</p>
+                                <p id="phoneDetailModal"></p>
                             </div>
 
                             <div class="col-auto">
@@ -84,7 +84,7 @@
                                         <h5>Ngày sinh</h5>
                                     </div>
                                     <div class="col-9">
-                                        <input class="w-100" style="border: none" type="date" th:value="${userInRoom.getBirthDayString()}">
+                                        <input class="w-100" style="border: none" type="date" value="" id="birthDayDetailModal">
                                     </div>
                                 </div>
                             </div>
@@ -98,8 +98,7 @@
                                         <h5>Giới tính</h5>
                                     </div>
                                     <div class="col-9">
-                                        <p th:if="${userInRoom.gender}">Nam</p>
-                                        <p th:if="${!userInRoom.gender}">Nữ</p>
+                                        <p id="genderDetailModal"></p>
                                     </div>
                                 </div>
                             </div>

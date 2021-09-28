@@ -76,12 +76,12 @@ public class RoomApi {
                 isFriend = SystemUtil.isFriend(user2, friends);
                 System.out.println("là bạn bè " + isFriend);
                 userDto = new UserDto(username, user1.getFullname(), user1.getImage());
-                userInRoomDto = new UserInRoomDto(user2.getUsername(), user2.getFullname(), user2.getImage(), user2.isOnline(), first, statusMessage, isFriend);
+                userInRoomDto = new UserInRoomDto(user2.getUsername(), user2.getFullname(), user2.getImage(), user2.isOnline(), first, statusMessage, isFriend, user2.getEmail(), user2.getPhone(), user2.getBirthDayString(), user2.isGender(), user2.getDescription());
             } else {
                 System.out.println("là bạn bè "+ isFriend);
                 isFriend = SystemUtil.isFriend(user1, friends);
                 userDto = new UserDto(username, user2.getFullname(), user2.getImage());
-                userInRoomDto = new UserInRoomDto(user1.getUsername(), user1.getFullname(), user1.getImage(), user1.isOnline(), first, statusMessage, isFriend);
+                userInRoomDto = new UserInRoomDto(user1.getUsername(), user1.getFullname(), user1.getImage(), user1.isOnline(), first, statusMessage, isFriend, user1.getEmail(), user1.getPhone(), user1.getBirthDayString(), user1.isGender(), user1.getDescription());
             }
             roomDetailDto.setRoomId(roomId);
             roomDetailDto.setUser(userDto);

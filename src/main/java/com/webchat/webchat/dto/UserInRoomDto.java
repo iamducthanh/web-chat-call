@@ -15,4 +15,9 @@ public class UserInRoomDto {
     private String first;
     private String statusMessage;
     private boolean isFriend;
+    private String email;
+    private String phone;
+    private String birthday;
+    private boolean gender;
+    private String description;
 }
