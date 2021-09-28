@@ -73,8 +73,9 @@ public class MessageController {
         messageUser.setCountMess(0);
         messageUser.setStatus(1);
         messageUser.setTime(message.getTimeChat());
-        message.setRoom(message.getRoom());
+        messageUser.setRoomCode(room.getId());
         messageUser.setFriend(SystemUtil.isFriend(user2, friends));
+        messageUser.setImage(user2.getImage());
         return messageUser;
     }
 
@@ -88,28 +89,5 @@ public class MessageController {
         }
         return "done";
     }
-
-//    public String createRoomChat(String id, User user){
-//        UUID roomId = UUID.randomUUID();
-//        UUID messageId = UUID.randomUUID();
-//        Room room = new Room(String.valueOf(roomId), 0, "",user.getUsername());
-//        roomService.saveRoom(room);
-//        User user2 = new User();
-//        user2.setId(Integer.parseInt(id));
-//        List<RoomDetail> roomDetails = new ArrayList<>();
-//        roomDetails.add(new RoomDetail(user,room));
-//        roomDetails.add(new RoomDetail(user2,room));
-//        roomDetailService.saveRoomDetail(roomDetails);
-//        Message message = new Message();
-//        message.setRoom(room);
-//        message.setType("CREATE");
-//        message.setTime(new Date());
-//        message.setContent("Bắt đầu trò chuyện");
-//        message.setUser(user);
-//        message.setId(String.valueOf(messageId));
-//        message.setStatus("CREATE");
-//        messageService.saveMessage(message);
-//        return "redirect:/message_direct?room=" + room.getId();
-//    }
 
 }

@@ -119,6 +119,37 @@
                     },
                     success: function (data) {
                         console.log(data)
+                        let contentUserMessage = document.getElementById("contentUserMessage");
+                        let name = 'messUser' + document.querySelector("#userOnline").value + data.username;
+                        contentUserMessage.innerHTML =
+                            "<a href='message_direct?room=" + data.roomCode + "'" +
+                            "class='card border-0 text-reset'>" +
+                            "<div class='card-body'>" +
+                            "<div class='row gx-5'>" +
+                            "<div class='col-auto'>" +
+                            "<div class='avatar avatar-online' id='" + data.username + "'>" +
+                            "<img src='" + data.image + "' alt='#' class='avatar-img'>" +
+                            "</div>" +
+                            "</div>" +
+
+                            "<div class='col'>" +
+                            "<div class='d-flex align-items-center mb-3'>" +
+                            "<h5 class='me-auto mb-0 messageSend' name='" + name + "'>" + data.name + "</h5>" +
+                            "<span class='text-muted extra-small ms-2 messageSend' name='" + name + "'></span>" +
+                            "</div>" +
+
+                            "<div class='d-flex align-items-center'>" +
+                            "<div class='line-clamp me-auto messageSend' name='" + name + "'>" +
+                            data.messageLast +
+                            "</div>" +
+                            "<div class='badge badge-circle bg-primary ms-5'>" +
+                            "<span name='" + name + "'>1</span>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</a>" + contentUserMessage.innerHTML;
                     },
                     type: 'POST'
                 });

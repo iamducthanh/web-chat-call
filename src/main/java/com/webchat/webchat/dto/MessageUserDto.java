@@ -24,6 +24,7 @@ public class MessageUserDto {
     private boolean active;
     private Date timeDate;
     private boolean isFriend;
+    private String image;
 
     public boolean isOnline(){
         if(UsersOnline.usersOnline.get(this.username) != null){
