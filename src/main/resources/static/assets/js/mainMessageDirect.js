@@ -280,6 +280,7 @@ async function onMessageReceived(payload) {
             if (classRe != null) {
                 document.getElementsByName(names)[2].innerText = message.content.substring(0, 100);
             }
+            document.getElementById('statusMessage').innerText = "  "
         }
     } else if(message.type === 'ATTACK'){
         let divAttack = document.getElementById(message.id);

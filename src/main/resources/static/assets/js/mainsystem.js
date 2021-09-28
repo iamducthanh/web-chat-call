@@ -67,25 +67,34 @@ function onError4() {
 
 function onAddRoom(payload) {
     let messageUser = JSON.parse(payload.body);
+    console.log(messageUser)
     let contentUserMessage = document.getElementById("contentUserMessage");
     let name = 'messUser' + document.querySelector("#userOnline").value + messageUser.sender;
+    let idUsername = messageUser.sender + "NotFriend";
+    let statusOnline = "avatar";
+    if(messageUser.friend){
+        idUsername = messageUser.sender;
+        if(messageUser.online){
+            statusOnline = "avatar avatar-online";
+        } else {
+            statusOnline = "avatar avatar-offline";
+        }
+    }
     contentUserMessage.innerHTML =
-        "<a href='message_direct?room=" + messageUser.roomId + "'" +
-        "class='card border-0 text-reset'>" +
+        "<div onclick='onRoomMessage(\""+messageUser.roomId+"\")' " +
+        "class='card border-0 text-reset' id='"+name+"'>" +
         "<div class='card-body'>" +
         "<div class='row gx-5'>" +
         "<div class='col-auto'>" +
-        "<div class='avatar avatar-online' id='" + messageUser.sender + "'>" +
+        "<div class='"+statusOnline+"' id='" + idUsername + "'>" +
         "<img src='" + messageUser.image + "' alt='#' class='avatar-img'>" +
         "</div>" +
         "</div>" +
-
         "<div class='col'>" +
         "<div class='d-flex align-items-center mb-3'>" +
         "<h5 class='me-auto mb-0 messageSend' name='" + name + "'>" + messageUser.fullname + "</h5>" +
-        "<span class='text-muted extra-small ms-2 messageSend' name='" + name + "'></span>" +
+        "<span class='text-muted extra-small ms-2 messageSend' name='" + name + "'>"+messageUser.time+"</span>" +
         "</div>" +
-
         "<div class='d-flex align-items-center'>" +
         "<div class='line-clamp me-auto messageSend' name='" + name + "'>" +
         messageUser.content +
@@ -97,7 +106,7 @@ function onAddRoom(payload) {
         "</div>" +
         "</div>" +
         "</div>" +
-        "</a>" + contentUserMessage.innerHTML;
+        "</div>" + contentUserMessage.innerHTML;
 
 }
 
@@ -124,7 +133,9 @@ function onMessageRealtime(payload) {
     let classname = 'messUser' + messageRealtime.reader + messageRealtime.sender;
     let contentUserMessage = document.getElementById("contentUserMessage");
     let userMessage = document.getElementById(classname);
-    contentUserMessage.removeChild(userMessage);
+    if(userMessage != null){
+        contentUserMessage.removeChild(userMessage);
+    }
     let divAdd = document.createElement("div");
     divAdd.appendChild(userMessage);
     contentUserMessage.innerHTML = divAdd.innerHTML + contentUserMessage.innerHTML
@@ -149,6 +160,7 @@ function onMessageRealtime(payload) {
             divCountMessage.className += ' icon-badged';
             let divSpan = document.createElement('div');
             divSpan.className = 'badge badge-circle bg-primary';
+            divSpan.id = 'onRemoveCount';
             divCountMessage.appendChild(divSpan);
             let span = document.createElement("span");
             span.id = 'countMessage';

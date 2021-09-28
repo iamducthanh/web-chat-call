@@ -1,9 +1,14 @@
 package com.webchat.webchat.controller.web;
 
 import com.webchat.webchat.constant.UsersOnline;
+import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.MessageUserConnectPojo;
 import com.webchat.webchat.pojo.MessageUserRealtime;
 import com.webchat.webchat.pojo.UserOnline;
+import com.webchat.webchat.service.impl.UserService;
+import com.webchat.webchat.utils.SessionUtil;
+import com.webchat.webchat.utils.SystemUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -13,9 +18,15 @@ import org.springframework.stereotype.Controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class SystemController {
+    @Autowired
+    private SessionUtil sessionUtil;
+
+    @Autowired
+    private UserService userService;
 
     @MessageMapping("/system.adduser")
     @SendTo("/topic/system.adduser")
@@ -39,6 +50,12 @@ public class SystemController {
     @MessageMapping("/system/{username}")
     @SendTo("/topic/system/{username}")
     public MessageUserConnectPojo onMessage(@Payload MessageUserConnectPojo messageUserConnectPojo) {
+//        List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
+//        User sender = userService.findByUsername(messageUserConnectPojo.getSender());
+        messageUserConnectPojo.setFriend(true);
+        Date now = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        messageUserConnectPojo.setTime(dateFormat.format(now));
         System.out.println(messageUserConnectPojo.toString());
         return messageUserConnectPojo;
     }
