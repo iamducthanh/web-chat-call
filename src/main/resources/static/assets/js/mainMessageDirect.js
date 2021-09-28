@@ -190,6 +190,13 @@ async function onMessageReceived(payload) {
     } else if (message.type === 'CHAT') {
         let username = document.querySelector('#name').value.trim();
         let names = 'messUser' + username + userInRoom;
+        console.log("nameeeeeeeeeeeeeeeee " + names)
+        let contentUserMessage = document.getElementById("contentUserMessage");
+        let userMessageChat = document.getElementById(names);
+        let divAdd = document.createElement("div");
+        divAdd.appendChild(userMessageChat);
+        // contentUserMessage.removeChild(userMessageChat);
+        contentUserMessage.innerHTML = divAdd.innerHTML + contentUserMessage.innerHTML;
         if (username == message.sender) {
             document.getElementById("statusMessage").innerHTML = message.statusMessage;
             messageArea.innerHTML +=

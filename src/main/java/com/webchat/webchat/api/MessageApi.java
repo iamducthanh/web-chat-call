@@ -107,7 +107,7 @@ public class MessageApi {
         if(dataFile.isEmpty()){
             dataFile.add(new FileAttackDto(String.valueOf(uuid),null,null));
         }
-        messageService.saveMessage(message);
+//        messageService.saveMessage(message);
         if(!attack.equals("[]")){
             attachService.saveAttach(attaches);
         }
