@@ -1,14 +1,14 @@
 package com.webchat.webchat.controller.web;
 
-import com.webchat.webchat.entities.Message;
-import com.webchat.webchat.entities.Room;
-import com.webchat.webchat.entities.RoomDetail;
-import com.webchat.webchat.entities.User;
+import com.webchat.webchat.dto.MessageUserDto;
+import com.webchat.webchat.entities.*;
+import com.webchat.webchat.pojo.MessageUser;
 import com.webchat.webchat.service.impl.MessageService;
 import com.webchat.webchat.service.impl.RoomDetailService;
 import com.webchat.webchat.service.impl.RoomService;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.SessionUtil;
+import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,23 +31,51 @@ public class MessageController {
     private MessageService messageService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private RoomDetailService roomDetailService;
 
-    @GetMapping("/message/check/{id}")
-    public String checkMessage(@PathVariable("id") String id){
+    @PostMapping("/message/create-room")
+    @ResponseBody
+    public MessageUserDto checkMessage(String userId){
+
+        MessageUserDto messageUser = new MessageUserDto();
         User user = (User) sessionUtil.getObject("USER");
-        String view = "redirect:/trang-chu";
-        try {
-            RoomDetail roomDetail = roomDetailService.findRoomDetailBy2User(user.getId(),Integer.parseInt(id));
-            if(roomDetail != null){
-                view = "redirect:/message_direct?room=" + roomDetail.getRoom().getId();
-            } else {
-                view = createRoomChat(id, user);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return view;
+        List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
+        // tạo room
+        UUID roomId = UUID.randomUUID();
+        UUID messageId = UUID.randomUUID();
+        Room room = new Room(String.valueOf(roomId), 0, "",user.getUsername());
+//        roomService.saveRoom(room);
+
+        // tạo room detail
+        User user2 = userService.findById(Integer.parseInt(userId));
+        List<RoomDetail> roomDetails = new ArrayList<>();
+        roomDetails.add(new RoomDetail(user,room));
+        roomDetails.add(new RoomDetail(user2,room));
+//        roomDetailService.saveRoomDetail(roomDetails);
+
+        // tạo tin nhắn đầu tiên
+        Message message = new Message();
+        message.setRoom(room);
+        message.setType("CREATE");
+        message.setTime(new Date());
+        message.setContent("Bắt đầu trò chuyện");
+        message.setUser(user);
+        message.setId(String.valueOf(messageId));
+        message.setStatus("CREATE");
+//        messageService.saveMessage(message);
+
+        messageUser.setName(user2.getFullname());
+        messageUser.setUsername(user2.getUsername());
+        messageUser.setMessageLast("Bắt đầu trò chuyện.");
+        messageUser.setCountMess(0);
+        messageUser.setStatus(1);
+        messageUser.setTime(message.getTimeChat());
+        message.setRoom(message.getRoom());
+        messageUser.setFriend(SystemUtil.isFriend(user2, friends));
+        return messageUser;
     }
 
     @PostMapping("/message/change-status")
@@ -61,27 +89,27 @@ public class MessageController {
         return "done";
     }
 
-    public String createRoomChat(String id, User user){
-        UUID roomId = UUID.randomUUID();
-        UUID messageId = UUID.randomUUID();
-        Room room = new Room(String.valueOf(roomId), 0, "",user.getUsername());
-        roomService.saveRoom(room);
-        User user2 = new User();
-        user2.setId(Integer.parseInt(id));
-        List<RoomDetail> roomDetails = new ArrayList<>();
-        roomDetails.add(new RoomDetail(user,room));
-        roomDetails.add(new RoomDetail(user2,room));
-        roomDetailService.saveRoomDetail(roomDetails);
-        Message message = new Message();
-        message.setRoom(room);
-        message.setType("CREATE");
-        message.setTime(new Date());
-        message.setContent("Bắt đầu trò chuyện");
-        message.setUser(user);
-        message.setId(String.valueOf(messageId));
-        message.setStatus("CREATE");
-        messageService.saveMessage(message);
-        return "redirect:/message_direct?room=" + room.getId();
-    }
+//    public String createRoomChat(String id, User user){
+//        UUID roomId = UUID.randomUUID();
+//        UUID messageId = UUID.randomUUID();
+//        Room room = new Room(String.valueOf(roomId), 0, "",user.getUsername());
+//        roomService.saveRoom(room);
+//        User user2 = new User();
+//        user2.setId(Integer.parseInt(id));
+//        List<RoomDetail> roomDetails = new ArrayList<>();
+//        roomDetails.add(new RoomDetail(user,room));
+//        roomDetails.add(new RoomDetail(user2,room));
+//        roomDetailService.saveRoomDetail(roomDetails);
+//        Message message = new Message();
+//        message.setRoom(room);
+//        message.setType("CREATE");
+//        message.setTime(new Date());
+//        message.setContent("Bắt đầu trò chuyện");
+//        message.setUser(user);
+//        message.setId(String.valueOf(messageId));
+//        message.setStatus("CREATE");
+//        messageService.saveMessage(message);
+//        return "redirect:/message_direct?room=" + room.getId();
+//    }
 
 }

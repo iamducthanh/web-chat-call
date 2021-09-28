@@ -41,6 +41,8 @@ function setRoomDetail(roomDetail){
     document.getElementById("statusMedia").value = 0;
     document.getElementById("userNameRoom").innerText=roomDetail.userInRoom.fullname;
     document.getElementById("userImageRoom").src=roomDetail.userInRoom.image;
+    document.getElementById("avtUserInroom").src=roomDetail.userInRoom.image;
+    document.getElementById("avtMyUser").src=roomDetail.user.image;
 
     document.getElementById("messageArea").innerHTML = "";
     scrollFunction_ct();

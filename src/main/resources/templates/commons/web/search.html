@@ -93,13 +93,36 @@
                             "</svg>" +
                             "</a>" +
                             "<ul class='dropdown-menu'>" +
-                            "<li><a href='message/check/"+data[i].id+"' class='dropdown-item'>Gửi tin nhắn</a></li>" +
+                            "<li><div onclick='checkRoomByUser(\""+data[i].username+"\", "+data[i].id+")' class='dropdown-item'>Gửi tin nhắn</div></li>" +
                             "<li><a class='dropdown-item'>Kết bạn</a></li>" +
                             "</ul> </div> </div> </div> </div> </div>"
                     }
                 },
                 type: 'POST'
             });
+        }
+
+        function checkRoomByUser(username, userId){
+            let userOnline = document.getElementById("userOnline").value;
+            let divRoom = document.getElementById('messUser' + userOnline + username);
+            if(divRoom != null){
+                divRoom.click();
+            }
+            else {
+                $.ajax({
+                    url: 'message/create-room',
+                    data: {
+                        userId: userId
+                    },
+                    error: function () {
+                        console.log("error")
+                    },
+                    success: function (data) {
+                        console.log(data)
+                    },
+                    type: 'POST'
+                });
+            }
         }
     </script>
 </div>
