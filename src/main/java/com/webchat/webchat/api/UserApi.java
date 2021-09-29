@@ -48,10 +48,12 @@ public class UserApi {
             List<User> users = userService.findByKeyword(keyword, keyword);
             if(users != null){
                 for (User user : users) {
-                    String statusFriend = "OFF"; // tắt gửi lời mời kết bạn
+                    String statusFriend = "ON"; // bật gửi lời mời kết bạn
                     Friend friend = friendService.findFriendBy2User(myUser.getUsername(), user.getUsername());
-                    if(friend == null){
-                        statusFriend = "ON"; // bật gửi lời mời kết bạn
+                    if(friend != null && friend.getStatus().equals("WAIT") && friend.getUser().getUsername().equals(user.getUsername())){
+                        statusFriend = "WAIT"; // bật hủy lời mời kết bạn
+                    } else if(friend != null){
+                        statusFriend = "OFF";
                     }
                     userPojos.add(new UserPojo(
                             user.getId(),

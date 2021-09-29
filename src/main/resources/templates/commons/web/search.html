@@ -58,7 +58,7 @@
                         let avatarOnline = "";
                         let status = "";
                         let username = data[i].username;
-                        let liAddFriend = "<li><a class='dropdown-item'>Kết bạn</a></li>";
+                        let liAddFriend = "<li><a class='dropdown-item' onclick='sendFriendRequest(\""+username+"\")'>Kết bạn</a></li>";
                         if(isFriend){
                             if(data[i].online){
                                 avatarOnline = 'avatar-online';
@@ -71,7 +71,9 @@
                         } else {
                             status = data[i].username;
                         }
-                        if(data[i].friendStatus == 'OFF'){
+                        if(data[i].friendStatus == 'WAIT'){
+                            liAddFriend = "<li><a class='dropdown-item'>Hủy lời mời</a></li>";
+                        } else if(data[i].friendStatus == "OFF") {
                             liAddFriend = "";
                         }
                         userSearchList.innerHTML +=
@@ -196,6 +198,10 @@
             } else {
                 document.getElementById("genderDetailModal").innerText = 'Nữ';
             }
+        }
+
+        function sendFriendRequest(username){
+            console.log(username)
         }
     </script>
 </div>
