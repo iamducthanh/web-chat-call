@@ -20,4 +20,5 @@ public class UserInRoomDto {
     private String birthday;
     private boolean gender;
     private String description;
+    private String lastOnline;
 }

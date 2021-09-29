@@ -76,6 +76,12 @@ public class User {
     private List<Friend> friends;
 
     @OneToMany(mappedBy = "user")
+    private List<Notification> user;
+
+    @OneToMany(mappedBy = "friend")
+    private List<Notification> friend;
+
+    @OneToMany(mappedBy = "user")
     private List<RoomDetail> roomDetails;
 
     public boolean isOnline(){
@@ -112,5 +118,31 @@ public class User {
     public String getBirthDayString(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(this.birthDate);
+    }
+
+    public String getLastOnlineString(){
+        String last = "";
+        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now= new Date();
+
+        long diff = now.getTime() - this.lastonline.getTime();
+        long diffSeconds = diff / 1000 % 60;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+//        System.out.print(diffDays + " days, ");
+//        System.out.print(diffHours + " hours, ");
+//        System.out.print(diffMinutes + " minutes, ");
+//        System.out.print(diffSeconds + " seconds.");
+        if(diffDays != 0){
+            last = "Hoạt động "+ diffDays + " ngày trước";
+        } else if(diffHours != 0){
+            last = "Hoạt động "+ diffHours + " giờ trước";
+        } else if(diffMinutes != 0){
+            last = "Hoạt động "+ diffMinutes + " phút trước";
+        } else if(diffSeconds != 0){
+            last = "Hoạt động "+ diffSeconds + " giây trước";
+        }
+        return last;
     }
 }

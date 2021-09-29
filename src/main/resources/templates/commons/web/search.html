@@ -72,10 +72,13 @@
                             status = data[i].username;
                         }
                         if(data[i].friendStatus == 'WAIT'){
-                            liAddFriend = "<li><a class='dropdown-item'>Hủy lời mời</a></li>";
+                            liAddFriend = "<li><a class='dropdown-item'>Hủy lời mời kết bạn</a></li>";
                         } else if(data[i].friendStatus == "OFF") {
                             liAddFriend = "";
+                        } else if(data[i].friendStatus == "AGREE") {
+                            liAddFriend = "<li><a class='dropdown-item'>Chấp nhận lời mời kết bạn</a></li>";
                         }
+
                         userSearchList.innerHTML +=
                             "<div class='card border-0'>" +
                             "<div class='card-body'>" +

@@ -88,7 +88,8 @@ public class RoomApi {
                         user2.getPhone(),
                         user2.getBirthDayString(),
                         user2.isGender(),
-                        user2.getDescription()
+                        user2.getDescription(),
+                        user2.getLastOnlineString()
                 );
             } else {
                 System.out.println("là bạn bè "+ isFriend);
@@ -106,7 +107,8 @@ public class RoomApi {
                         user1.getPhone(),
                         user1.getBirthDayString(),
                         user1.isGender(),
-                        user1.getDescription()
+                        user1.getDescription(),
+                        user1.getLastOnlineString()
                 );
             }
             roomDetailDto.setRoomId(roomId);

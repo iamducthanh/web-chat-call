@@ -2,9 +2,12 @@ package com.webchat.webchat.component;
 
 import com.webchat.webchat.constant.AttackFile;
 import com.webchat.webchat.constant.UsersOnline;
+import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.ChatMessagePojo;
 import com.webchat.webchat.pojo.UserConnectPojo;
 import com.webchat.webchat.pojo.UserOnline;
+import com.webchat.webchat.service.IUserService;
+import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.slf4j.Logger;
+
+import java.util.Date;
+
 @Component
 public class WebSocketEventListener {
 
@@ -22,6 +28,9 @@ public class WebSocketEventListener {
 
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
+
+    @Autowired
+    private IUserService userService;
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
@@ -33,6 +42,11 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String userOnline = (String) headerAccessor.getSessionAttributes().get("userOnline");
         if(userOnline != null){
+            System.out.println("-------------------------------------");
+            Date now = new Date();
+            User user = userService.findByUsername(userOnline);
+            user.setLastonline(now);
+            userService.saveUser(user); // lưu lại thời gian off trước
             UserOnline userOnline1 = new UserOnline();
             userOnline1.setUsername(userOnline);
             userOnline1.setType("OFFLINE");

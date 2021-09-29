@@ -82,7 +82,7 @@ function setRoomDetail(roomDetail){
         if(roomDetail.userInRoom.online){
             statusOn.innerText = "Đang hoạt động";
         } else {
-            statusOn.innerText = "Không hoạt động";
+            statusOn.innerText = roomDetail.userInRoom.lastOnline;
         }
         statusOn.className = "text-truncate " + roomDetail.userInRoom.username;
     } else {
