@@ -18,4 +18,10 @@ public class FriendService implements IFriendService {
         List<Friend> list = repo.findByUser(username, username);
         return list.isEmpty() ? null : list;
     }
+
+    @Override
+    public Friend findFriendBy2User(String username1, String usernam2) {
+        List<Friend> list = repo.findBy2User(username1, usernam2);
+        return list.isEmpty() ? null : list.get(0);
+    }
 }

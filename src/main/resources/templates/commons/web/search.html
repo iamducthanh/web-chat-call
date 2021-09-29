@@ -53,10 +53,12 @@
                     let userSearchList = document.getElementById("UserSearchList");
                     userSearchList.innerHTML = "";
                     for (let i = 0; i < data.length; i++) {
+                        console.log(data[i])
                         let isFriend = document.querySelector("#friend" + data[i].username) == null ? false : true;
                         let avatarOnline = "";
                         let status = "";
                         let username = data[i].username;
+                        let liAddFriend = "<li><a class='dropdown-item'>Kết bạn</a></li>";
                         if(isFriend){
                             if(data[i].online){
                                 avatarOnline = 'avatar-online';
@@ -69,6 +71,9 @@
                         } else {
                             status = data[i].username;
                         }
+                        if(data[i].friendStatus == 'OFF'){
+                            liAddFriend = "";
+                        }
                         userSearchList.innerHTML +=
                             "<div class='card border-0'>" +
                             "<div class='card-body'>" +
@@ -77,7 +82,16 @@
                             "<a href='#' class='avatar "+avatarOnline+"' id=''>" +
                             "<img class='avatar-img' src='"+data[i].image+"' alt=''></a>" +
                             "</div>" +
-                            "<div class='col'>" +
+                            "<div class='col' data-bs-toggle=\"modal\" data-bs-target=\"#modal-user-profile\" onclick='showModalUserProfile("+
+                            "\""+data[i].fullName+"\" "+
+                            ",\""+data[i].image+"\""+
+                            ",\""+data[i].descreption+"\""+
+                            ",\""+data[i].username+"\""+
+                            ",\""+data[i].email+"\""+
+                            ",\""+data[i].phone+"\""+
+                            ",\""+data[i].birthdayString+"\""+
+                            ",\""+data[i].gender+"\""+
+                            ")'>" +
                             "<h5><a href='#'>"+data[i].fullName+"</a></h5>" +
                             "<p class='text-truncate'>"+status+"</p>" +
                             "</div>" +
@@ -94,7 +108,7 @@
                             "</a>" +
                             "<ul class='dropdown-menu'>" +
                             "<li><div onclick='checkRoomByUser(\""+data[i].username+"\", "+data[i].id+")' class='dropdown-item'>Gửi tin nhắn</div></li>" +
-                            "<li><a class='dropdown-item'>Kết bạn</a></li>" +
+                            liAddFriend +
                             "</ul> </div> </div> </div> </div> </div>"
                     }
                 },
@@ -132,7 +146,6 @@
                             }
                         }
 
-
                         contentUserMessage.innerHTML =
                             "<div onclick='onRoomMessage(\""+data.roomCode+"\")' " +
                             "class='card border-0 text-reset' id='"+name+"'>" +
@@ -167,6 +180,21 @@
                     },
                     type: 'POST'
                 });
+            }
+        }
+
+        function showModalUserProfile(fullName,image,descreption,username,email,phone,birthdayString,gender){
+            document.getElementById("usernameDetailModal").innerText = username;
+            document.getElementById("fullnameDetailModal").innerText = fullName;
+            document.getElementById("avtDetailModal").src = image;
+            document.getElementById("emailDetailModal").innerText = email;
+            document.getElementById("descriptionModal").innerText = descreption;
+            document.getElementById("phoneDetailModal").innerText = phone;
+            document.getElementById("birthDayDetailModal").value = birthdayString;
+            if(gender == 'true'){
+                document.getElementById("genderDetailModal").innerText = 'Nam';
+            } else {
+                document.getElementById("genderDetailModal").innerText = 'Nữ';
             }
         }
     </script>

@@ -3,9 +3,12 @@ package com.webchat.webchat.api;
 import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.ChangePasswordDto;
 import com.webchat.webchat.dto.UserProfileUpdateDto;
+import com.webchat.webchat.entities.Friend;
 import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.ErrorPojo;
 import com.webchat.webchat.pojo.UserPojo;
+import com.webchat.webchat.service.IFriendService;
+import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.service.impl.FriendService;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.SessionUtil;
@@ -28,10 +31,13 @@ import java.util.*;
 @Controller
 public class UserApi {
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private SessionUtil sessionUtil;
+
+    @Autowired
+    private IFriendService friendService;
 
     @PostMapping("/user/search")
     @ResponseBody
@@ -42,8 +48,11 @@ public class UserApi {
             List<User> users = userService.findByKeyword(keyword, keyword);
             if(users != null){
                 for (User user : users) {
-                    String isFriend = "";
-//                    Friend friend = friendService.getFriendByUser();
+                    String statusFriend = "OFF"; // tắt gửi lời mời kết bạn
+                    Friend friend = friendService.findFriendBy2User(myUser.getUsername(), user.getUsername());
+                    if(friend == null){
+                        statusFriend = "ON"; // bật gửi lời mời kết bạn
+                    }
                     userPojos.add(new UserPojo(
                             user.getId(),
                             user.getUsername(),
@@ -54,8 +63,11 @@ public class UserApi {
                             user.isGender(),
                             user.getRole(),
                             user.getBirthDate(),
-                            isFriend,
-                            UsersOnline.usersOnline.get(user.getUsername()) != null ? true : false
+                            statusFriend,
+                            UsersOnline.usersOnline.get(user.getUsername()) != null ? true : false,
+                            user.getPhone(),
+                            user.getDescription(),
+                            user.getBirthDayString()
                     ));
                 }
             }

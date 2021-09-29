@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -20,6 +22,10 @@ public class UserPojo {
     private boolean gender;
     private String role;
     private Date birthDate;
-    private String isFriend;
+    private String friendStatus;
     private boolean online;
+    private String phone;
+    private String descreption;
+    private String birthdayString;
+
 }

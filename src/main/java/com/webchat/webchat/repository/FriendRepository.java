@@ -9,4 +9,7 @@ import java.util.List;
 public interface FriendRepository extends JpaRepository<Friend, Integer> {
     @Query("select o from Friend o where o.user.username = ?1 or o.friend.username = ?2")
     List<Friend> findByUser(String username1, String username2);
+
+    @Query("select o from Friend o where (o.user.username = ?1 and o.friend.username = ?2) or (o.user.username = ?2 and o.friend.username = ?1)")
+    List<Friend> findBy2User(String username1, String username2);
 }
