@@ -57,7 +57,7 @@ function socketRoomConected(){
     stompClientRoom.subscribe('/topic/system/' + userOnline, onAddRoom);
 }
 function socketFriendConected(){
-    stompClientRoom.subscribe('/topic/system/friend/' + userOnline, onFriendRequest);
+    stompClientRoom.subscribe('/topic/system/friend/' + userIdOnline, onFriendRequest);
 }
 
 function onError1() {

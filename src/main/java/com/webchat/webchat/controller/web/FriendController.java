@@ -23,13 +23,16 @@ public class FriendController {
     @Autowired
     private IFriendService friendService;
 
-    @MessageMapping("/system/friend/{username}")
-    @SendTo("/topic/system/friend/{username}")
+    @MessageMapping("/system/friend/{id}")
+    @SendTo("/topic/system/friend/{id}")
     public FriendRequestDto addUser(@Payload FriendRequestDto friendRequest, SimpMessageHeaderAccessor headerAccessor) {
         System.out.println(friendRequest.toString());
         User user = userService.findById(Integer.parseInt(friendRequest.getSenderId()));
         if(friendRequest.getType().equals("REQUEST")){
             addFriendRequest(user, friendRequest.getUserId());
+            friendRequest.setFullname(user.getFullname());
+            friendRequest.setImage(user.getImage());
+            friendRequest.setTime(friendRequest.getTimeString());
         }
         return friendRequest;
     }
@@ -42,6 +45,6 @@ public class FriendController {
         friendNew.setFriend(friend);
         friendNew.setStatus("WAIT");
         friendNew.setTime(new Date());
-        friendService.saveFriend(friendNew);
+//        friendService.saveFriend(friendNew);
     }
 }
