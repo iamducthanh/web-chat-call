@@ -24,4 +24,9 @@ public class FriendService implements IFriendService {
         List<Friend> list = repo.findBy2User(username1, usernam2);
         return list.isEmpty() ? null : list.get(0);
     }
+
+    @Override
+    public void saveFriend(Friend friend) {
+        repo.save(friend);
+    }
 }

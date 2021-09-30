@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table(name = "notification")
@@ -14,7 +17,7 @@ import javax.persistence.*;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @ManyToOne @JoinColumn(name = "userid")
     private User user;
@@ -24,4 +27,13 @@ public class Notification {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "time")
+    private Date time;
+
+    public String getTimeString(){
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        String strDate = dateFormat.format(this.time);
+        return strDate;
+    }
 }

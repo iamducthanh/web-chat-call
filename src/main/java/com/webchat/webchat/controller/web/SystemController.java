@@ -22,11 +22,6 @@ import java.util.List;
 
 @Controller
 public class SystemController {
-    @Autowired
-    private SessionUtil sessionUtil;
-
-    @Autowired
-    private UserService userService;
 
     @MessageMapping("/system.adduser")
     @SendTo("/topic/system.adduser")

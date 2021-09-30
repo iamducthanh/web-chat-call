@@ -1,18 +1,11 @@
 package com.webchat.webchat.intercepter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webchat.webchat.constant.ListConstant;
 import com.webchat.webchat.constant.PropertiesConstant;
-import com.webchat.webchat.entities.Friend;
-import com.webchat.webchat.entities.Message;
-import com.webchat.webchat.entities.RoomDetail;
-import com.webchat.webchat.entities.User;
+import com.webchat.webchat.entities.*;
+import com.webchat.webchat.pojo.FriendRequestPojo;
 import com.webchat.webchat.pojo.MessageUser;
 import com.webchat.webchat.pojo.NotificationPojo;
-import com.webchat.webchat.service.impl.FriendService;
-import com.webchat.webchat.service.impl.MessageService;
-import com.webchat.webchat.service.impl.RoomDetailService;
-import com.webchat.webchat.service.impl.UserService;
+import com.webchat.webchat.service.*;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +16,22 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
 public class DataIntercepter implements HandlerInterceptor {
     @Autowired
-    private RoomDetailService roomDetailService;
+    private IRoomDetailService roomDetailService;
     @Autowired
-    private UserService userService;
+    private IUserService userService;
     @Autowired
-    private MessageService messageService;
+    private IMessageService messageService;
     @Autowired
-    private FriendService friendService;
+    private IFriendService friendService;
     @Autowired
     private SessionUtil sessionUtil;
+    @Autowired
+    private INotificationService notificationService;
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
@@ -46,11 +40,13 @@ public class DataIntercepter implements HandlerInterceptor {
         req.setAttribute("user", user);
         getUserOnline(req, user);
         getFriendUser(req, user);
+        getNotification(req, user);
         return true;
     }
 
     public void getUserOnline(HttpServletRequest req, User user) {
         req.setAttribute("userOnline", user.getUsername());
+        req.setAttribute("userId", user.getId());
     }
 
     public void getMessageUser(HttpServletRequest req, User user, List<User> friends) {
@@ -113,7 +109,7 @@ public class DataIntercepter implements HandlerInterceptor {
     public void getFriendUser(HttpServletRequest req, User user) {
         List<User> friends = new ArrayList<>();
         List<Friend> listFriend = friendService.getFriendByUser(user.getUsername());
-        List<NotificationPojo> notifications = new ArrayList<>();
+        List<FriendRequestPojo> friendRequestPojos = new ArrayList<>();
         List<Integer> idUserList = new ArrayList<>();
         if (listFriend != null) {
             for (Friend friend : listFriend) {
@@ -126,14 +122,37 @@ public class DataIntercepter implements HandlerInterceptor {
                         idUserList.add(friend.getUser().getId());
                     }
                 } else if (friend.getStatus().equals("WAIT") && friend.getFriend().getUsername().equals(user.getUsername())) {
-                    notifications.add(new NotificationPojo(friend.getUser(), friend.getDay()));
+                    friendRequestPojos.add(new FriendRequestPojo(friend.getUser(), friend.getTime()));
                 }
             }
             sessionUtil.addObject("FRIENDS", friends);
         }
         req.setAttribute("friend", friends);
-        req.setAttribute("notifications", notifications);
+        req.setAttribute("friendRequests", friendRequestPojos);
         getMessageUser(req, user, friends);
+    }
+
+    public void getNotification(HttpServletRequest req, User user){
+        List<Notification> notifications = notificationService.findByUser(user.getUsername());
+        List<NotificationPojo> notificationPojos = new ArrayList<>();
+        int count = 0;
+        if(notifications != null){
+            for(Notification notification : notifications){
+                if(notification.getStatus().equals("ON")){
+                    count++;
+                }
+                notificationPojos.add(new NotificationPojo(
+                        notification.getId(),
+                        notification.getUser().getFullname(),
+                        notification.getUser().getImage(),
+                        notification.getTimeString(),
+                        notification.getStatus()
+                ));
+            }
+        }
+        req.setAttribute("notifications", notificationPojos);
+        req.setAttribute("countNotification", count);
+
     }
 
     @Override

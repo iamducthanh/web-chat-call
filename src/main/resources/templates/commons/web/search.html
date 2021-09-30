@@ -58,7 +58,7 @@
                         let avatarOnline = "";
                         let status = "";
                         let username = data[i].username;
-                        let liAddFriend = "<li><a class='dropdown-item' onclick='sendFriendRequest(\""+username+"\")'>Kết bạn</a></li>";
+                        let liAddFriend = "<li><a class='dropdown-item' onclick='sendFriendRequest(this,\""+data[i].id+"\")'>Kết bạn</a></li>";
                         if(isFriend){
                             if(data[i].online){
                                 avatarOnline = 'avatar-online';
@@ -203,9 +203,6 @@
             }
         }
 
-        function sendFriendRequest(username){
-            console.log(username)
-        }
     </script>
 </div>
 

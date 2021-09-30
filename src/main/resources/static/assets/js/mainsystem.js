@@ -4,12 +4,16 @@ let stompClientSystem = null;
 let stompClientMessageListen = null;
 let stompClientCall = null;
 let stompClientRoom = null;
+let stompClientFriend = null;
 let userOnline = null;
+let userIdOnline = null;
 let socketClient = null;
 let socketSystem = null;
 let socketCall = null;
 let socketRoom = null;
+let socketFriend = null;
 userOnline = document.querySelector('#userOnline').value.trim();
+userIdOnline = document.querySelector('#userIdOnline').value.trim();
 
 function online(event) {
     userOnline = document.querySelector('#userOnline').value.trim();
@@ -29,6 +33,10 @@ function online(event) {
         socketRoom = new SockJS('/chatroom/wss');
         stompClientRoom = Stomp.over(socketRoom);
         stompClientRoom.connect({}, socketRoomConected, onError4);
+
+        socketFriend = new SockJS('/chatroom/wss');
+        stompClientFriend = Stomp.over(socketFriend);
+        stompClientFriend.connect({}, socketFriendConected, onError5);
     }
 }
 
@@ -48,6 +56,9 @@ function socketCallConected(){
 function socketRoomConected(){
     stompClientRoom.subscribe('/topic/system/' + userOnline, onAddRoom);
 }
+function socketFriendConected(){
+    stompClientRoom.subscribe('/topic/system/friend/' + userOnline, onFriendRequest);
+}
 
 function onError1() {
     console.log("error ------ stompClientSystem")
@@ -63,6 +74,10 @@ function onError3() {
 
 function onError4() {
     console.log("error ------ stompClientRoom")
+}
+
+function onError5() {
+    console.log("error ------ stompClientFriend")
 }
 
 function onAddRoom(payload) {

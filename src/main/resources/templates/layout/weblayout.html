@@ -22,6 +22,7 @@
 </head>
 <body>
 <input type="hidden" th:value="${userOnline}" id="userOnline">
+<input type="hidden" th:value="${userId}" id="userIdOnline">
     <div class="layout overflow-hidden">
         <div th:replace="/commons/web/navigation :: navigation"></div>
         <div th:replace="/commons/web/sidebar :: sidebar"></div>
@@ -54,6 +55,7 @@
 <script th:src="@{/assets/js/mainMessageDirect.js}"></script>
 <script th:src="@{/assets/js/mainroom.js}"></script>
 <script th:src="@{/assets/js/template.js}"></script>
+<script th:src="@{/assets/js/mainfriend.js}"></script>
 <style>
     .messageSend{
         font-weight: 900;
