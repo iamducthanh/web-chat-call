@@ -3,6 +3,7 @@ package com.webchat.webchat.controller.web;
 import com.webchat.webchat.dto.FriendRequestDto;
 import com.webchat.webchat.entities.Friend;
 import com.webchat.webchat.entities.User;
+import com.webchat.webchat.pojo.FriendRequestPojo;
 import com.webchat.webchat.service.IFriendService;
 import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.utils.SessionUtil;
@@ -36,6 +37,8 @@ public class FriendController {
 
         } else if(friendRequest.getType().equals("CANCEL")){
             deleteFriend(Integer.parseInt(friendRequest.getSenderId()), Integer.parseInt(friendRequest.getUserId()));
+        } else if(friendRequest.getType().equals("AGREE")){
+            agreeFriendRequest(friendRequest, Integer.parseInt(friendRequest.getSenderId()), Integer.parseInt(friendRequest.getUserId()));
         }
         return friendRequest;
     }
@@ -54,5 +57,13 @@ public class FriendController {
     public void deleteFriend(Integer userId, Integer friendId){
         Friend friend = friendService.findFriendBy2UserId(userId, friendId);
         friendService.deleteFriend(friend);
+    }
+
+    public void agreeFriendRequest(FriendRequestDto friendRequest, Integer userId, Integer friendId){
+        Friend friend = friendService.findFriendBy2UserId(userId, friendId);
+        friend.setStatus("FRIEND");
+        friend.setTime(new Date());
+        friendRequest.setFullname(friend.getFriend().getFullname());
+//        friendService.saveFriend(friend);
     }
 }

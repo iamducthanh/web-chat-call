@@ -70,14 +70,14 @@
                                                                     </a>
 
                                                                     <ul class="dropdown-menu">
-                                                                        <li><a class="dropdown-item" href="#">New message</a></li>
-                                                                        <li><a class="dropdown-item" href="#">Edit contact</a>
-                                                                        </li>
+                                                                        <li><a class="dropdown-item"
+                                                                               th:attr="onclick=|checkRoomByUser('${friend.username}','${friend.id}')|"
+                                                                               href="#">Gửi tin nhắn</a></li>
                                                                         <li>
                                                                             <hr class="dropdown-divider">
                                                                         </li>
                                                                         <li>
-                                                                            <a class="dropdown-item text-danger" href="#">Block user</a>
+                                                                            <a class="dropdown-item text-danger" href="#">Chặn</a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -129,7 +129,9 @@
                                             >Xoá</a>
                                         </div>
                                         <div class="col">
-                                            <a href="#" class="btn btn-sm btn-primary w-100">Chấp nhận</a>
+                                            <a href="#" class="btn btn-sm btn-primary w-100"
+                                               th:attr="onclick=|agreeFriendRequest('${friendRequest.getUser().id}','${friendRequest.getUser().getFullname()}')|"
+                                            >Chấp nhận</a>
                                         </div>
                                     </div>
                                 </div>

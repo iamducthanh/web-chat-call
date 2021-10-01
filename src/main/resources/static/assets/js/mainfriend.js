@@ -68,15 +68,9 @@ function onFriendRequest(payload) {
             divFriendRequest.removeChild(friendRequest);
         }
 
-        let countFriendRequest = document.getElementById("countFriendRequest");
-
-        countFriendRequest.innerText = Number(countFriendRequest.innerText) - 1;
-        if(countFriendRequest.innerText == 0){
-            let divCountFriendRequest = document.getElementById("divCountFriendRequest");
-            divCountFriendRequest.className = 'icon icon-xl';
-            let divSlgFR = document.getElementById("divSlgFR");
-            divCountFriendRequest.removeChild(divSlgFR);
-        }
+        resetCountFriendRequest();
+    } else if(friendRequest.type == 'AGREE'){
+        toastInfo("Thông báo", friendRequest.fullname + " đã chấp nhận lời mời kết bạn");
     }
 }
 
@@ -113,8 +107,37 @@ function refuseFriendRequest(userId){
             console.log("done");
             let friendRequest = document.getElementById("friendRequest" + userId);
             document.getElementById("friend-request").removeChild(friendRequest);
-            toastInfo("Xoá", "Đã xóa yêu cầu kết bạn")
+            toastInfo("Xoá", "Đã xóa yêu cầu kết bạn");
+            resetCountFriendRequest();
         },
         type: 'PUT'
     });
+}
+
+function agreeFriendRequest(userId, fullname){
+    let friendRequest = {
+        senderId: userId,
+        userId: userIdOnline,
+        fullname: fullname,
+        image: "",
+        type: "AGREE",
+        time: ""
+    }
+    stompClientSystem.send("/app/system/friend/" + userId,
+        {},
+        JSON.stringify(friendRequest)
+    );
+    toastInfo("Thông báo",  "Bạn và " + fullname + " đã trở thành bạn bè");
+    resetCountFriendRequest();
+}
+
+function resetCountFriendRequest(){
+    let countFriendRequest = document.getElementById("countFriendRequest");
+    countFriendRequest.innerText = Number(countFriendRequest.innerText) - 1;
+    if(countFriendRequest.innerText == 0){
+        let divCountFriendRequest = document.getElementById("divCountFriendRequest");
+        divCountFriendRequest.className = 'icon icon-xl';
+        let divSlgFR = document.getElementById("divSlgFR");
+        divCountFriendRequest.removeChild(divSlgFR);
+    }
 }
