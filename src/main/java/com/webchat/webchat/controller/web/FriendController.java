@@ -33,6 +33,9 @@ public class FriendController {
             friendRequest.setFullname(user.getFullname());
             friendRequest.setImage(user.getImage());
             friendRequest.setTime(friendRequest.getTimeString());
+
+        } else if(friendRequest.getType().equals("CANCEL")){
+            deleteFriend(Integer.parseInt(friendRequest.getSenderId()), Integer.parseInt(friendRequest.getUserId()));
         }
         return friendRequest;
     }
@@ -45,6 +48,11 @@ public class FriendController {
         friendNew.setFriend(friend);
         friendNew.setStatus("WAIT");
         friendNew.setTime(new Date());
-//        friendService.saveFriend(friendNew);
+        friendService.saveFriend(friendNew);
+    }
+
+    public void deleteFriend(Integer userId, Integer friendId){
+        Friend friend = friendService.findFriendBy2UserId(userId, friendId);
+        friendService.deleteFriend(friend);
     }
 }

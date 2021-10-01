@@ -51,19 +51,30 @@ function onFriendRequest(payload) {
         if(countFriendRequest == null){
             divCountFriendRequest.className = 'icon icon-xl icon-badged';
             divCountFriendRequest.innerHTML = divCountFriendRequest.innerHTML +
-                "<div class=\"badge badge-circle bg-primary\">"+
+                "<div id='divSlgFR' class=\"badge badge-circle bg-primary\">"+
                 "<span id=\"countFriendRequest\">1</span>"+
                 "</div>";
         } else {
             countFriendRequest.innerText = Number(countFriendRequest.innerText) + 1;
         }
     } else if(friendRequest.type == 'CANCEL'){
-        let divCountFriendRequest = document.getElementById("friend-request");
+        let divFriendRequest = document.getElementById("friend-request");
         console.log("lmhb can xoa la: " + id)
         let friendRequest = document.getElementById(id);
         if(friendRequest != null){
-            divCountFriendRequest.removeChild(friendRequest);
+            divFriendRequest.removeChild(friendRequest);
         }
+
+        let countFriendRequest = document.getElementById("countFriendRequest");
+
+        countFriendRequest.innerText = Number(countFriendRequest.innerText) - 1;
+        if(countFriendRequest.innerText == 0){
+            let divCountFriendRequest = document.getElementById("divCountFriendRequest");
+            divCountFriendRequest.className = 'icon icon-xl';
+            let divSlgFR = document.getElementById("divSlgFR");
+            divCountFriendRequest.removeChild(divSlgFR);
+        }
+
     }
 }
 

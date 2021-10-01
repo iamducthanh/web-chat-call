@@ -26,7 +26,18 @@ public class FriendService implements IFriendService {
     }
 
     @Override
+    public Friend findFriendBy2UserId(Integer userId, Integer friendId) {
+        List<Friend> list = repo.findBy2UserId(userId, friendId);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    @Override
     public void saveFriend(Friend friend) {
         repo.save(friend);
+    }
+
+    @Override
+    public void deleteFriend(Friend friend) {
+        repo.delete(friend);
     }
 }
