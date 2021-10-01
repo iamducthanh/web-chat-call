@@ -124,7 +124,9 @@
                                 <div class="card-footer">
                                     <div class="row gx-5">
                                         <div class="col">
-                                            <a href="#" class="btn btn-sm btn-secondary w-100">Xoá</a>
+                                            <a href="#" class="btn btn-sm btn-secondary w-100"
+                                               th:attr="onclick=|refuseFriendRequest('${friendRequest.getUser().id}')|"
+                                            >Xoá</a>
                                         </div>
                                         <div class="col">
                                             <a href="#" class="btn btn-sm btn-primary w-100">Chấp nhận</a>

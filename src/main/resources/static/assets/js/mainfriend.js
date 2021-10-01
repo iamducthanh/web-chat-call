@@ -14,6 +14,8 @@ function sendFriendRequest(event, userId) {
         {},
         JSON.stringify(friendRequest)
     );
+    toastInfo("Thông báo",  "Gửi yêu cầu kết bạn thành công")
+
 }
 
 function onFriendRequest(payload) {
@@ -39,7 +41,7 @@ function onFriendRequest(payload) {
             "<div class=\"d-flex\"><div class=\"me-auto\">Đã gửi cho bạn lời mời kết bạn.</div>" +
             "</div></div></div></div><div class=\"card-footer\"><div class=\"row gx-5\">" +
             "<div class=\"col\">" +
-            "<a href=\"#\" class=\"btn btn-sm btn-secondary w-100\">Xoá</a>" +
+            "<a href=\"#\" class=\"btn btn-sm btn-secondary w-100\" onclick='refuseFriendRequest("+friendRequest.senderId+")'>Xoá</a>" +
             "</div>" +
             "<div class=\"col\">" +
             "<a href=\"#\" class=\"btn btn-sm btn-primary w-100\">Chấp nhận</a>" +
@@ -57,6 +59,7 @@ function onFriendRequest(payload) {
         } else {
             countFriendRequest.innerText = Number(countFriendRequest.innerText) + 1;
         }
+        toastInfo("Thông báo",  friendRequest.fullname+" đã gửi cho bạn lời mời kết bạn")
     } else if(friendRequest.type == 'CANCEL'){
         let divFriendRequest = document.getElementById("friend-request");
         console.log("lmhb can xoa la: " + id)
@@ -74,7 +77,6 @@ function onFriendRequest(payload) {
             let divSlgFR = document.getElementById("divSlgFR");
             divCountFriendRequest.removeChild(divSlgFR);
         }
-
     }
 }
 
@@ -94,4 +96,25 @@ function cancelFriendRequest(userId, event){
         {},
         JSON.stringify(friendRequest)
     );
+    toastInfo("Thông báo",  "Đã hủy yêu cầu kết bạn");
+}
+
+function refuseFriendRequest(userId){
+    $.ajax({
+        url: 'api/friend/delete',
+        data: {
+            userId: userId,
+            friendId: userIdOnline
+        },
+        error: function () {
+            console.log("error")
+        },
+        success: async function (data) {
+            console.log("done");
+            let friendRequest = document.getElementById("friendRequest" + userId);
+            document.getElementById("friend-request").removeChild(friendRequest);
+            toastInfo("Xoá", "Đã xóa yêu cầu kết bạn")
+        },
+        type: 'PUT'
+    });
 }
