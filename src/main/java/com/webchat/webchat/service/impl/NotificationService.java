@@ -18,4 +18,14 @@ public class NotificationService implements INotificationService {
         List<Notification> list = notificationRepo.findByUser(username);
         return list.isEmpty() ? null : list;
     }
+
+    @Override
+    public void updateNotification(List<Notification> notifications) {
+        notificationRepo.saveAll(notifications);
+    }
+
+    @Override
+    public void saveOneNotification(Notification notifications) {
+        notificationRepo.save(notifications);
+    }
 }

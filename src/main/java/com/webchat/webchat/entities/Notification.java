@@ -25,6 +25,9 @@ public class Notification {
     @ManyToOne @JoinColumn(name = "friendid")
     private User friend;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "status")
     private String status;
 

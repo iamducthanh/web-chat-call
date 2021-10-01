@@ -2,9 +2,11 @@ package com.webchat.webchat.controller.web;
 
 import com.webchat.webchat.dto.FriendRequestDto;
 import com.webchat.webchat.entities.Friend;
+import com.webchat.webchat.entities.Notification;
 import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.FriendRequestPojo;
 import com.webchat.webchat.service.IFriendService;
+import com.webchat.webchat.service.INotificationService;
 import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class FriendController {
@@ -23,6 +26,9 @@ public class FriendController {
 
     @Autowired
     private IFriendService friendService;
+
+    @Autowired
+    private INotificationService notificationService;
 
     @MessageMapping("/system/friend/{id}")
     @SendTo("/topic/system/friend/{id}")
@@ -68,5 +74,12 @@ public class FriendController {
         friendRequest.setImage(friend.getFriend().getImage());
         friendRequest.setUsername(friend.getFriend().getUsername());
         friendService.saveFriend(friend);
+        Notification notification = new Notification();
+        notification.setUser(friend.getUser());
+        notification.setFriend(friend.getFriend());
+        notification.setStatus("ON");
+        notification.setType("AGREE");
+        notification.setTime(new Date());
+        notificationService.saveOneNotification(notification);
     }
 }
