@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 29, 2021 lúc 08:30 AM
+-- Thời gian đã tạo: Th10 01, 2021 lúc 05:03 PM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -53,18 +53,20 @@ CREATE TABLE `friend` (
                           `id` int(11) NOT NULL,
                           `userId` int(11) DEFAULT NULL,
                           `friendId` int(11) DEFAULT NULL,
-                          `day` date DEFAULT NULL,
-                          `status` varchar(20) DEFAULT NULL
+                          `status` varchar(20) DEFAULT NULL,
+                          `time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `friend`
 --
 
-INSERT INTO `friend` (`id`, `userId`, `friendId`, `day`, `status`) VALUES
-(1, 1, 3, '2021-09-06', 'FRIEND'),
-(2, 3, 2, '2021-09-07', 'FRIEND'),
-(3, 1, 2, '2021-09-19', 'WAIT');
+INSERT INTO `friend` (`id`, `userId`, `friendId`, `status`, `time`) VALUES
+(1, 1, 3, 'FRIEND', '2021-09-15 06:18:14'),
+(2, 3, 2, 'FRIEND', '2021-09-22 05:28:00'),
+(3, 1, 2, 'WAIT', '2021-10-01 22:02:06'),
+(4, 2, 4, 'WAIT', '2021-09-30 17:30:19'),
+(28, 2, 5, 'WAIT', '2021-10-01 21:58:55');
 
 -- --------------------------------------------------------
 
@@ -91,6 +93,7 @@ INSERT INTO `message` (`id`, `userId`, `roomId`, `type`, `time`, `content`, `sta
 ('0b82cd99-71d3-4577-a3d7-dda78ffbd20e', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:48', 'wwwwwwwwww', 'READ'),
 ('11b94c20-3250-433d-8d1d-592b9aceb893', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 16:37:31', 'chào', 'READ'),
 ('181388c5-d852-47f3-83b8-008dbba95202', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 10:01:22', 'sao', 'READ'),
+('36bcfd18-3acf-4967-a13e-ad2632bddfa1', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CREATE', '2021-09-30 21:06:04', 'Bắt đầu trò chuyện', 'CREATE'),
 ('44abf221-0890-403d-aede-ae3c1e4e7fb2', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:46', 'wwwwwwwww', 'SEND'),
 ('4af86928-e475-42d3-92d8-bc0271f3c259', 4, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 'CREATE', '2021-09-28 16:53:13', 'Bắt đầu trò chuyện', 'CREATE'),
 ('4cff46fa-14b2-48cf-9c55-0ce42e316f62', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:37', 'aaa', 'READ'),
@@ -101,6 +104,7 @@ INSERT INTO `message` (`id`, `userId`, `roomId`, `type`, `time`, `content`, `sta
 ('6d22daba-fd7a-4989-9f56-c4ee5f30d399', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'ATTACK', '2021-09-27 22:09:33', 'đẹp không', 'SEND'),
 ('6fca8ee5-4bf0-466d-ae31-f8690cd8d024', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:13', 'cũng đc', 'READ'),
 ('70a24114-3050-4b7c-9039-876ea4a2b300', 4, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 'CHAT', '2021-09-28 16:53:17', 'chào', 'READ'),
+('713ca764-ccea-4708-91a8-2dd33b956286', 3, '8ea718ec-7bae-4fb5-82b8-6d13015c9c20', 'CREATE', '2021-09-29 17:08:00', 'Bắt đầu trò chuyện', 'CREATE'),
 ('7208acaa-01a6-4826-bdf7-ffcc684c5a0b', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 16:34:35', 'chào', 'READ'),
 ('7fd1af30-a1be-4b1f-acf7-d4164cd82d8b', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 22:03:47', 'đâu r', 'READ'),
 ('983165dd-adb3-40d2-914a-f30504049e8f', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-27 22:11:41', 'hả', 'READ'),
@@ -109,9 +113,11 @@ INSERT INTO `message` (`id`, `userId`, `roomId`, `type`, `time`, `content`, `sta
 ('a0f1af3c-1fa3-43db-8ed8-409cd77e8d6e', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:42', 'dddddđ', 'READ'),
 ('a31b002c-934d-406c-bbfa-e1ebe34e7dbc', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:58:02', 'oke luon', 'READ'),
 ('b572f14d-bcf8-4620-9f4a-041fd5895d2d', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:57:56', 'teest nhiefu leen', 'READ'),
+('b6bdbd15-701c-4fb4-8ebb-b6509f517e69', 3, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 'CREATE', '2021-09-29 17:03:30', 'Bắt đầu trò chuyện', 'CREATE'),
 ('bfb2b436-b71d-4201-9e6e-180fb3843dd4', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-27 22:09:05', 'dd', 'SEND'),
 ('cfd96605-43b3-455c-864b-96bb598c6395', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:36', 'aaaaaaaaaaa', 'READ'),
 ('d0b5899e-6afc-4060-8e2b-bd2e79afdf18', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 21:11:37', 'chào bro', 'SEND'),
+('d5a5dbf0-d1d7-4360-90e2-c053a800d1ab', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CHAT', '2021-10-01 21:59:48', 'Chào', 'SEND'),
 ('ea8b14af-968d-45bb-8d04-3c16be91fb4b', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:58:06', 'nhan de', 'READ'),
 ('ed20c3fd-e8a2-406e-aa8b-88bb2c5392df', 4, '91467c30-afd4-47e4-98c7-a27c6ca5ce2d', 'CREATE', '2021-09-28 16:42:57', 'Bắt đầu trò chuyện', 'CREATE'),
 ('f463b22d-322a-4586-8ff7-ad35dcfafd9a', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 22:03:28', 'aloooo', 'READ'),
@@ -128,8 +134,17 @@ CREATE TABLE `notification` (
                                 `id` int(11) NOT NULL,
                                 `userId` int(11) DEFAULT NULL,
                                 `friendId` int(11) DEFAULT NULL,
-                                `type` varchar(10) DEFAULT NULL
+                                `type` varchar(10) DEFAULT NULL,
+                                `status` varchar(10) NOT NULL,
+                                `time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `notification`
+--
+
+INSERT INTO `notification` (`id`, `userId`, `friendId`, `type`, `status`, `time`) VALUES
+(1, 2, 3, 'AGREE', 'ON', '2021-09-15 15:27:06');
 
 -- --------------------------------------------------------
 
@@ -150,8 +165,11 @@ CREATE TABLE `room` (
 
 INSERT INTO `room` (`id`, `groupchat`, `name`, `username`) VALUES
 ('19f4723a-0c86-4da4-940b-df3c32280f57', b'0', '', ''),
+('524f7546-9984-4e44-906f-e15c492d3c76', b'0', '', ''),
 ('5c3b7026-3856-4d86-8630-ddedcc1ea5c7', b'0', '', ''),
+('8ea718ec-7bae-4fb5-82b8-6d13015c9c20', b'0', '', 'quang'),
 ('91467c30-afd4-47e4-98c7-a27c6ca5ce2d', b'0', '', ''),
+('c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', b'0', '', 'quang'),
 ('e00cece0-d368-4a3f-8bc9-e58952859afe', b'0', '', 'trung'),
 ('fae804e8-8aa4-4583-8f25-c170da39c0d9', b'0', '', '');
 
@@ -181,7 +199,13 @@ INSERT INTO `roomdetail` (`id`, `roomId`, `userId`) VALUES
 (45, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 4),
 (46, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 2),
 (47, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 2),
-(48, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 3);
+(48, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 3),
+(49, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 3),
+(50, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 2),
+(51, '8ea718ec-7bae-4fb5-82b8-6d13015c9c20', 3),
+(52, '8ea718ec-7bae-4fb5-82b8-6d13015c9c20', 4),
+(53, '524f7546-9984-4e44-906f-e15c492d3c76', 2),
+(54, '524f7546-9984-4e44-906f-e15c492d3c76', 5);
 
 -- --------------------------------------------------------
 
@@ -210,11 +234,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `firstname`, `lastname`, `email`, `password`, `phone`, `image`, `birthdate`, `gender`, `role`, `description`, `lastonline`) VALUES
-(1, 'admin', 'Thành', 'Nguyễn Đức', 'admin@gmail.com', '$2a$10$OHafDhpuGk9SQvtAPqnJK.cayB5/VgV3GbfXA6sriEg8wYFfc.Zuu', '0944485574', '0bd8982d-1561-4432-9fae-a4f4dac91b20.gif', '2005-06-17', b'1', 'ROLE_ADMIN', 'Hello Iam Duc Thanh', '2021-09-18 20:31:17'),
-(2, 'trung', 'Trung', 'Nguyễn Đức', 'trung@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-08-01', b'1', 'ROLE_ADMIN', '', '2021-09-18 20:31:17'),
-(3, 'quang', 'Quang', 'Đặng Tiến', 'quang@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-07-12', b'1', 'ROLE_ADMIN', '', '2021-09-18 20:31:17'),
-(4, 'fpoly', 'Nguyễn', 'Duy', 'ducthanh@gmail.com', '$2a$10$KBp6/YrR8loiY57gfk2JjeNZwR7v5JDGNHLH3AhG/CNnXQMLvOwfe', '', 'avt.png', '2007-06-12', b'1', 'ROLE_USER', '', '2021-09-18 20:31:17'),
-(5, 'fpoly1', 'Trung', 'Nguyễn', 'ducthanh260801@gmail.com', '$2a$10$2Yxh6Y/hlRVW.RMcN2WwTO5SXUIqqSOoSaw7/Gd2.oOdysiaZBqtG', '', 'avt.png', '2021-09-07', b'1', 'ROLE_USER', '', '2021-09-20 10:59:36');
+(1, 'admin', 'Thành', 'Nguyễn Đức', 'admin@gmail.com', '$2a$10$OHafDhpuGk9SQvtAPqnJK.cayB5/VgV3GbfXA6sriEg8wYFfc.Zuu', '0944485574', '0bd8982d-1561-4432-9fae-a4f4dac91b20.gif', '2005-06-17', b'1', 'ROLE_ADMIN', 'Hello Iam Duc Thanh', '2021-10-01 22:02:23'),
+(2, 'trung', 'Trung', 'Nguyễn Đức', 'trung@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-08-01', b'1', 'ROLE_ADMIN', '', '2021-10-01 22:02:24'),
+(3, 'quang', 'Quang', 'Đặng Tiến', 'quang@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-07-12', b'1', 'ROLE_ADMIN', '', '2021-09-30 17:18:50'),
+(4, 'fpoly', 'Nguyễn', 'Duy', 'ducthanh@gmail.com', '$2a$10$KBp6/YrR8loiY57gfk2JjeNZwR7v5JDGNHLH3AhG/CNnXQMLvOwfe', '', 'avt.png', '2007-06-12', b'1', 'ROLE_USER', '', '2021-09-30 17:31:08'),
+(5, 'fpoly1', 'Trung', 'Nguyễn', 'ducthanh260801@gmail.com', '$2a$10$sl5C66UwdHFNd0XNAVA7fOD8FJVoeOT8MohshjvgAr5gs2FXnc3HS', '', 'avt.png', '2021-09-07', b'1', 'ROLE_USER', '', '2021-10-01 21:59:54');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -285,19 +309,19 @@ ALTER TABLE `attach`
 -- AUTO_INCREMENT cho bảng `friend`
 --
 ALTER TABLE `friend`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT cho bảng `notification`
 --
 ALTER TABLE `notification`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `roomdetail`
 --
 ALTER TABLE `roomdetail`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT cho bảng `users`

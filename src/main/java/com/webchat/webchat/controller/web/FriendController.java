@@ -64,6 +64,9 @@ public class FriendController {
         friend.setStatus("FRIEND");
         friend.setTime(new Date());
         friendRequest.setFullname(friend.getFriend().getFullname());
-//        friendService.saveFriend(friend);
+        friendRequest.setUserId(String.valueOf(friend.getFriend().getId()));
+        friendRequest.setImage(friend.getFriend().getImage());
+        friendRequest.setUsername(friend.getFriend().getUsername());
+        friendService.saveFriend(friend);
     }
 }

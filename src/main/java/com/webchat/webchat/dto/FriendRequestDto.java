@@ -17,6 +17,7 @@ public class FriendRequestDto {
     private String image;
     private String type;
     private String time;
+    private String username;
 
     public String getTimeString(){
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

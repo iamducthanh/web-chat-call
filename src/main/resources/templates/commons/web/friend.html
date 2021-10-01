@@ -47,7 +47,7 @@
                 <!-- Tabs content -->
                 <div class="tab-content" role="tablist">
                     <div class="tab-pane fade show active" id="friend-list" role="tabpanel">
-                                        <div class="card-list">
+                                        <div class="card-list" id="containerFriend">
                                             <th:block th:each="friend:${friend}">
                                                 <div class="card border-0" th:id="${'friend' + friend.username}">
                                                     <div class="card-body">
@@ -130,7 +130,7 @@
                                         </div>
                                         <div class="col">
                                             <a href="#" class="btn btn-sm btn-primary w-100"
-                                               th:attr="onclick=|agreeFriendRequest('${friendRequest.getUser().id}','${friendRequest.getUser().getFullname()}')|"
+                                               th:attr="onclick=|agreeFriendRequest('${friendRequest.getUser().id}','${friendRequest.getUser().getFullname()}','${friendRequest.getUser().username}','${friendRequest.user.image}')|"
                                             >Chấp nhận</a>
                                         </div>
                                     </div>
