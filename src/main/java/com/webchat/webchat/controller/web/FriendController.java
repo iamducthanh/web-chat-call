@@ -73,7 +73,7 @@ public class FriendController {
         friendRequest.setUserId(String.valueOf(friend.getFriend().getId()));
         friendRequest.setImage(friend.getFriend().getImage());
         friendRequest.setUsername(friend.getFriend().getUsername());
-//        friendService.saveFriend(friend);
+        friendService.saveFriend(friend);
         Notification notification = new Notification();
         notification.setUser(friend.getUser());
         notification.setStatus("ON");

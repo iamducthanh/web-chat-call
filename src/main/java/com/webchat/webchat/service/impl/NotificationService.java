@@ -20,6 +20,12 @@ public class NotificationService implements INotificationService {
     }
 
     @Override
+    public List<Notification> findByUserAndStatus(String username, String status) {
+        List<Notification> list = notificationRepo.findByUserAndStatus(username, status);
+        return list.isEmpty() ? null : list;
+    }
+
+    @Override
     public void updateNotification(List<Notification> notifications) {
         notificationRepo.saveAll(notifications);
     }

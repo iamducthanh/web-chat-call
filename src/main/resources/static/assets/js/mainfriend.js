@@ -74,6 +74,8 @@ function onFriendRequest(payload) {
     } else if (friendRequest.type == 'AGREE') {
         toastInfo("Thông báo", friendRequest.fullname + " đã chấp nhận lời mời kết bạn");
         addDivFriend(friendRequest.fullname, friendRequest.username, friendRequest.userId, friendRequest.image)
+        console.log(friendRequest);
+        addDivNotification(friendRequest.fullname, friendRequest.image, friendRequest.fullname + " đã chấp nhận lời mời kết bạn", friendRequest.timeString);
     }
 }
 
@@ -187,4 +189,49 @@ function addDivFriend(fullname, username, id, image) {
         "</div>" +
         "</div>" +
         "</div>" + containerFriend.innerHTML;
+}
+
+function addDivNotification(title, image, content, time){
+    let containerNotification = document.getElementById("containerNotification");
+    containerNotification.innerHTML =
+        "<div class=\"card border-0 mb-5\">"+
+            "<div class=\"card-body\">"+
+                "<div class=\"row gx-5\">"+
+                    "<div class=\"col-auto\">"+
+                        "<a href=\"#\" class=\"avatar\">"+
+                            "<img class=\"avatar-img\" src=\""+image+"\" alt=\"\">"+
+                                "<div class=\"badge badge-circle bg-primary border-outline position-absolute bottom-0 end-0\">"+
+                                    "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-user\">"+
+                                        "<path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path>"+
+                                        "<circle cx=\"12\" cy=\"7\" r=\"4\"></circle>"+
+                                        "</svg>"+
+                                    "</div>"+
+                                "</a>"+
+                        "</div>"+
+                    "<div class=\"col\">"+
+                        "<div class=\"d-flex align-items-center mb-2\">"+
+                            "<h5 class=\"me-auto mb-0\">"+
+                                "<a href=\"#\"><b>"+title+"</b></a>"+
+                                "</h5>"+
+                            "<span class=\"extra-small text-muted ms-2\"><b>"+time+"</b></span>"+
+                            "</div>"+
+                        "<div class=\"d-flex\">"+
+                            "<div class=\"me-auto\"><b>"+content+"</b></div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>" + containerNotification.innerHTML;
+        let countNotification = document.getElementById("countNotification");
+        let divCountNotification = document.getElementById("divCountNotification");
+        if(countNotification != null){
+            countNotification.innerText = Number(countNotification.innerText) + 1;
+        } else {
+            divCountNotification.className = "icon icon-xl icon-badged";
+            divCountNotification.innerHTML +=
+                "<div id=\"onRemoveNotification\" class=\"badge badge-circle bg-primary\">"+
+                    "<span id=\"countNotification\">1</span>"+
+                "</div>";
+        }
+
 }

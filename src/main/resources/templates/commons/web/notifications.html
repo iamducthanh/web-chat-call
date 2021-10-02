@@ -25,13 +25,12 @@
         </div>
 
         <!-- Today -->
-        <div class="card-list">
+        <div class="card-list" id="containerNotification">
           <!-- Title -->
           <div class="d-flex align-items-center my-4 px-6">
             <small class="text-muted me-auto">Thông báo</small>
           </div>
           <!-- Title -->
-
           <!-- Card -->
           <th:block th:each="notification:${notifications}">
             <div class="card border-0 mb-5">

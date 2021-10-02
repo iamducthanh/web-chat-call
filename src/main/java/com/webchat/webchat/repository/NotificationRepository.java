@@ -9,4 +9,7 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
     @Query("select o from Notification o where o.user.username = ?1 order by o.time desc")
     List<Notification> findByUser(String username);
+
+    @Query("select o from Notification o where o.user.username = ?1 and o.status = ?2")
+    List<Notification> findByUserAndStatus(String username, String status);
 }
