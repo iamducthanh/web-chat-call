@@ -21,6 +21,10 @@ function connect() {
 function onConnected() {
     var names = 'messUser' + username + document.getElementById('userInRoomDirect').value;
     // clear thông báo tin nhắn
+    let divDetailMessUser = document.getElementsByClassName(names);
+    if(divDetailMessUser.length == 3){
+
+    }
     document.getElementsByName(names)[0].className = 'me-auto mb-0';
     document.getElementsByName(names)[1].className = 'text-muted extra-small ms-2';
     document.getElementsByName(names)[2].className = 'line-clamp me-auto';

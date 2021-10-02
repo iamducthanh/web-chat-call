@@ -91,3 +91,7 @@ function setRoomDetail(roomDetail){
     // loadImage();
     connect();
 }
+
+function setRoomGroupDetail(){
+
+}
