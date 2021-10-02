@@ -12,6 +12,7 @@
     <artifactId>web-chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>web-chat</name>
+    <packaging>jar</packaging>
     <description>Web Chat</description>
     <properties>
         <java.version>8</java.version>
