@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 01, 2021 lúc 05:03 PM
+-- Thời gian đã tạo: Th10 02, 2021 lúc 05:57 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -64,8 +64,8 @@ CREATE TABLE `friend` (
 INSERT INTO `friend` (`id`, `userId`, `friendId`, `status`, `time`) VALUES
 (1, 1, 3, 'FRIEND', '2021-09-15 06:18:14'),
 (2, 3, 2, 'FRIEND', '2021-09-22 05:28:00'),
-(3, 1, 2, 'WAIT', '2021-10-01 22:02:06'),
-(4, 2, 4, 'WAIT', '2021-09-30 17:30:19'),
+(3, 1, 2, 'WAIT', '2021-10-02 10:22:52'),
+(4, 2, 4, 'FRIEND', '2021-10-01 22:07:24'),
 (28, 2, 5, 'WAIT', '2021-10-01 21:58:55');
 
 -- --------------------------------------------------------
@@ -133,18 +133,21 @@ INSERT INTO `message` (`id`, `userId`, `roomId`, `type`, `time`, `content`, `sta
 CREATE TABLE `notification` (
                                 `id` int(11) NOT NULL,
                                 `userId` int(11) DEFAULT NULL,
-                                `friendId` int(11) DEFAULT NULL,
-                                `type` varchar(10) DEFAULT NULL,
-                                `status` varchar(10) NOT NULL,
-                                `time` datetime DEFAULT NULL
+                                `title` varchar(50) DEFAULT NULL,
+                                `image` varchar(100) DEFAULT NULL,
+                                `content` varchar(100) DEFAULT NULL,
+                                `status` varchar(10) DEFAULT NULL,
+                                `type` varchar(5) DEFAULT NULL,
+                                `time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `notification`
 --
 
-INSERT INTO `notification` (`id`, `userId`, `friendId`, `type`, `status`, `time`) VALUES
-(1, 2, 3, 'AGREE', 'ON', '2021-09-15 15:27:06');
+INSERT INTO `notification` (`id`, `userId`, `title`, `image`, `content`, `status`, `type`, `time`) VALUES
+(1, 2, 'Đặng Tiến Quang', 'avt.png', 'Đặng Tiến Quang đã chấp nhận lời mời kết bạn.', 'ON', 'AGREE', '2021-10-02 05:37:00'),
+(2, 1, 'Nguyễn Đức Trung', 'avt.png', 'Nguyễn Đức Trung đã chấp nhận lời mời kết bạn.', 'ON', 'AGREE', '2021-10-02 10:56:42');
 
 -- --------------------------------------------------------
 
@@ -234,11 +237,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `firstname`, `lastname`, `email`, `password`, `phone`, `image`, `birthdate`, `gender`, `role`, `description`, `lastonline`) VALUES
-(1, 'admin', 'Thành', 'Nguyễn Đức', 'admin@gmail.com', '$2a$10$OHafDhpuGk9SQvtAPqnJK.cayB5/VgV3GbfXA6sriEg8wYFfc.Zuu', '0944485574', '0bd8982d-1561-4432-9fae-a4f4dac91b20.gif', '2005-06-17', b'1', 'ROLE_ADMIN', 'Hello Iam Duc Thanh', '2021-10-01 22:02:23'),
-(2, 'trung', 'Trung', 'Nguyễn Đức', 'trung@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-08-01', b'1', 'ROLE_ADMIN', '', '2021-10-01 22:02:24'),
+(1, 'admin', 'Thành', 'Nguyễn Đức', 'admin@gmail.com', '$2a$10$OHafDhpuGk9SQvtAPqnJK.cayB5/VgV3GbfXA6sriEg8wYFfc.Zuu', '0944485574', '0bd8982d-1561-4432-9fae-a4f4dac91b20.gif', '2005-06-17', b'1', 'ROLE_ADMIN', 'Hello Iam Duc Thanh', '2021-10-02 10:57:22'),
+(2, 'trung', 'Trung', 'Nguyễn Đức', 'trung@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-08-01', b'1', 'ROLE_ADMIN', '', '2021-10-02 10:57:25'),
 (3, 'quang', 'Quang', 'Đặng Tiến', 'quang@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-07-12', b'1', 'ROLE_ADMIN', '', '2021-09-30 17:18:50'),
-(4, 'fpoly', 'Nguyễn', 'Duy', 'ducthanh@gmail.com', '$2a$10$KBp6/YrR8loiY57gfk2JjeNZwR7v5JDGNHLH3AhG/CNnXQMLvOwfe', '', 'avt.png', '2007-06-12', b'1', 'ROLE_USER', '', '2021-09-30 17:31:08'),
-(5, 'fpoly1', 'Trung', 'Nguyễn', 'ducthanh260801@gmail.com', '$2a$10$sl5C66UwdHFNd0XNAVA7fOD8FJVoeOT8MohshjvgAr5gs2FXnc3HS', '', 'avt.png', '2021-09-07', b'1', 'ROLE_USER', '', '2021-10-01 21:59:54');
+(4, 'fpoly', 'Nguyễn', 'Duy', 'ducthanh@gmail.com', '$2a$10$KBp6/YrR8loiY57gfk2JjeNZwR7v5JDGNHLH3AhG/CNnXQMLvOwfe', '', 'avt.png', '2007-06-12', b'1', 'ROLE_USER', '', '2021-10-01 22:07:32'),
+(5, 'fpoly1', 'Trung', 'Nguyễn', 'ducthanh260801@gmail.com', '$2a$10$sl5C66UwdHFNd0XNAVA7fOD8FJVoeOT8MohshjvgAr5gs2FXnc3HS', '', 'avt.png', '2021-09-07', b'1', 'ROLE_USER', '', '2021-10-01 22:08:26');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -272,8 +275,7 @@ ALTER TABLE `message`
 --
 ALTER TABLE `notification`
     ADD PRIMARY KEY (`id`),
-  ADD KEY `userId` (`userId`),
-  ADD KEY `friendId` (`friendId`);
+  ADD KEY `userId` (`userId`);
 
 --
 -- Chỉ mục cho bảng `room`
@@ -315,7 +317,7 @@ ALTER TABLE `friend`
 -- AUTO_INCREMENT cho bảng `notification`
 --
 ALTER TABLE `notification`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `roomdetail`
@@ -357,8 +359,7 @@ ALTER TABLE `message`
 -- Các ràng buộc cho bảng `notification`
 --
 ALTER TABLE `notification`
-    ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`friendId`) REFERENCES `users` (`id`);
+    ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
 -- Các ràng buộc cho bảng `roomdetail`

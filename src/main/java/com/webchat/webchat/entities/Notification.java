@@ -10,13 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "notification")
+@Table(name = "notification", uniqueConstraints = {@UniqueConstraint(columnNames = {"userid"})})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notification {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne @JoinColumn(name = "userid")
