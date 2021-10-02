@@ -22,8 +22,14 @@ public class Notification {
     @ManyToOne @JoinColumn(name = "userid")
     private User user;
 
-    @ManyToOne @JoinColumn(name = "friendid")
-    private User friend;
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "content")
+    private String content;
 
     @Column(name = "type")
     private String type;
@@ -33,6 +39,10 @@ public class Notification {
 
     @Column(name = "time")
     private Date time;
+
+    public String getImage() {
+        return "https://github.com/phonghotkgd2k1/image_public/blob/main/" + image + "?raw=true";
+    }
 
     public String getTimeString(){
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");

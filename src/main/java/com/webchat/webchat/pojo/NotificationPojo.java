@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 public class NotificationPojo {
     private Integer id;
-    private String fullname;
+    private String title;
     private String image;
+    private String content;
     private String time;
     private String status;
 }

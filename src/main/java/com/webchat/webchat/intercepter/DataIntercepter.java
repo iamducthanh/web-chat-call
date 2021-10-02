@@ -143,8 +143,9 @@ public class DataIntercepter implements HandlerInterceptor {
                 }
                 notificationPojos.add(new NotificationPojo(
                         notification.getId(),
-                        notification.getUser().getFullname(),
-                        notification.getUser().getImage(),
+                        notification.getTitle(),
+                        notification.getImage(),
+                        notification.getContent(),
                         notification.getTimeString(),
                         notification.getStatus()
                 ));

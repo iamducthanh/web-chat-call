@@ -73,13 +73,16 @@ public class FriendController {
         friendRequest.setUserId(String.valueOf(friend.getFriend().getId()));
         friendRequest.setImage(friend.getFriend().getImage());
         friendRequest.setUsername(friend.getFriend().getUsername());
-        friendService.saveFriend(friend);
+//        friendService.saveFriend(friend);
         Notification notification = new Notification();
         notification.setUser(friend.getUser());
-        notification.setFriend(friend.getFriend());
         notification.setStatus("ON");
         notification.setType("AGREE");
         notification.setTime(new Date());
+        notification.setImage(friend.getFriend().getImageFirst());
+        notification.setContent(friend.getFriend().getFullname() + " đã chấp nhận lời mời kết bạn.");
+        notification.setTitle(friend.getFriend().getFullname());
+        System.out.println(notification.toString());
         notificationService.saveOneNotification(notification);
     }
 }

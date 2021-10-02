@@ -78,9 +78,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Notification> user;
 
-    @OneToMany(mappedBy = "friend")
-    private List<Notification> friend;
-
     @OneToMany(mappedBy = "user")
     private List<RoomDetail> roomDetails;
 
@@ -109,6 +106,10 @@ public class User {
 
     public String getImage() {
         return "https://github.com/phonghotkgd2k1/image_public/blob/main/" + image + "?raw=true";
+    }
+
+    public String getImageFirst() {
+        return image;
     }
 
     public String getFullname(){
