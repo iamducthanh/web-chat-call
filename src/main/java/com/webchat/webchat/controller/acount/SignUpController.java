@@ -65,12 +65,12 @@ public class SignUpController {
                 error.add(new ErrorPojo(messageError.substring(messageError.lastIndexOf(".") + 1, messageError.length()), message.getString(messageError)));
             }
         }
-        if(!user.getPassword().isBlank() && !user.getComfirmPassword().isBlank()){
+        if(!(user.getPassword().trim().length() == 0) && !(user.getComfirmPassword().trim().length() == 0)){
             if(!user.getPassword().equals(user.getComfirmPassword())){
                 error.add(new ErrorPojo("comfirmPassword",message.getString("Unlike.user.comfirmPassword")));
             }
         }
-        if(!user.getUsername().isBlank()){
+        if(!(user.getUsername().trim().length() == 0)){
             if(!user.getUsername().matches("[A-Za-z0-9]{5,20}")){
                 error.add(new ErrorPojo("username",message.getString("specialCharacters")));
             } else {
@@ -87,7 +87,7 @@ public class SignUpController {
                 error.add(new ErrorPojo("email",message.getString("EmailExist")));
             }
         }
-        if(!user.getCode().isBlank()){
+        if(!(user.getCode().trim().length() == 0)){
             String code = String.valueOf(CodeComfirm.codeComfirm.get(user.getEmail()));
             if(!code.equals(user.getCode())){
                 error.add(new ErrorPojo("code",message.getString("User.code")));

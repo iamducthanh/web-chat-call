@@ -34,11 +34,14 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
+        System.out.println("có connect đến");
         logger.info("Received a new web socket connection");
     }
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+        System.out.println("Có disconect");
+        System.out.println("event "+event);
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String userOnline = (String) headerAccessor.getSessionAttributes().get("userOnline");
         if(userOnline != null){
