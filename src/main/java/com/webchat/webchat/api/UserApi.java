@@ -44,7 +44,7 @@ public class UserApi {
     public List<UserPojo> getUserByKeyword(@RequestParam("keyword") String keyword) {
         List<UserPojo> userPojos = new ArrayList<>();
         User myUser = (User) sessionUtil.getObject("USER");
-        if (!keyword.isBlank()) {
+        if (!(keyword.trim().length() == 0)) {
             List<User> users = userService.findByKeyword(keyword, keyword);
             if(users != null){
                 for (User user : users) {
@@ -116,7 +116,7 @@ public class UserApi {
                 error.add(new ErrorPojo(messageError.substring(messageError.lastIndexOf(".") + 1, messageError.length()), message.getString(messageError)));
             }
         }
-        if(!userProfileUpdateDto.getUsername().isBlank()){
+        if(!(userProfileUpdateDto.getUsername().trim().length() == 0)){
             if(!userProfileUpdateDto.getUsername().matches("[A-Za-z0-9]{5,20}")){
                 error.add(new ErrorPojo("username",message.getString("specialCharacters")));
             } else {
@@ -128,7 +128,7 @@ public class UserApi {
                 }
             }
         }
-        if(!userProfileUpdateDto.getPhone().isBlank()){
+        if(!(userProfileUpdateDto.getPhone().trim().length() == 0)){
             if(!userProfileUpdateDto.getPhone().matches("[0]{1}[0-9]{9}")){
                 error.add(new ErrorPojo("phone",message.getString("User.phone")));
             }
@@ -177,7 +177,7 @@ public class UserApi {
         }
         String password = changePasswordDto.getPassword();
         BCryptPasswordEncoder pass = new BCryptPasswordEncoder();
-        if(!changePasswordDto.getPassword().isBlank()){
+        if(!(changePasswordDto.getPassword().trim().length() == 0)){
             if(!pass.matches(password, user.getPassword())){
                 error.add(new ErrorPojo("password",message.getString("User.password")));
             }
