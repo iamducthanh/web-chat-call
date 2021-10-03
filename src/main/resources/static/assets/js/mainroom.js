@@ -46,6 +46,16 @@ function onRoomMessageGroup(roomId){
         type: 'GET'
     });
 }
+
+function setBaseRoom(roomDetail){
+    document.getElementById("room").value = roomDetail.roomId;
+    document.getElementById("name").value = roomDetail.user.username;
+    document.getElementById("fullname").value = roomDetail.user.fullname;
+    document.getElementById("pageIndex").value = -1;
+    document.getElementById("statusMedia").value = 0;
+    document.getElementById("imageUserLogin").value = roomDetail.user.image;
+}
+
 let roomIdUploadFile = null;
 function setRoomDetail(roomDetail){
     console.log(roomDetail)
@@ -53,17 +63,11 @@ function setRoomDetail(roomDetail){
         stompClient.disconnect();
     }
     roomIdUploadFile = roomDetail.roomId;
-    document.getElementById("room").value = roomDetail.roomId;
-    document.getElementById("name").value = roomDetail.user.username;
-    document.getElementById("fullname").value = roomDetail.user.fullname;
-    document.getElementById("pageIndex").value = -1;
+    setBaseRoom(roomDetail);
     document.getElementById("first").value = roomDetail.userInRoom.first;
-
     document.getElementById("userInRoomDirect").value = roomDetail.userInRoom.username;
     document.getElementById("usernameDetailModal").innerText = roomDetail.userInRoom.username;
-    document.getElementById("imageUserLogin").value = roomDetail.user.image;
     document.getElementById("imageUserInRoom").value = roomDetail.userInRoom.image;
-    document.getElementById("statusMedia").value = 0;
     document.getElementById("userNameRoom").innerText=roomDetail.userInRoom.fullname;
     document.getElementById("fullnameTask").innerText=roomDetail.userInRoom.fullname;
     document.getElementById("fullnameDetail").innerText=roomDetail.userInRoom.fullname;
@@ -90,7 +94,7 @@ function setRoomDetail(roomDetail){
     document.getElementById("avtMyUser").src=roomDetail.user.image;
 
     document.getElementById("messageArea").innerHTML = "";
-    scrollFunction_ct();
+    loadMessage();
     let messForm = document.getElementById('messForm');
     messForm.scrollTop = messForm.scrollHeight;
     if(roomDetail.userInRoom.statusMessage.length == 0){
@@ -102,6 +106,7 @@ function setRoomDetail(roomDetail){
     }
     console.log("là bạn bè: ---------------- " + roomDetail.userInRoom.friend)
     let statusOn = document.getElementById("statusOn");
+
     if(roomDetail.userInRoom.friend == true){
         if(roomDetail.userInRoom.online){
             statusOn.innerText = "Đang hoạt động";
@@ -123,14 +128,16 @@ function setRoomGroupDetail(roomDetail){
     document.getElementsByName("countMember")[0].innerText = (roomDetail.userInRooms.length + 1) + " người " + roomDetail.countOnline + " đang hoạt động";
     document.getElementsByName("countMember")[1].innerText = (roomDetail.userInRooms.length + 1) + " người " + roomDetail.countOnline + " đang hoạt động";
     document.getElementsByName("countMember")[2].innerText = (roomDetail.userInRooms.length + 1) + " người " + roomDetail.countOnline + " đang hoạt động";
-
+    setBaseRoom(roomDetail);
     let containerMemberGroup = document.getElementById("containerMemberGroup");
     containerMemberGroup.innerHTML = "";
-
+    document.getElementById("statusMessage").innerHTML = ''
     for(let i=0;i<roomDetail.userInRooms.length;i++){
         containerMemberGroup.innerHTML += addDivMember(roomDetail.userInRooms[i]);
 
     }
+    document.getElementById("messageArea").innerHTML = "";
+    loadMessage();
 }
 
 function addDivMember(user){

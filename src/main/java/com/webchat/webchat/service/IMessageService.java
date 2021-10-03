@@ -13,5 +13,5 @@ public interface IMessageService {
     void setStatusMessage(String roomId, String username, String status);
     List<Message> findByRoomAndUserAndStatus(String roomId, String username, String status);
     Message findMessageLast(String roomId);
-    int countMessageSend(String roomId, String username);
+    int countMessageSend(String roomId, String myUsername, String username);
 }

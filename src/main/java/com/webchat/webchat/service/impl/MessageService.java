@@ -56,8 +56,8 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public int countMessageSend(String roomId, String username) {
-        List<Message> list = messageRepo.countMessageSend(roomId, username);
+    public int countMessageSend(String roomId, String myUsername, String username) {
+        List<Message> list = messageRepo.countMessageSend(roomId, myUsername, username);
         return list.isEmpty() ? 0 : list.size();
     }
 }

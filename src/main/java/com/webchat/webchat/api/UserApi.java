@@ -90,19 +90,6 @@ public class UserApi {
         return "done";
     }
 
-    public static void main(String[] args) {
-        final String uri = "http://localhost:8080/user/search";
-        HttpHeaders headers = new HttpHeaders();
-        RestTemplate restTemplate = new RestTemplate();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.set("X-COM-PERSIST", "NO");
-        headers.set("X-COM-LOCATION", "USA");
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<UserPojo> responseEntity = restTemplate
-                .exchange(uri, HttpMethod.GET, entity, UserPojo.class);
-//        System.out.println(responseEntity.getBody().getData());
-    }
-
     @PutMapping("/user/update/profile")
     @ResponseBody
     public List<ErrorPojo> updateProfile(@Validated UserProfileUpdateDto userProfileUpdateDto, BindingResult result){

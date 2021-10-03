@@ -11,7 +11,7 @@ public class ChatMessagePojo {
     private String room;
     private Date timeChat;
     private String statusMessage;
-    private String urlFile;
+    private String image;
 
     public String getStatusMessage() {
         return statusMessage;
@@ -29,12 +29,12 @@ public class ChatMessagePojo {
         ATTACK
     }
 
-    public String getUrlFile() {
-        return urlFile;
+    public String getImage() {
+        return image;
     }
 
-    public void setUrlFile(String urlFile) {
-        this.urlFile = urlFile;
+    public void setUrlFile(String image) {
+        this.image = image;
     }
 
     public String getId() {

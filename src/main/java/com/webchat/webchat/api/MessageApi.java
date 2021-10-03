@@ -44,6 +44,7 @@ public class MessageApi {
         List<Message> messages = messageService.findByRoom(messagePageDto.getRoomId(), PageRequest.of(messagePageDto.getPage(), 10));
         List<MessagePojo> list = new ArrayList<>();
         if (messages != null) {
+            System.out.println("size mess: " + messages.size());
             for (int i = messages.size() - 1; i > -1; i--) {
                 List<String> listFile = null;
                 if(messages.get(i).getAttachList().size() != 0){

@@ -29,6 +29,7 @@
 
         <div th:replace="/views/trangchu :: trang-chu"></div>
         <div th:replace="/views/message/message-direct :: message-direct"></div>
+        <div th:replace="/views/message/message-group :: message-group"></div>
 
     </div>
     <div th:replace="/commons/web/modal-invite :: modal-invite"></div>
@@ -37,10 +38,7 @@
     <div th:replace="/component/alert/waitcall :: waitcall"></div>
     <div th:replace="/commons/web/modal-profile :: modal-profile"></div>
     <div th:replace="/commons/web/modal-media-preview :: modal-media-preview"></div>
-<!--<th:block th:if="${not empty userInRoom}">-->
-<!--</th:block>-->
-<!--    <div th:replace="/commons/web/modal-media-preview :: modal-media-preview"></div>-->
-<!-- Scripts -->
+
 <script th:src="@{/assets/js/vendor.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -54,6 +52,7 @@
 <script th:src="@{/toastr/js/toa.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script th:src="@{/assets/js/mainMessageDirect.js}"></script>
+<!--<script th:src="@{/assets/js/mainMessageGroup.js}"></script>-->
 <script th:src="@{/assets/js/mainroom.js}"></script>
 <script th:src="@{/assets/js/template.js}"></script>
 <style>

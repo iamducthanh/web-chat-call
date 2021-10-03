@@ -71,9 +71,9 @@ public class DataIntercepter implements HandlerInterceptor {
                 int countMess = 0;
                 if (messageLast != null) {
                     time = messageLast.getTimeChat();
-                    countMess = messageService.countMessageSend(roomDetail.getRoom().getId(), userInRoom.get(0).getUsername());
+                    countMess = messageService.countMessageSend(roomDetail.getRoom().getId(), user.getUsername() ,userInRoom.get(0).getUsername());
                     if (!messageLast.getUser().getUsername().equals(user.getUsername())) {
-                        if (messageLast.getStatus().equals(String.valueOf(PropertiesConstant.MessageStatus.SEND))) {
+                        if (countMess != 0) {
                             countMessage++;
                             status = 1;
                         }
