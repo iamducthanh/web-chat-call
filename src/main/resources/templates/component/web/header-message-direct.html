@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header-message-direct" id="header-message-direct" class="chat-header border-bottom py-4 py-lg-7">
+    <div class="row align-items-center">
+
+        <!-- Mobile: close -->
+        <div class="col-2 d-xl-none" onclick="closeRoomMessage()">
+            <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" class="feather feather-chevron-left">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </a>
+        </div>
+        <!-- Mobile: close -->
+
+        <!-- Content -->
+        <div class="col-8 col-xl-12">
+            <div class="row align-items-center text-center text-xl-start">
+                <!-- Title -->
+                <div class="col-12 col-xl-6">
+                    <div class="row align-items-center gx-5">
+                        <div class="col-auto">
+                            <div class="avatar d-none d-xl-inline-block" data-bs-toggle="modal" data-bs-target="#modal-user-profile">
+                                <img id="userImageRoom" class="avatar-img" th:src="@{/assets/image/avt.png}" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col overflow-hidden">
+                            <h5 class="text-truncate" id="userNameRoom">Đặng Tiến Quang</h5>
+                            <p class="text-truncate" id="statusOn">Người lạ</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Title -->
+
+                <!-- Toolbar -->
+                <div class="col-xl-6 d-none d-xl-block">
+                    <div class="row align-items-center justify-content-end gx-6">
+                        <div class="col-auto">
+                            <a href="#" data-toggle="tooltip" title="Chat video" onclick="callVideo();">
+                                <svg role="presentation" width="26px" height="26px" viewBox="-5 -5 30 30">
+                                    <path d="M19.492 4.112a.972.972 0 00-1.01.063l-3.052 2.12a.998.998 0 00-.43.822v5.766a1 1 0 00.43.823l3.051 2.12a.978.978 0 001.011.063.936.936 0 00.508-.829V4.94a.936.936 0 00-.508-.828zM10.996 18A3.008 3.008 0 0014 14.996V5.004A3.008 3.008 0 0010.996 2H3.004A3.008 3.008 0 000 5.004v9.992A3.008 3.008 0 003.004 18h7.992z"
+                                          fill="#bec2c9"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="#" class="icon icon-lg text-muted" data-bs-toggle="offcanvas"
+                               data-bs-target="#offcanvas-more" aria-controls="offcanvas-more">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                     stroke-linecap="round" stroke-linejoin="round"
+                                     class="feather feather-more-horizontal">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="avatar-group">
+                                <a href="#" class="avatar avatar-sm" data-bs-toggle="modal"
+                                   data-bs-target="#modal-user-profile">
+                                    <img class="avatar-img" id="avtUserInroom" th:src="@{/assets/image/avt.png}" alt="#">
+                                </a>
+
+                                <a href="#" class="avatar avatar-sm" data-bs-toggle="modal"
+                                   data-bs-target="#modal-profile">
+                                    <img class="avatar-img" id="avtMyUser" th:src="@{/assets/image/avt.png}" alt="#">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Toolbar -->
+            </div>
+        </div>
+        <!-- Content -->
+
+        <!-- Mobile: more -->
+        <div class="col-2 d-xl-none text-end">
+            <a href="#" data-toggle="tooltip" title="Chat video" onclick="callVideo();">
+                <svg role="presentation" width="26px" height="26px" viewBox="-5 -5 30 30">
+                    <path d="M19.492 4.112a.972.972 0 00-1.01.063l-3.052 2.12a.998.998 0 00-.43.822v5.766a1 1 0 00.43.823l3.051 2.12a.978.978 0 001.011.063.936.936 0 00.508-.829V4.94a.936.936 0 00-.508-.828zM10.996 18A3.008 3.008 0 0014 14.996V5.004A3.008 3.008 0 0010.996 2H3.004A3.008 3.008 0 000 5.004v9.992A3.008 3.008 0 003.004 18h7.992z"
+                          fill="#bec2c9"></path>
+                </svg>
+            </a>
+            <a href="#" class="icon icon-lg text-muted" data-bs-toggle="offcanvas"
+               data-bs-target="#offcanvas-more" aria-controls="offcanvas-more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" class="feather feather-more-vertical">
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="12" cy="5" r="1"></circle>
+                    <circle cx="12" cy="19" r="1"></circle>
+                </svg>
+            </a>
+        </div>
+        <!-- Mobile: more -->
+
+    </div>
+</div>
+</html>
