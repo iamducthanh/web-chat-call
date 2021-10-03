@@ -12,7 +12,6 @@
     <artifactId>web-chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>web-chat</name>
-    <packaging>jar</packaging>
     <description>Web Chat</description>
     <properties>
         <java.version>8</java.version>
@@ -105,62 +104,63 @@
         </dependency>
     </dependencies>
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+    <build>
+        <finalName>${artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 <!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
 <!--                <artifactId>maven-compiler-plugin</artifactId>-->
 <!--                <configuration>-->
-<!--                    <source>8</source>-->
-<!--                    <target>8</target>-->
+<!--                    <source>11</source>-->
+<!--                    <target>11</target>-->
 <!--                </configuration>-->
 <!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-        <build>
-            <finalName>chat</finalName>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.tomcat.maven</groupId>
-                    <artifactId>tomcat7-maven-plugin</artifactId>
-                    <version>2.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.8</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>com.github.jsimone</groupId>
-                                        <artifactId>webapp-runner</artifactId>
-                                        <version>8.0.30.2</version>
-                                        <destFileName>webapp-runner.jar</destFileName>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
+        </plugins>
+    </build>
+<!--        <build>-->
+<!--            <finalName>chat</finalName>-->
+<!--            <plugins>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.tomcat.maven</groupId>-->
+<!--                    <artifactId>tomcat7-maven-plugin</artifactId>-->
+<!--                    <version>2.2</version>-->
+<!--                </plugin>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                    <version>2.8</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <phase>package</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>copy</goal>-->
+<!--                            </goals>-->
+<!--                            <configuration>-->
+<!--                                <artifactItems>-->
+<!--                                    <artifactItem>-->
+<!--                                        <groupId>com.github.jsimone</groupId>-->
+<!--                                        <artifactId>webapp-runner</artifactId>-->
+<!--                                        <version>8.0.30.2</version>-->
+<!--                                        <destFileName>webapp-runner.jar</destFileName>-->
+<!--                                    </artifactItem>-->
+<!--                                </artifactItems>-->
+<!--                            </configuration>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
+<!--            </plugins>-->
+<!--        </build>-->
 
 </project>
