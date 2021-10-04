@@ -11,4 +11,5 @@ public class UsersOnline {
 //    public static List<UserConnectPojo> userConnectPojo = new ArrayList<>();
     public static HashMap usersOnline = new HashMap();
     public static HashMap<String, UserConnectPojo> userConnectPojo = new HashMap();
+    public static HashMap<String, List<String>> userConnectGroup = new HashMap();
 }

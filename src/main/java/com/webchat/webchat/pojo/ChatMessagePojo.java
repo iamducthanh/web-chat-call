@@ -30,6 +30,7 @@ public class ChatMessagePojo {
     }
 
     public enum MessageType {
+        JOINGROUP,
         CHAT,
         JOIN,
         LEAVE,

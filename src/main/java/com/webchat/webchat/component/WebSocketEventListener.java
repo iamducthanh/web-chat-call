@@ -20,6 +20,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.slf4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class WebSocketEventListener {
@@ -63,28 +64,39 @@ public class WebSocketEventListener {
         } else {
             String username = (String) headerAccessor.getSessionAttributes().get("username");
             String room = (String) headerAccessor.getSessionAttributes().get("room");
+            boolean isGroup = (boolean) headerAccessor.getSessionAttributes().get("isGroup");
+            System.out.println("laf nhosm" + isGroup);
             if(username != null) {
-                UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(room);
-                if(userConnectPojo.getUser1() == null || userConnectPojo.getUser2() == null){
-                    UsersOnline.userConnectPojo.remove(room);
-                    AttackFile.messageAttackHashMap.remove(username);
-                    System.out.println("attackkk size: "+ AttackFile.messageAttackHashMap.size());
-                    System.out.println("remove connect room");
-                } else {
-                    System.out.println(username);
-                    if(userConnectPojo.getUser1().equals(username)){
-                        userConnectPojo.setUser1(null);
-                    } else if(userConnectPojo.getUser2().equals(username)){
-                        userConnectPojo.setUser2(null);
+                if(isGroup){
+                    List<String> userGroup = UsersOnline.userConnectGroup.get(room);
+                    userGroup.remove(username);
+                    if(userGroup.size() == 0){
+                        UsersOnline.userConnectGroup.remove(room);
+                        System.out.println(UsersOnline.userConnectGroup.size());
                     }
-                    System.out.println(userConnectPojo.toString());
+                } else {
+                    UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(room);
+                    if (userConnectPojo.getUser1() == null || userConnectPojo.getUser2() == null) {
+                        UsersOnline.userConnectPojo.remove(room);
+                        AttackFile.messageAttackHashMap.remove(username);
+                        System.out.println("attackkk size: " + AttackFile.messageAttackHashMap.size());
+                        System.out.println("remove connect room");
+                    } else {
+                        System.out.println(username);
+                        if (userConnectPojo.getUser1().equals(username)) {
+                            userConnectPojo.setUser1(null);
+                        } else if (userConnectPojo.getUser2().equals(username)) {
+                            userConnectPojo.setUser2(null);
+                        }
+                        System.out.println(userConnectPojo.toString());
+                    }
+                    logger.info("User Disconnected : " + username);
+                    ChatMessagePojo chatMessagePojo = new ChatMessagePojo();
+                    chatMessagePojo.setType(ChatMessagePojo.MessageType.LEAVE);
+                    chatMessagePojo.setSender(username);
+                    chatMessagePojo.setRoom(room);
+                    messagingTemplate.convertAndSend("/topic/" + room, chatMessagePojo);
                 }
-                logger.info("User Disconnected : " + username);
-                ChatMessagePojo chatMessagePojo = new ChatMessagePojo();
-                chatMessagePojo.setType(ChatMessagePojo.MessageType.LEAVE);
-                chatMessagePojo.setSender(username);
-                chatMessagePojo.setRoom(room);
-                messagingTemplate.convertAndSend("/topic/" + room, chatMessagePojo);
             }
         }
     }

@@ -41,17 +41,23 @@ function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/' + room, onMessageReceived);
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser/" + room,
-        {},
-        JSON.stringify({sender: username, room: room, type: 'JOIN'})
-    )
+    if(document.getElementById("isGroup").value == 'true'){
+        stompClient.send("/app/chat.addUser/" + room,
+            {},
+            JSON.stringify({sender: username, room: room, type: 'JOINGROUP'})
+        )
+    } else {
+        stompClient.send("/app/chat.addUser/" + room,
+            {},
+            JSON.stringify({sender: username, room: room, type: 'JOIN'})
+        )
+    }
 }
 
 // connect();
 
 function onError() {
-    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-    connectingElement.style.color = 'red';
+    console.log("lỗi socket chat rồi")
 }
 
 async function sendMessage(event) {
