@@ -13,11 +13,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>web-chat</name>
     <description>Web Chat</description>
+    <packaging>war</packaging>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <websocket.version>5.3.9</websocket.version>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
