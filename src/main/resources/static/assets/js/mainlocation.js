@@ -2,13 +2,27 @@ function getLocation() {
     $.getJSON("https://ipinfo.io/", onLocationGot);
     getO()
 }
-getLocation();
+
 function getO() {
     navigator.geolocation.getCurrentPosition(showPosition, showError);
 }
-function showPosition(position) {
+async function showPosition(position) {
+    let KEY = 'mnEP46vy4H6Q1TQbS8_RYI4vysHPV6IGuTMiV_PC9tA';
     console.log("real " + position.coords.latitude);
     console.log("real " + position.coords.longitude);
+    let la = position.coords.latitude;
+    let lo = position.coords.longitude;
+    await fetch('https://discover.search.hereapi.com/v1/discover?at='+la+','+lo+'&q='+la+','+lo+'&apiKey=' + KEY, {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(out => {
+            console.log("Dia chi cua ban")
+            console.log(out)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
 }
 function onLocationGot(info) {

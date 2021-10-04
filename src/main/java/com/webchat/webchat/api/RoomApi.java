@@ -39,6 +39,9 @@ public class RoomApi {
     @Autowired
     private IMessageService messageService;
 
+    @Autowired
+    private SystemUtil systemUtil;
+
     @GetMapping("/api/room/message-direct")
     @ResponseBody
     public RoomDetailDto getRoomDetail(String roomId){
@@ -82,7 +85,7 @@ public class RoomApi {
             }
             System.out.println(statusMessage);
             if(user1.getUsername().equals(username)){
-                isFriend = SystemUtil.isFriend(user2, friends);
+                isFriend = systemUtil.isFriend(user2, friends);
                 System.out.println("là bạn bè " + isFriend);
                 userDto = new UserDto(username, user1.getFullname(), user1.getImage());
                 userInRoomDto = new UserInRoomDto(
@@ -102,7 +105,7 @@ public class RoomApi {
                 );
             } else {
                 System.out.println("là bạn bè "+ isFriend);
-                isFriend = SystemUtil.isFriend(user1, friends);
+                isFriend = systemUtil.isFriend(user1, friends);
                 userDto = new UserDto(username, user2.getFullname(), user2.getImage());
                 userInRoomDto = new UserInRoomDto(
                         user1.getUsername(),
@@ -151,7 +154,7 @@ public class RoomApi {
                     user1.isOnline(),
                     "",
                     "",
-                    SystemUtil.isFriend(user1, friend),
+                    systemUtil.isFriend(user1, friend),
                     user1.getEmail(),
                     user1.getPhone(),
                     user1.getBirthDayString(),

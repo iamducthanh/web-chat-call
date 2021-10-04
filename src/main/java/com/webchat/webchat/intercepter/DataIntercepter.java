@@ -25,6 +25,8 @@ public class DataIntercepter implements HandlerInterceptor {
     @Autowired
     private IUserService userService;
     @Autowired
+    private SystemUtil systemUtil;
+    @Autowired
     private IMessageService messageService;
     @Autowired
     private IFriendService friendService;
@@ -60,7 +62,7 @@ public class DataIntercepter implements HandlerInterceptor {
                 List<User> userInRoom = userService.findInRoom(user.getId(), roomDetail.getRoom().getId());
                 if (userInRoom.size() == 1) {
                     name = userInRoom.get(0).getFullname();
-                    isFriend = SystemUtil.isFriend(userInRoom.get(0), friends); // check bạn bè
+                    isFriend = systemUtil.isFriend(userInRoom.get(0), friends); // check bạn bè
 
                 } else {
                     name = roomDetail.getRoom().getName();

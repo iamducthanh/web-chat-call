@@ -94,7 +94,8 @@ function setRoomDetail(roomDetail){
     document.getElementById("avtMyUser").src=roomDetail.user.image;
 
     document.getElementById("messageArea").innerHTML = "";
-    loadMessage();
+        loadMessage();
+
     let messForm = document.getElementById('messForm');
     messForm.scrollTop = messForm.scrollHeight;
     if(roomDetail.userInRoom.statusMessage.length == 0){
@@ -137,7 +138,9 @@ function setRoomGroupDetail(roomDetail){
 
     }
     document.getElementById("messageArea").innerHTML = "";
+
     loadMessage();
+
 }
 
 function addDivMember(user){

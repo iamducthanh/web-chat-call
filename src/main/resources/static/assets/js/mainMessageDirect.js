@@ -474,8 +474,8 @@ async function loadMessage(){
 }
 
 function scrollFunction_ct () {
-    let messageArea = document.getElementById("messageArea");
-    if (messForm.scrollTop == 0 && messageArea.innerHTML != "") {
+    let page = document.querySelector("#pageIndex");
+    if (messForm.scrollTop == 0 && page.value != -1) {
         loadMessage();
     }
 }

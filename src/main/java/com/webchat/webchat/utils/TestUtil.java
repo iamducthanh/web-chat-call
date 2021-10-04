@@ -39,6 +39,5 @@ public class TestUtil {
 //        List<RoomDetail> roomDetails = roomDetailService.findByUser(1);
 //        System.out.println(roomDetails.size());
 
-        System.out.println(Inet4Address.getLocalHost().getHostAddress());
     }
 }

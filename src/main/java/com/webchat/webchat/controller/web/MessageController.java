@@ -25,6 +25,9 @@ public class MessageController {
     private SessionUtil sessionUtil;
 
     @Autowired
+    private SystemUtil systemUtil;
+
+    @Autowired
     private RoomService roomService;
 
     @Autowired
@@ -74,7 +77,7 @@ public class MessageController {
         messageUser.setStatus(1);
         messageUser.setTime(message.getTimeChat());
         messageUser.setRoomCode(room.getId());
-        messageUser.setFriend(SystemUtil.isFriend(user2, friends));
+        messageUser.setFriend(systemUtil.isFriend(user2, friends));
         messageUser.setImage(user2.getImage());
         return messageUser;
     }
