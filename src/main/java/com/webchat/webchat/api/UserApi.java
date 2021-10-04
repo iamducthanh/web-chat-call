@@ -19,10 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
@@ -176,4 +173,19 @@ public class UserApi {
         return error;
     }
 
+    @GetMapping("/user/user-online")
+    @ResponseBody
+    public List<String> getUserOnlineInRoom(String roomId) {
+        User user = (User) sessionUtil.getObject("USER");
+        List<User> users = userService.findInRoom(user.getId(), roomId);
+        List<String> userOnline = new ArrayList<>();
+        for(User user1 : users){
+            if(user1.isOnline()){
+                userOnline.add(user1.getUsername());
+            }
+        }
+
+        return userOnline;
+
+    }
 }

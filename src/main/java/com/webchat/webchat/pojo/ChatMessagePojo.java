@@ -1,8 +1,15 @@
 package com.webchat.webchat.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatMessagePojo {
     private String id;
     private MessageType type;
@@ -12,6 +19,7 @@ public class ChatMessagePojo {
     private Date timeChat;
     private String statusMessage;
     private String image;
+    private String urlFile;
 
     public String getStatusMessage() {
         return statusMessage;
@@ -29,61 +37,7 @@ public class ChatMessagePojo {
         ATTACK
     }
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setUrlFile(String image) {
-        this.image = image;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getTimeChat() {
-        return timeChat;
-    }
-
-    public void setTimeChat(Date timeChat) {
-        this.timeChat = timeChat;
-    }
-
-    public MessageType getType() {
-        return type;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
-    public void setType(MessageType type) {
-        this.type = type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
 
     @Override
     public String toString() {

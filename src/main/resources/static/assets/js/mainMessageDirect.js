@@ -21,10 +21,7 @@ function connect() {
 function onConnected() {
     var names = 'messUser' + username + document.getElementById('userInRoomDirect').value;
     // clear thông báo tin nhắn
-    let divDetailMessUser = document.getElementsByClassName(names);
-    if(divDetailMessUser.length == 3){
 
-    }
     document.getElementsByName(names)[0].className = 'me-auto mb-0';
     document.getElementsByName(names)[1].className = 'text-muted extra-small ms-2';
     document.getElementsByName(names)[2].className = 'line-clamp me-auto';
@@ -62,31 +59,7 @@ async function sendMessage(event) {
     let first = document.querySelector("#first");
     if(first.value == 'onFirst'){
         first.value = "";
-        $.ajax({
-            url: 'message/change-status',
-            data: {
-                roomId: room
-            },
-            error: function () {
-                console.log("error")
-            },
-            success: async function (data) {
-                if(data == 'done'){
-                    let user = {
-                        roomId: room,
-                        fullname: document.querySelector("#fullname").value,
-                        image: document.querySelector("#avtMyUser").src,
-                        sender: username,
-                        content: messageContent
-                    }
-                    stompClientRoom.send("/app/system/" + document.getElementById("userInRoomDirect").value,
-                        {},
-                        JSON.stringify(user)
-                    );
-                }
-            },
-            type: 'POST'
-        });
+        changeStatusFirstMessage(messageContent);
     }
     if (messageContent && stompClient) {
         var attack = document.getElementsByClassName("attackFiles");
@@ -103,7 +76,6 @@ async function sendMessage(event) {
             data: {
                 content: messageContent,
                 room: room,
-                sendto: document.getElementById('userInRoomDirect').value,
                 attack: attacks
             },
             error: function () {
@@ -134,25 +106,11 @@ async function sendMessage(event) {
                             content: "",
                             type: 'ATTACK',
                             room: room,
-                            // urlFile: "data:image/png;base64," + data[i].data
+                            image: "",
                             urlFile: data[i].fileName
                         };
                         document.querySelector("#dz-preview-row").innerHTML = "";
-                        await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + data[i].fileName, {
-                            method: 'PUT',
-                            headers: {
-                                "Authorization": TO + KEN,
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(dataa),
-                        })
-                            .then(response => response.json())
-                            .then(out => {
-
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
+                        await uploadFileToGit(dataa, data[i].fileName);
                         stompClient.send("/app/chat.sendMessage/" + room, {}, JSON.stringify(attack));
                     }
                 }
@@ -161,6 +119,52 @@ async function sendMessage(event) {
         });
     }
     event.preventDefault();
+}
+
+async function uploadFileToGit(dataFile, fileName){
+    await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + fileName, {
+        method: 'PUT',
+        headers: {
+            "Authorization": TO + KEN,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataFile),
+    })
+        .then(response => response.json())
+        .then(out => {
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
+function changeStatusFirstMessage(messageContent){
+    $.ajax({
+        url: 'message/change-status',
+        data: {
+            roomId: room
+        },
+        error: function () {
+            console.log("error")
+        },
+        success: async function (data) {
+            if(data == 'done'){
+                let user = {
+                    roomId: room,
+                    fullname: document.querySelector("#fullname").value,
+                    image: document.querySelector("#avtMyUser").src,
+                    sender: username,
+                    content: messageContent
+                }
+                stompClientRoom.send("/app/system/" + document.getElementById("userInRoomDirect").value,
+                    {},
+                    JSON.stringify(user)
+                );
+            }
+        },
+        type: 'POST'
+    });
 }
 
 async function onMessageReceived(payload) {
@@ -202,90 +206,44 @@ async function onMessageReceived(payload) {
         contentUserMessage.innerHTML = divAdd.innerHTML + contentUserMessage.innerHTML;
         if (username == message.sender) {
             document.getElementById("statusMessage").innerHTML = message.statusMessage;
-            messageArea.innerHTML +=
-                "<div class='message message-out'><a href='#' data-bs-toggle='modal' data-bs-target='#modal-profile' class='avatar avatar-responsive'>" +
-                "<img class='avatar-img' src='" + document.getElementById("imageUserLogin").value + "'" + " alt=''>" +
-                "</a>" +
-                "<div class='message-inner'>" +
-                "<div class='message-body'>" +
-                "<div class='message-content'>" +
-                "<div class='message-text'>" +
-                "<p>" + message.content + "</p>" +
-                "</div>" +
-                "<div class='message-action'>" +
-                "<div class='dropdown'>" +
-                "<a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown'" +
-                "aria-expanded='false'>" +
-                "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg>" +
-                "</a>" +
-                "<ul class='dropdown-menu'>" +
-                "<li>" +
-                "<a class='dropdown-item d-flex align-items-center' href='#'>" +
-                "<span class='me-auto'>Edit</span>" +
-                "<div class='icon'>" +
-                "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-edit-3'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path>" +
-                "</svg>" +
-                "</div>" +
-                "</a> </li> <li>" +
-                "<a class='dropdown-item d-flex align-items-center' href='#'>" +
-                "<span class='me-auto'>Reply</span>" +
-                "<div class='icon'>" +
-                "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-corner-up-left'><polyline points='9 14 4 9 9 4'></polyline><path d='M20 20v-7a4 4 0 0 0-4-4H4'></path>" +
-                "</svg>" + "</div>" + "</a>" + "</li>" +
-                "<li><hr class='dropdown-divider'></li>" + "<li>" +
-                "<a class='dropdown-item d-flex align-items-center text-danger' href='#'>" +
-                "<span class='me-auto'>Delete</span>" +
-                "<div class='icon'>" +
-                "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path>" +
-                "<line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line>" +
-                "</svg>" + "</div>" + "</a>" + "</li>" + "</ul>" + "</div>" + "</div>" + "</div>" +
 
-                "<div class='message-content'>"+
-                    "<div class='message-gallery'>"+
-                        "<div class='row gx-3' id='"+message.id+"'>"+
-
-                        "</div>"+
-                    "</div>"+
-                "</div>"+
-
-                "</div>" +
-                "<div class='message-footer'>" +
-                "<span class='extra-small text-muted'>" + timeChat + "</span>" + "</div>" + "</div>" + "</div>";
+            addDivMessageSender(messageArea, message, timeChat);
 
             let classRe = document.getElementsByName(names);
             if (classRe != null) {
                 document.getElementsByName(names)[2].innerText = message.content.substring(0, 100);
             }
-            if (message.statusMessage == 'Đã gửi') {
-                stompClientMessageListen.send("/app/system.onmessage/" + userInRoom,
-                    {},
-                    JSON.stringify({sender: username, reader: userInRoom, content: message.content})
-                )
+            if(document.getElementById("isGroup")){
+                $.ajax({
+                    url: 'user/user-online',
+                    data: {
+                        roomId: room
+                    },
+                    error: function () {
+                        console.log("error")
+                    },
+                    success: async function (data) {
+                        console.log(data)
+                        for(let i=0;i<data.length;i++){
+                            stompClientMessageListen.send("/app/system.onmessage/" + data[i],
+                                {},
+                                JSON.stringify({sender: room, reader: data[i], content: message.content})
+                            )
+                        }
+                    },
+                    type: 'GET'
+                });
+            } else {
+                if (message.statusMessage == 'Đã gửi') {
+                    stompClientMessageListen.send("/app/system.onmessage/" + userInRoom,
+                        {},
+                        JSON.stringify({sender: username, reader: userInRoom, content: message.content})
+                    )
+                }
             }
         } else {
             console.log(message)
-            messageArea.innerHTML +=
-                "<div class='message'>" +
-                "<a data-bs-toggle='modal' data-bs-target='#modal-user-profile'" +
-                "class='avatar avatar-responsive'>" +
-                "<img class='avatar-img' src='" + message.image + "'" + " alt=''>" +
-                "</a>" +
-                "<div class='message-inner'>" + "<div class='message-body'>" +
-                "<div class='message-content'>" +
-                "<div class='message-text'>" +
-                "<p>" + message.content + "</p>" +
-                "</div>" + "</div>" +
-                "<div class='message-content'>"+
-                "<div class='message-gallery'>"+
-                "<div class='row gx-3' id='"+message.id+"'>"+
-
-                "</div>"+
-                "</div>"+
-                "</div>"+
-                "</div>" +
-                "<div class='message-footer'>" +
-                "<span class='extra-small text-muted'>" + timeChat + "</span>" +
-                "</div>" + "</div>" + "</div>";
+            addDivMessageReader(messageArea, message, timeChat);
 
             let classRe = document.getElementsByName(names);
             if (classRe != null) {
@@ -479,6 +437,7 @@ function scrollFunction_ct () {
         loadMessage();
     }
 }
+
 function loadImage(){
     let imageMessages = document.getElementsByClassName("imageMessage");
     for(let i=0;i<imageMessages.length;i++){
@@ -566,5 +525,82 @@ function onLoadMedia(){
 function showImage(index){
     console.log(index)
     document.getElementById("modal-media-preview").style.display='block'
+}
+
+function addDivMessageSender(messageArea, message, timeChat){
+    messageArea.innerHTML +=
+        "<div class='message message-out'><a href='#' data-bs-toggle='modal' data-bs-target='#modal-profile' class='avatar avatar-responsive'>" +
+        "<img class='avatar-img' src='" + document.getElementById("imageUserLogin").value + "'" + " alt=''>" +
+        "</a>" +
+        "<div class='message-inner'>" +
+        "<div class='message-body'>" +
+        "<div class='message-content'>" +
+        "<div class='message-text'>" +
+        "<p>" + message.content + "</p>" +
+        "</div>" +
+        "<div class='message-action'>" +
+        "<div class='dropdown'>" +
+        "<a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown'" +
+        "aria-expanded='false'>" +
+        "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg>" +
+        "</a>" +
+        "<ul class='dropdown-menu'>" +
+        "<li>" +
+        "<a class='dropdown-item d-flex align-items-center' href='#'>" +
+        "<span class='me-auto'>Edit</span>" +
+        "<div class='icon'>" +
+        "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-edit-3'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path>" +
+        "</svg>" +
+        "</div>" +
+        "</a> </li> <li>" +
+        "<a class='dropdown-item d-flex align-items-center' href='#'>" +
+        "<span class='me-auto'>Reply</span>" +
+        "<div class='icon'>" +
+        "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-corner-up-left'><polyline points='9 14 4 9 9 4'></polyline><path d='M20 20v-7a4 4 0 0 0-4-4H4'></path>" +
+        "</svg>" + "</div>" + "</a>" + "</li>" +
+        "<li><hr class='dropdown-divider'></li>" + "<li>" +
+        "<a class='dropdown-item d-flex align-items-center text-danger' href='#'>" +
+        "<span class='me-auto'>Delete</span>" +
+        "<div class='icon'>" +
+        "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path>" +
+        "<line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line>" +
+        "</svg>" + "</div>" + "</a>" + "</li>" + "</ul>" + "</div>" + "</div>" + "</div>" +
+
+        "<div class='message-content'>"+
+        "<div class='message-gallery'>"+
+        "<div class='row gx-3' id='"+message.id+"'>"+
+
+        "</div>"+
+        "</div>"+
+        "</div>"+
+
+        "</div>" +
+        "<div class='message-footer'>" +
+        "<span class='extra-small text-muted'>" + timeChat + "</span>" + "</div>" + "</div>" + "</div>";
+}
+
+function addDivMessageReader(messageArea, message, timeChat){
+    messageArea.innerHTML +=
+        "<div class='message'>" +
+        "<a data-bs-toggle='modal' data-bs-target='#modal-user-profile'" +
+        "class='avatar avatar-responsive'>" +
+        "<img class='avatar-img' src='" + message.image + "'" + " alt=''>" +
+        "</a>" +
+        "<div class='message-inner'>" + "<div class='message-body'>" +
+        "<div class='message-content'>" +
+        "<div class='message-text'>" +
+        "<p>" + message.content + "</p>" +
+        "</div>" + "</div>" +
+        "<div class='message-content'>"+
+        "<div class='message-gallery'>"+
+        "<div class='row gx-3' id='"+message.id+"'>"+
+
+        "</div>"+
+        "</div>"+
+        "</div>"+
+        "</div>" +
+        "<div class='message-footer'>" +
+        "<span class='extra-small text-muted'>" + timeChat + "</span>" +
+        "</div>" + "</div>" + "</div>";
 }
 

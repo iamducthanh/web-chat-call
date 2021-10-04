@@ -437,26 +437,16 @@
                         <div class="card-body py-3">
 
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            <h5>Windows ⋅ USA, Houston</h5>
-                                            <p>Today at 2:48 pm ⋅ Browser: Chrome</p>
+                                <th:block th:each="location : ${locations}">
+                                    <li class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h5>[[${location.address}]]</h5>
+                                                <p>[[${location.getLastTime()}]]</p>
+                                            </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <span class="text-primary extra-small">active</span>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            <h5>iPhone ⋅ USA, Houston</h5>
-                                            <p>Yesterday at 2:48 pm ⋅ Browser: Chrome</p>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                </th:block>
                             </ul>
 
                         </div>

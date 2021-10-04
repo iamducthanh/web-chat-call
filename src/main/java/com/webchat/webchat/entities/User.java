@@ -70,6 +70,9 @@ public class User {
     private List<Message> messages;
 
     @OneToMany(mappedBy = "user")
+    private List<Location> locations;
+
+    @OneToMany(mappedBy = "user")
     private List<Friend> users;
 
     @OneToMany(mappedBy = "friend")

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.List;
 
 @Service
@@ -24,7 +26,7 @@ public class SystemUtil {
         return false;
     }
 
-    public String getIp(){
+    public String getIp() throws UnknownHostException {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
             ip = request.getHeader("Proxy-Client-IP");
@@ -59,6 +61,9 @@ public class SystemUtil {
         if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
             ip = request.getRemoteAddr();
         }
+//        if(ip.equals("0:0:0:0:0:0:0:1")){
+//            ip = Inet4Address.getLocalHost().getHostAddress();
+//        }
         return ip;
     }
 }

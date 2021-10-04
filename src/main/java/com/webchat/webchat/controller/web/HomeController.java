@@ -1,12 +1,23 @@
 package com.webchat.webchat.controller.web;
 
 import com.google.api.services.drive.Drive;
+import com.webchat.webchat.dto.LocationDto;
+import com.webchat.webchat.entities.Location;
+import com.webchat.webchat.entities.User;
+import com.webchat.webchat.service.impl.LocationService;
 import com.webchat.webchat.service.impl.RoomDetailService;
+import com.webchat.webchat.utils.SessionUtil;
+import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,16 +30,48 @@ public class HomeController {
     HttpServletRequest req;
 
     @Autowired
+    private SystemUtil systemUtil;
+
+    @Autowired
+    private SessionUtil sessionUtil;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
     private RoomDetailService roomDetailService;
 
     @GetMapping(value = "/")
+    @CrossOrigin(origins = "http://localhost:8080")
     public String beginPage() {
         return "redirect:/trang-chu";
     }
 
     @GetMapping(value = "/trang-chu")
-    public String homePage() {
+    public String homePage(Model model) throws UnknownHostException {
+        String ip = systemUtil.getIp();
+        model.addAttribute("ip", ip);
         return "layout/weblayout";
+    }
+
+    @PostMapping("/log-ip")
+    @ResponseBody
+    public String logIp(LocationDto locationDto){
+        System.out.println(locationDto.toString());
+        User user = (User) sessionUtil.getObject("USER");
+        Location location = locationService.findByUserAndIp(user.getUsername(), locationDto.getIp());
+        if(location == null){
+            location = new Location(
+                    user,
+                    locationDto.getIp(),
+                    locationDto.getLongitude(),
+                    locationDto.getLatitude(),
+                    locationDto.getCity() + ", " + locationDto.getCountry(),
+                    new Date()
+            );
+            locationService.saveLocation(location);
+        }
+        return "add";
     }
 
     @GetMapping(value = "/call")
@@ -37,30 +80,4 @@ public class HomeController {
     }
 
 
-
-//    @RequestMapping(value = "/message_empty", method = RequestMethod.GET)
-//    public String messageEmptyPage() {
-//        return "views/message/message-empty";
-//    }
-
-    public static void main(String[] args) throws ParseException {
-//        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date last = fm.parse("2021-09-29 16:17:20");
-//        Date now= new Date();
-//        System.out.println(last.toString());
-//        System.out.println(now.toString());
-//        long diff = now.getTime() - last.getTime();
-//        System.out.println(now.getTime());
-//        System.out.println(last.getTime());
-//        System.out.println(diff);
-//        long diffSeconds = diff / 1000 % 60;
-//        long diffMinutes = diff / (60 * 1000) % 60;
-//        long diffHours = diff / (60 * 60 * 1000) % 24;
-//        long diffDays = diff / (24 * 60 * 60 * 1000);
-//
-//        System.out.print(diffDays + " days, ");
-//        System.out.print(diffHours + " hours, ");
-//        System.out.print(diffMinutes + " minutes, ");
-//        System.out.print(diffSeconds + " seconds.");
-    }
 }

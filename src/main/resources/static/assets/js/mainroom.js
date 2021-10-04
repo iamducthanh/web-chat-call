@@ -58,6 +58,7 @@ function setBaseRoom(roomDetail){
 
 let roomIdUploadFile = null;
 function setRoomDetail(roomDetail){
+    document.getElementById("isGroup").value = false;
     console.log(roomDetail)
     if(stompClient != null){
         stompClient.disconnect();
@@ -123,9 +124,11 @@ function setRoomDetail(roomDetail){
 }
 
 function setRoomGroupDetail(roomDetail){
+    document.getElementById("isGroup").value = true;
     document.getElementsByName("nameMessageGroup")[0].innerText = roomDetail.name;
     document.getElementsByName("nameMessageGroup")[1].innerText = roomDetail.name;
     document.getElementsByName("nameMessageGroup")[2].innerText = roomDetail.name;
+    document.getElementById("userInRoomDirect").value = roomDetail.roomId;
     document.getElementsByName("countMember")[0].innerText = (roomDetail.userInRooms.length + 1) + " người " + roomDetail.countOnline + " đang hoạt động";
     document.getElementsByName("countMember")[1].innerText = (roomDetail.userInRooms.length + 1) + " người " + roomDetail.countOnline + " đang hoạt động";
     document.getElementsByName("countMember")[2].innerText = (roomDetail.userInRooms.length + 1) + " người " + roomDetail.countOnline + " đang hoạt động";
@@ -140,7 +143,7 @@ function setRoomGroupDetail(roomDetail){
     document.getElementById("messageArea").innerHTML = "";
 
     loadMessage();
-
+connect();
 }
 
 function addDivMember(user){

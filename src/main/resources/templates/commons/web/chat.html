@@ -65,7 +65,7 @@
 
                         <div th:if="${messageUser.users.size() != 1}"
                              th:attr="onclick=|onRoomMessageGroup('${messageUser.roomCode}')|"
-                             th:id="'group' + ${messageUser.roomCode}"
+                             th:id="'messUser' + ${userOnline + messageUser.roomCode}"
                              class="card border-0 text-reset">
                             <div class="card-body">
                                 <div class="row gx-5">
@@ -91,13 +91,16 @@
 
                                     <div class="col">
                                         <div class="d-flex align-items-center mb-3">
-                                            <h5 th:class="'me-auto mb-0 ' + ${messageUser.status == 1 ? 'messageSend' : ''}">[[${messageUser.name}]]</h5>
-                                            <span th:class="'text-muted extra-small ms-2 ' + ${messageUser.status == 1 ? 'messageSend' : ''}">[[${messageUser.time}]]</span>
+                                            <h5 th:class="'me-auto mb-0 ' + ${messageUser.status == 1 ? 'messageSend' : ''}" th:name="'messUser' + ${userOnline + messageUser.roomCode}">[[${messageUser.name}]]</h5>
+                                            <span th:class="'text-muted extra-small ms-2 ' + ${messageUser.status == 1 ? 'messageSend' : ''}" th:name="'messUser' + ${userOnline + messageUser.roomCode}">[[${messageUser.time}]]</span>
                                         </div>
 
                                         <div class="d-flex align-items-center">
-                                            <div th:class="'line-clamp me-auto ' + ${messageUser.status == 1 ? 'messageSend' : ''}">
+                                            <div th:class="'line-clamp me-auto ' + ${messageUser.status == 1 ? 'messageSend' : ''}" th:name="'messUser' + ${userOnline + messageUser.roomCode}">
                                                 [[${messageUser.messageLast}]]
+                                            </div>
+                                            <div class="badge badge-circle bg-primary ms-5">
+                                                <span th:name="'messUser' + ${userOnline + messageUser.roomCode}">[[${messageUser.countMess}]]</span>
                                             </div>
                                         </div>
                                     </div>

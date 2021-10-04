@@ -34,6 +34,8 @@ public class DataIntercepter implements HandlerInterceptor {
     private SessionUtil sessionUtil;
     @Autowired
     private INotificationService notificationService;
+    @Autowired
+    private ILocationService locationService;
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
@@ -43,6 +45,7 @@ public class DataIntercepter implements HandlerInterceptor {
         getUserOnline(req, user);
         getFriendUser(req, user);
         getNotification(req, user);
+        getLocation(req, user);
         return true;
     }
 
@@ -156,6 +159,11 @@ public class DataIntercepter implements HandlerInterceptor {
         req.setAttribute("notifications", notificationPojos);
         req.setAttribute("countNotification", count);
 
+    }
+
+    public void getLocation(HttpServletRequest req, User user){
+        List<Location> locations = locationService.findByUser(user.getUsername());
+        req.setAttribute("locations", locations);
     }
 
     @Override
