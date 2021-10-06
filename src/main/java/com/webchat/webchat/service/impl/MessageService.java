@@ -31,6 +31,7 @@ public class MessageService implements IMessageService {
     @Override
     public void setStatusMessage(String roomId, String username, String status) {
         List<Message> list = messageRepo.findByRoomAndUserAndStatus(roomId, username, status);
+        System.out.println("Nhung tin nhan chua doc: " + list.size());
         if(list != null){
             for(Message message : list){
                 message.setStatus(String.valueOf(PropertiesConstant.MessageStatus.READ));

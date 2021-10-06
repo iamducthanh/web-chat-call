@@ -64,8 +64,10 @@ public class WebSocketEventListener {
         } else {
             String username = (String) headerAccessor.getSessionAttributes().get("username");
             String room = (String) headerAccessor.getSessionAttributes().get("room");
-            boolean isGroup = (boolean) headerAccessor.getSessionAttributes().get("isGroup");
-            System.out.println("laf nhosm" + isGroup);
+            boolean isGroup = false;
+            if(headerAccessor.getSessionAttributes().get("isGroup") != null){
+                isGroup = (boolean) headerAccessor.getSessionAttributes().get("isGroup");
+            }
             if(username != null) {
                 if(isGroup){
                     List<String> userGroup = UsersOnline.userConnectGroup.get(room);

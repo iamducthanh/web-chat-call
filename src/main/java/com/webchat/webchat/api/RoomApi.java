@@ -77,10 +77,9 @@ public class RoomApi {
                     statusMessage = "READ";
                 }
             } else {
-                if(message.getStatus().equals("SEND")){ // sửa thành tin nhắn đã xem
-                    message.setStatus("READ");
-                    messageService.saveMessage(message);
-                }
+             //   if(message.getStatus().equals("SEND")){ // sửa thành tin nhắn đã xem
+                    messageService.setStatusMessage(roomId, message.getUser().getUsername(), "SEND");
+            //    }
                 System.out.println("là của người khác gửi");
             }
             System.out.println(statusMessage);
