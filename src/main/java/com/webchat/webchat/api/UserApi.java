@@ -2,6 +2,7 @@ package com.webchat.webchat.api;
 
 import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.ChangePasswordDto;
+import com.webchat.webchat.dto.UserDto;
 import com.webchat.webchat.dto.UserProfileUpdateDto;
 import com.webchat.webchat.entities.Friend;
 import com.webchat.webchat.entities.User;
@@ -186,6 +187,31 @@ public class UserApi {
         }
 
         return userOnline;
+
+    }
+
+    @GetMapping("/user/get-by-username")
+    @ResponseBody
+    public UserPojo getUserByUsername(String username) {
+        User user = userService.findByUsername(username);
+        UserPojo userPojo = new UserPojo(
+                user.getId(),
+                user.getUsername(),
+                user.getFullname(),
+                user.getEmail(),
+                user.getImage(),
+                user.getLastonline(),
+                user.isGender(),
+                user.getRole(),
+                user.getBirthDate(),
+                "",
+                user.isOnline(),
+                user.getPhone(),
+                user.getDescription(),
+                user.getBirthDayString()
+        );
+
+        return userPojo;
 
     }
 }

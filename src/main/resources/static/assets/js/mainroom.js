@@ -67,29 +67,20 @@ function setRoomDetail(roomDetail){
     setBaseRoom(roomDetail);
     document.getElementById("first").value = roomDetail.userInRoom.first;
     document.getElementById("userInRoomDirect").value = roomDetail.userInRoom.username;
-    document.getElementById("usernameDetailModal").innerText = roomDetail.userInRoom.username;
     document.getElementById("imageUserInRoom").value = roomDetail.userInRoom.image;
     document.getElementById("userNameRoom").innerText=roomDetail.userInRoom.fullname;
     document.getElementById("fullnameTask").innerText=roomDetail.userInRoom.fullname;
     document.getElementById("fullnameDetail").innerText=roomDetail.userInRoom.fullname;
-    document.getElementById("fullnameDetailModal").innerText=roomDetail.userInRoom.fullname;
     document.getElementById("userImageRoom").src=roomDetail.userInRoom.image;
     document.getElementById("avtUserInroom").src=roomDetail.userInRoom.image;
     document.getElementById("avtDetail").src=roomDetail.userInRoom.image;
-    document.getElementById("avtDetailModal").src=roomDetail.userInRoom.image;
     document.getElementById("emailDetail").innerText=roomDetail.userInRoom.email;
-    document.getElementById("emailDetailModal").innerText=roomDetail.userInRoom.email;
     document.getElementById("sdtDetail").innerText=roomDetail.userInRoom.phone;
-    document.getElementById("descriptionModal").innerText=roomDetail.userInRoom.description;
-    document.getElementById("phoneDetailModal").innerText=roomDetail.userInRoom.phone;
     document.getElementById("birthDayDetail").value = roomDetail.userInRoom.birthday;
-    document.getElementById("birthDayDetailModal").value = roomDetail.userInRoom.birthday;
     if(roomDetail.userInRoom.gender){
         document.getElementById("genderDetail").innerText = 'Nam';
-        document.getElementById("genderDetailModal").innerText = 'Nam';
     } else {
         document.getElementById("genderDetail").innerText = 'Nữ';
-        document.getElementById("genderDetailModal").innerText = 'Nữ';
     }
 
     document.getElementById("avtMyUser").src=roomDetail.user.image;
@@ -199,4 +190,32 @@ function addDivMember(user){
         "</div>"+
     "</li>";
     return div;
+}
+
+function showUserProfile(username){
+    $.ajax({
+        url: 'user/get-by-username',
+        data: {
+            username: username
+        },
+        error: function () {
+            console.log("error")
+        },
+        success: function (user) {
+            console.log(user)
+            document.getElementById("usernameDetailModal").innerText = user.username;
+            document.getElementById("fullnameDetailModal").innerText=user.fullName;
+            document.getElementById("avtDetailModal").src=user.image;
+            document.getElementById("emailDetailModal").innerText=user.email;
+            document.getElementById("descriptionModal").innerText=user.descreption;
+            document.getElementById("phoneDetailModal").innerText=user.phone;
+            document.getElementById("birthDayDetailModal").value = user.birthdayString;
+            if(user.gender){
+                document.getElementById("genderDetailModal").innerText = 'Nam';
+            } else {
+                document.getElementById("genderDetailModal").innerText = 'Nữ';
+            }
+        },
+        type: 'GET'
+    });
 }

@@ -384,7 +384,7 @@ async function loadMessage(){
                 } else {
                     messagePlus +=
                         "<div class='message'>" +
-                        "<a data-bs-toggle='modal' data-bs-target='#modal-user-profile'" +
+                        "<a data-bs-toggle='modal' onclick='showUserProfile(\""+message.sender+"\")' data-bs-target='#modal-user-profile'" +
                         "class='avatar avatar-responsive'>" +
                         "<img class='avatar-img' src='" + message.image + "'" + " alt=''>" +
                         "</a>" +
