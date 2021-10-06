@@ -146,6 +146,7 @@ function onCall(payload) {
 function onMessageRealtime(payload) {
     let messageRealtime = JSON.parse(payload.body);
     let classname = 'messUser' + messageRealtime.reader + messageRealtime.sender;
+    console.log(classname)
     let contentUserMessage = document.getElementById("contentUserMessage");
     let userMessage = document.getElementById(classname);
     if(userMessage != null){

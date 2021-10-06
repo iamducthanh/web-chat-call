@@ -24,8 +24,12 @@ public class ChatController {
         Date now = new Date();
         chatMessagePojo.setTimeChat(now);
         UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(chatMessagePojo.getRoom());
-        if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
-            chatMessagePojo.setStatusMessage("Đã xem");
+        if(userConnectPojo != null){
+            if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
+                chatMessagePojo.setStatusMessage("Đã xem");
+            } else {
+                chatMessagePojo.setStatusMessage("Đã gửi");
+            }
         } else {
             chatMessagePojo.setStatusMessage("Đã gửi");
         }

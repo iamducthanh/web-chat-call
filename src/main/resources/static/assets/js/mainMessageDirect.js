@@ -19,7 +19,7 @@ function connect() {
 }
 
 function onConnected() {
-    var names = 'messUser' + username + document.getElementById('userInRoomDirect').value;
+    var names = 'messUser' + username + room;
     // clear thông báo tin nhắn
 
     document.getElementsByName(names)[0].className = 'me-auto mb-0';
@@ -204,7 +204,7 @@ async function onMessageReceived(payload) {
         messageArea.innerHTML += "<div class='close-conect'><p>" + message.sender + " đã thoát!</p></div>";
     } else if (message.type === 'CHAT') {
         let username = document.querySelector('#name').value.trim();
-        let names = 'messUser' + username + userInRoom;
+        let names = 'messUser' + username + room;
         let contentUserMessage = document.getElementById("contentUserMessage");
         let userMessageChat = document.getElementById(names);
         let divAdd = document.createElement("div");

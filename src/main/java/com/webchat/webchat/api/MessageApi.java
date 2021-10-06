@@ -106,8 +106,12 @@ public class MessageApi {
         message.setTime(new Date());
         message.setContent(content);
         UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(roomId);
-        if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
-            message.setStatus("READ");
+        if(userConnectPojo != null){
+            if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
+                message.setStatus("READ");
+            } else {
+                message.setStatus("SEND");
+            }
         } else {
             message.setStatus("SEND");
         }
@@ -137,9 +141,9 @@ public class MessageApi {
         if(dataFile.isEmpty()){
             dataFile.add(new FileAttackDto(String.valueOf(uuid),null,null));
         }
-        messageService.saveMessage(message);
+//        messageService.saveMessage(message);
         if(!attack.equals("[]")){
-            attachService.saveAttach(attaches);
+//            attachService.saveAttach(attaches);
         }
         return dataFile;
     }
