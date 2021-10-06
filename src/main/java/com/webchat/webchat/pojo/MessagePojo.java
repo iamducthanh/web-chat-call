@@ -14,9 +14,8 @@ import java.util.List;
 public class MessagePojo {
     private String id;
     private String sender;
-    private String content;
+    private List<String> content;
     private String time;
     private String image;
     private List<String> listFile;
-
 }

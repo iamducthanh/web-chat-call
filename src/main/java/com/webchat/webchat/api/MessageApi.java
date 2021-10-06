@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -44,18 +45,47 @@ public class MessageApi {
         List<Message> messages = messageService.findByRoom(messagePageDto.getRoomId(), PageRequest.of(messagePageDto.getPage(), 10));
         List<MessagePojo> list = new ArrayList<>();
         if (messages != null) {
-            System.out.println("size mess: " + messages.size());
             for (int i = messages.size() - 1; i > -1; i--) {
-                List<String> listFile = null;
+                List<String> listFile = new ArrayList<>();
+                List<String> contents = new ArrayList<>();
+
+                if(i < messages.size()-1){
+                    Message message = messages.get(i + 1);
+                    if(message.getUser().getUsername().equals(messages.get(i).getUser().getUsername())){
+                        long diff = messages.get(i).getTime().getTime() - message.getTime().getTime();
+                        long diffMinutes = diff / (60 * 1000) % 60;
+                        long diffHours = diff / (60 * 60 * 1000) % 24;
+                        long diffDays = diff / (24 * 60 * 60 * 1000);
+                        if(diffDays == 0 && diffHours == 0 && diffMinutes <=5){
+                            list.get(list.size()-1).getContent().add(messages.get(i).getContent());
+                            list.get(list.size()-1).setTime(messages.get(i).getTimeChat());
+                            if(messages.get(i).getAttachList().size() != 0){
+                                for(Attach attach:messages.get(i).getAttachList()){
+                                    list.get(list.size()-1).getListFile().add(attach.getFilename());
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                }
+
+                contents.add(messages.get(i).getContent());
+
                 if(messages.get(i).getAttachList().size() != 0){
                     listFile = new ArrayList<>();
                     for(Attach attach:messages.get(i).getAttachList()){
                         listFile.add(attach.getFilename());
                     }
                 }
-                list.add(new MessagePojo(messages.get(i).getId(), messages.get(i).getUser().getUsername(), messages.get(i).getContent(), messages.get(i).getTimeChat(), messages.get(i).getUser().getImage(), listFile));
+                list.add(new MessagePojo(
+                        messages.get(i).getId(),
+                        messages.get(i).getUser().getUsername(),
+                        contents, messages.get(i).getTimeChat(),
+                        messages.get(i).getUser().getImage(),
+                        listFile));
             }
         }
+        System.out.println(list.size());
         return list;
     }
 

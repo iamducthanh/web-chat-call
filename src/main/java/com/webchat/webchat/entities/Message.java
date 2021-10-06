@@ -76,8 +76,26 @@ public class Message {
     }
 
     public String getTimeChat(){
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        SimpleDateFormat fm = new SimpleDateFormat("HH:mm");
         String strDate = dateFormat.format(this.time);
-        return strDate;
+
+        String timeChat = "";
+        Date now= new Date();
+        String strDateNow = dateFormat.format(now);
+        if(strDate.substring(0, 10).equals(strDateNow.substring(0, 10))){
+            timeChat = fm.format(this.time);
+        } else {
+            timeChat = dateFormat.format(this.time);
+        }
+
+
+        long diff = this.time.getTime() - now.getTime();
+        long diffSeconds = diff / 1000 % 60;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        return timeChat;
     }
+
 }
