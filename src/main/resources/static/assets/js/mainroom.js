@@ -5,6 +5,7 @@ function closeRoomMessage(){
     document.querySelector('#message-direct').style.display = 'none';
 }
 function onRoomMessage(roomId){
+    document.getElementById("contentMedia").innerHTML = "";
     document.querySelector('#trang-chu').style.display = 'none';
     document.querySelector('#message-direct').style.display = 'unset';
     document.querySelector('#header-message-direct').style.display = 'unset';
@@ -152,7 +153,7 @@ function addDivMember(user){
         status = "Người lạ"
     }
     let div =
-    "<li class=\"list-group-item\">"+
+    "<li class=\"list-group-item\" id='member"+user.username+"'>"+
         "<div class=\"row align-items-center gx-5\">"+
             "<div class=\"col-auto\">"+
                 "<a href=\"#\" class=\"avatar "+avtOnline+"\">"+

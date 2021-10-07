@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header-message-group" id="header-message-group" class="chat-header border-bottom py-4 py-lg-7">
-  <div class="row align-items-center">
-    <div class="col-2 d-xl-none">
-      <a class="icon icon-lg text-muted" href="#" data-toggle-chat="" onclick="closeRoomMessage()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round" class="feather feather-chevron-left">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-    </div>
-
-    <div class="col-8 col-xl-12">
-      <div class="row align-items-center text-center text-xl-start">
-        <!-- Title -->
-        <div class="col-12 col-xl-6">
-          <div class="row align-items-center gx-5">
-            <div class="col-auto">
-              <div class="avatar d-none d-xl-inline-block">
-                <img class="avatar-img" src="assets/img/avatars/bootstrap.svg" alt="">
-              </div>
-            </div>
-
-            <div class="col overflow-hidden">
-              <h5 class="text-truncate" name="nameMessageGroup"></h5>
-              <p class="text-truncate" name="countMember"></p>
-            </div>
-          </div>
-        </div>
-        <!-- Title -->
-
-        <!-- Toolbar -->
-        <div class="col-xl-6 d-none d-xl-block">
-          <div class="row align-items-center justify-content-end gx-6">
-            <div class="col-auto">
-              <a href="#" class="icon icon-lg text-muted" data-bs-toggle="offcanvas"
-                 data-bs-target="#offcanvas-more-group" aria-controls="offcanvas-more-group">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round"
-                     class="feather feather-more-horizontal">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
+    <div class="row align-items-center">
+        <div class="col-2 d-xl-none">
+            <a class="icon icon-lg text-muted" href="#" data-toggle-chat="" onclick="closeRoomMessage()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" class="feather feather-chevron-left">
+                    <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
-              </a>
-            </div>
+            </a>
+        </div>
 
-            <div class="col-auto">
-              <div class="avatar-group">
-                <a href="#" class="avatar avatar-sm" data-bs-toggle="offcanvas"
-                   data-bs-target="#offcanvas-add-members"
-                   aria-controls="offcanvas-add-members">
+        <div class="col-8 col-xl-12">
+            <div class="row align-items-center text-center text-xl-start">
+                <!-- Title -->
+                <div class="col-12 col-xl-6">
+                    <div class="row align-items-center gx-5">
+                        <div class="col-auto">
+                            <div class="avatar d-none d-xl-inline-block">
+                                <img class="avatar-img" src="assets/img/avatars/bootstrap.svg" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col overflow-hidden">
+                            <h5 class="text-truncate" name="nameMessageGroup"></h5>
+                            <p class="text-truncate" name="countMember"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Title -->
+
+                <!-- Toolbar -->
+                <div class="col-xl-6 d-none d-xl-block">
+                    <div class="row align-items-center justify-content-end gx-6">
+                        <div class="col-auto">
+                            <a href="#" class="icon icon-lg text-muted" data-bs-toggle="offcanvas"
+                               data-bs-target="#offcanvas-more-group" aria-controls="offcanvas-more-group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                     stroke-linecap="round" stroke-linejoin="round"
+                                     class="feather feather-more-horizontal">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="avatar-group">
+                                <a href="#" class="avatar avatar-sm" data-bs-toggle="offcanvas"
+                                   data-bs-target="#offcanvas-add-members"
+                                   aria-controls="offcanvas-add-members" onclick="onAddMemmber()">
                                                             <span class="avatar-text" data-bs-toggle="tooltip"
                                                                   data-bs-placement="bottom"
                                                                   title="<strong>Add People</strong><p>Invite friends to group</p>">
@@ -65,44 +65,60 @@
                                                                                                         y2="19"></line><line
                                                                         x1="5" y1="12" x2="19" y2="12"></line></svg>
                                                             </span>
-                </a>
-              </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Toolbar -->
             </div>
-          </div>
         </div>
-        <!-- Toolbar -->
-      </div>
+
+        <div class="col-2 d-xl-none text-end">
+            <div class="dropdown">
+                <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <div class="icon icon-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round" class="feather feather-more-vertical">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                        </svg>
+                    </div>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="#" data-bs-toggle="offcanvas"
+                           data-bs-target="#offcanvas-add-members" aria-controls="offcanvas-add-members" onclick="onAddMemmber()">Thêm thành
+                            viên</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" data-bs-toggle="offcanvas"
+                           data-bs-target="#offcanvas-more-group"
+                           aria-controls="offcanvas-more-group">Khác</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
-    <div class="col-2 d-xl-none text-end">
-      <div class="dropdown">
-        <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown"
-           aria-expanded="false">
-          <div class="icon icon-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" class="feather feather-more-vertical">
-              <circle cx="12" cy="12" r="1"></circle>
-              <circle cx="12" cy="5" r="1"></circle>
-              <circle cx="12" cy="19" r="1"></circle>
-            </svg>
-          </div>
-        </a>
-
-        <ul class="dropdown-menu">
-          <li>
-            <a class="dropdown-item" href="#" data-bs-toggle="offcanvas"
-               data-bs-target="#offcanvas-add-members" aria-controls="offcanvas-add-members">Thêm thành viên</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#" data-bs-toggle="offcanvas"
-               data-bs-target="#offcanvas-more-group"
-               aria-controls="offcanvas-more-group">Khác</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
+  <script>
+    function onAddMemmber(){
+      $.ajax({
+        url: 'api/friend',
+        error: function () {
+          console.log("error")
+        },
+        success: function (friend) {
+            console.log(friend)
+        },
+        type: 'GET'
+      });
+    }
+  </script>
 </div>
 </html>
