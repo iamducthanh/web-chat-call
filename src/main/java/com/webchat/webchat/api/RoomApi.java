@@ -1,5 +1,7 @@
 package com.webchat.webchat.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webchat.webchat.dto.RoomDetailDto;
 import com.webchat.webchat.dto.RoomGroupDetailDto;
 import com.webchat.webchat.dto.UserDto;
@@ -17,9 +19,11 @@ import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -100,7 +104,8 @@ public class RoomApi {
                         user2.getBirthDayString(),
                         user2.isGender(),
                         user2.getDescription(),
-                        user2.getLastOnlineString()
+                        user2.getLastOnlineString(),
+                        user2.getId()
                 );
             } else {
                 System.out.println("là bạn bè "+ isFriend);
@@ -119,7 +124,8 @@ public class RoomApi {
                         user1.getBirthDayString(),
                         user1.isGender(),
                         user1.getDescription(),
-                        user1.getLastOnlineString()
+                        user1.getLastOnlineString(),
+                        user1.getId()
                 );
             }
             roomDetailDto.setRoomId(roomId);
@@ -159,12 +165,44 @@ public class RoomApi {
                     user1.getBirthDayString(),
                     user1.isGender(),
                     user1.getDescription(),
-                    user1.getLastOnlineString()
+                    user1.getLastOnlineString(),
+                    user1.getId()
             );
             userInRoomDtos.add(userInRoomDto);
         }
         roomGroupDetail.setUserInRooms(userInRoomDtos);
         roomGroupDetail.setCountOnline(countOnline);
         return roomGroupDetail;
+    }
+
+    @PostMapping("/api/room/add-member")
+    @ResponseBody
+    public String addMember(String roomId, String members) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> memberNews = new ArrayList<>();
+        memberNews = Arrays.asList(objectMapper.readValue(members, String[].class));
+        Room room = new Room();
+        room.setId(roomId);
+        List<RoomDetail> roomDetails = new ArrayList<>();
+        for(String userId : memberNews){
+            User user = new User();
+            user.setId(Integer.parseInt(userId));
+            RoomDetail roomDetail = new RoomDetail();
+            roomDetail.setUser(user);
+            roomDetail.setRoom(room);
+            roomDetails.add(roomDetail);
+        }
+        roomDetailService.saveRoomDetail(roomDetails);
+        return "";
+    }
+
+    @PostMapping("/api/room/delete-member")
+    @ResponseBody
+    public String deleteMember(String roomId, String userId) {
+        System.out.println(roomId);
+        System.out.println(userId);
+        RoomDetail roomDetail = roomDetailService.findRoomDetailByUserAndRoom(Integer.parseInt(userId), roomId);
+        roomDetailService.deleteRoomDetail(roomDetail);
+        return "";
     }
 }

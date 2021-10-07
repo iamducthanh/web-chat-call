@@ -48,6 +48,26 @@ function onRoomMessageGroup(roomId){
     });
 }
 
+function showMember(){
+    $.ajax({
+        url: 'api/room/message-group',
+        data: {
+            roomId: room
+        },
+        error: function () {
+            console.log("error")
+        },
+        success: function (roomDetail) {
+            let containerMemberGroup = document.getElementById("containerMemberGroup");
+            containerMemberGroup.innerHTML = "";
+            for(let i=0;i<roomDetail.userInRooms.length;i++){
+                containerMemberGroup.innerHTML += addDivMember(roomDetail.userInRooms[i]);
+            }
+        },
+        type: 'GET'
+    });
+}
+
 function setBaseRoom(roomDetail){
     document.getElementById("room").value = roomDetail.roomId;
     document.getElementById("name").value = roomDetail.user.username;
@@ -174,7 +194,7 @@ function addDivMember(user){
                     "</a>"+
                     "<ul class=\"dropdown-menu\">"+
                         "<li>"+
-                            "<a class=\"dropdown-item d-flex align-items-center text-danger\" href=\"#\"> Xóa khỏi nhóm" +
+                            "<a onclick='deleteUserInGroup("+user.id+")' class=\"dropdown-item d-flex align-items-center text-danger\" href=\"#\"> Xóa khỏi nhóm&ensp; " +
                                 "<div class=\"icon ms-auto\">"+
                                     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-trash-2\">"+
                                         "<polyline points=\"3 6 5 6 21 6\"></polyline>"+
@@ -191,6 +211,25 @@ function addDivMember(user){
         "</div>"+
     "</li>";
     return div;
+}
+
+function deleteUserInGroup(userId){
+    $.ajax({
+        url: 'api/room/delete-member',
+        data: {
+            userId: userId,
+            roomId: room
+        },
+        error: function () {
+            console.log("error")
+        },
+        success: function (data) {
+            document.getElementById("btnShowMember").click();
+            toastInfo("Thông báo","Xóa thành công!")
+            console.log(data)
+        },
+        type: 'POST'
+    });
 }
 
 function showUserProfile(username){

@@ -53,7 +53,7 @@ public class FriendApi {
                         user.isOnline(),
                         user.getPhone(),
                         user.getDescription(),
-                        user.getBirthDayString()
+                        user.getLastOnlineString()
                 );
                 friendOut.add(userPojo);
             }

@@ -100,14 +100,14 @@
         <!-- Tabs -->
         <ul class="nav nav-pills nav-justified" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="pill" href="#offcanvas-group-tab-members" role="tab"
+                <a onclick="showMember()" id="btnShowMember" class="nav-link active" data-bs-toggle="pill" href="#offcanvas-group-tab-members" role="tab"
                    aria-controls="offcanvas-group-tab-members" aria-selected="true">
                     Thành viên
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-media" role="tab"
+                <a class="nav-link" onclick="onLoadMedia1();" data-bs-toggle="pill" href="#offcanvas-group-tab-media" role="tab"
                    aria-controls="offcanvas-group-tab-media" aria-selected="true">
                     Ảnh
                 </a>
@@ -181,69 +181,9 @@
 
             <!-- Media -->
             <div class="tab-pane fade" id="offcanvas-group-tab-media" role="tabpanel">
-                <div class="row row-cols-3 g-3 py-6">
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-1.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/1.jpg" alt="">
-                        </a>
-                    </div>
+                <input type="hidden" value="0" id="statusMedia1">
+                <div class="row row-cols-3 g-3 py-6" id="contentMedia1">
 
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-2.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/2.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-3.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/3.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-1.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/4.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-2.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/5.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-3.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/6.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-1.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/7.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-2.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/8.jpg" alt="">
-                        </a>
-                    </div>
-
-                    <div class="col">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview"
-                           data-theme-img-url="assets/img/chat/media-3.jpg">
-                            <img class="img-fluid rounded" src="assets/img/chat/9.jpg" alt="">
-                        </a>
-                    </div>
                 </div>
             </div>
             <!-- Media -->
