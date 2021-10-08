@@ -19,8 +19,8 @@ public class Room {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "groupchat")
-    private int groupChat;
+    @Column(name = "image")
+    private String image;
 
     @Column(name = "name")
     private String name;
@@ -28,9 +28,9 @@ public class Room {
     @Column(name = "username")
     private String username;
 
-    public Room(String id, int groupChat, String name, String username) {
+    public Room(String id, String image, String name, String username) {
         this.id = id;
-        this.groupChat = groupChat;
+        this.image = image;
         this.name = name;
         this.username = username;
     }

@@ -49,7 +49,7 @@ public class MessageController {
         // tạo room
         UUID roomId = UUID.randomUUID();
         UUID messageId = UUID.randomUUID();
-        Room room = new Room(String.valueOf(roomId), 0, "",user.getUsername());
+        Room room = new Room(String.valueOf(roomId), "", "",user.getUsername());
         roomService.saveRoom(room);
 
         // tạo room detail

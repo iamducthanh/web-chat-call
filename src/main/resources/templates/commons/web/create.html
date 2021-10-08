@@ -83,20 +83,6 @@
 
                                 <div class="profile-body p-0">
                                     <div class="avatar avatar-lg">
-                                                            <span class="avatar-text bg-primary">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                     height="24" viewBox="0 0 24 24" fill="none"
-                                                                     stroke="currentColor" stroke-width="2"
-                                                                     stroke-linecap="round" stroke-linejoin="round"
-                                                                     class="feather feather-image"><rect x="3" y="3"
-                                                                                                         width="18"
-                                                                                                         height="18"
-                                                                                                         rx="2"
-                                                                                                         ry="2"></rect><circle
-                                                                        cx="8.5" cy="8.5" r="1.5"></circle><polyline
-                                                                        points="21 15 16 10 5 21"></polyline></svg>
-                                                            </span>
-
                                         <div class="badge badge-lg badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -107,8 +93,11 @@
                                             </svg>
                                         </div>
 
-                                        <input id="upload-chat-group-img" class="d-none" type="file">
-                                        <label class="stretched-label mb-0" ></label>
+                                        <input id="upload-chat-group-img" onchange="setDataImageGroup()" class="d-none" type="file">
+                                        <input id="data-group-img" class="d-none" type="hidden">
+                                        <label class="stretched-label mb-0" id="lbSelect" onclick="selectImageGroupChat()">
+                                        </label>
+                                        <img class="avatar-img avatarView" id="image-group-review" src="" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -132,29 +121,8 @@
                     <!-- Members -->
                     <div class="tab-pane fade" id="create-chat-members" role="tabpanel">
                         <nav id="containerAddMemberFriend">
-                            <div class="card border-0 mt-5">
-                                <div class="card-body">
-                                    <div class="row align-items-center gx-5">
-                                        <div class="col-auto">
-                                            <div class="avatar ">
-                                                <img class="avatar-img" src="assets/img/avatars/6.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <h5>Bill Marrow</h5>
-                                            <p>last seen 3 days ago</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                       id="id-member-1">
-                                                <label class="form-check-label" for="id-member-1"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label class="stretched-label" for="id-member-1"></label>
-                                </div>
-                            </div>
+
+
                         </nav>
                     </div>
                 </div>
@@ -181,7 +149,13 @@
 
     <script>
         function selectImageGroupChat(){
-            document.getElementById()
+            document.getElementById('upload-chat-group-img').click();
+        }
+        async function setDataImageGroup(){
+            let file = document.getElementById('upload-chat-group-img').files[0];
+            let data = await toBase64(file);
+            document.getElementById("image-group-review").src = data;
+            document.getElementById("data-group-img").value = data;
         }
     </script>
 </div>
