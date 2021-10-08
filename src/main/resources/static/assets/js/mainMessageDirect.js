@@ -127,24 +127,6 @@ async function sendMessage(event) {
     event.preventDefault();
 }
 
-async function uploadFileToGit(dataFile, fileName) {
-    await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + fileName, {
-        method: 'PUT',
-        headers: {
-            "Authorization": TO + KEN,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataFile),
-    })
-        .then(response => response.json())
-        .then(out => {
-
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-}
-
 function changeStatusFirstMessage(messageContent) {
     $.ajax({
         url: 'message/change-status',
@@ -220,25 +202,17 @@ async function onMessageReceived(payload) {
                 document.getElementsByName(names)[2].innerText = message.content.substring(0, 100);
             }
             if (document.getElementById("isGroup")) {
-                $.ajax({
-                    url: 'user/user-online',
-                    data: {
-                        roomId: room
-                    },
-                    error: function () {
-                        console.log("error")
-                    },
-                    success: async function (data) {
-                        console.log(data)
-                        for (let i = 0; i < data.length; i++) {
-                            stompClientMessageListen.send("/app/system.onmessage/" + data[i],
-                                {},
-                                JSON.stringify({sender: room, reader: data[i], content: message.content})
-                            )
-                        }
-                    },
-                    type: 'GET'
-                });
+                let data = {
+                    roomId: room
+                }
+                let dataOut = await callAjax('user/user-online', data, 'GET')
+                for (let i = 0; i < dataOut.length; i++) {
+                    stompClientMessageListen.send("/app/system.onmessage/" + dataOut[i],
+                        {},
+                        JSON.stringify({sender: room, reader: dataOut[i], content: message.content})
+                    )
+                }
+
             } else {
                 if (message.statusMessage == 'Đã gửi') {
                     stompClientMessageListen.send("/app/system.onmessage/" + userInRoom,
@@ -248,9 +222,7 @@ async function onMessageReceived(payload) {
                 }
             }
         } else {
-            console.log(message)
             addDivMessageReader(messageArea, message, timeChat);
-
             let classRe = document.getElementsByName(names);
             if (classRe != null) {
                 document.getElementsByName(names)[2].innerText = message.content.substring(0, 100);
@@ -259,26 +231,12 @@ async function onMessageReceived(payload) {
         }
     } else if (message.type === 'ATTACK') {
         let divAttack = document.getElementById(message.id);
-        let data = '';
         console.log("file nameeee: " + message.urlFile)
-        await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + message.urlFile, {
-            method: 'GET',
-            headers: {
-                "Authorization": TO + KEN,
-                "Accept": "application/vnd.github.v3+json"
-            },
-        })
-            .then(response => response.json())
-            .then(out => {
-                data = "data:image/png;base64," + out.content;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        let src = await getImageToGit(message.urlFile);
         divAttack.innerHTML +=
             "<div class='col'>" +
             "<img class='img-fluid rounded'" +
-            "src='" + data + "' data-action='zoom'" +
+            "src='" + src + "' data-action='zoom'" +
             "alt=''>" +
             "</div>"
     }
@@ -495,39 +453,30 @@ async function onLoadMedia() {
         let dataOut = await callAjax('api/files', data, 'GET')
 
         let contentMedia = document.getElementById("contentMedia");
-        if (dataOut.length > 0) {
-            for (let i = 0; i < dataOut.length; i++) {
-                let src = "";
-                await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + dataOut[i], {
-                    method: 'GET',
-                    headers: {
-                        "Authorization": TO + KEN,
-                        "Accept": "application/vnd.github.v3+json"
-                    },
-                })
-                    .then(response => response.json())
-                    .then(out => {
-                        src = "data:image/png;base64," + out.content;
-                        let divCol = document.createElement("div");
-                        divCol.className = 'col';
-                        let aa = document.createElement("a");
-                        aa.setAttribute('data-bs-toggle', 'modal');
-                        aa.setAttribute('data-bs-target', '#modal-media-preview');
-                        aa.setAttribute('data-theme-img-url', src);
-                        divCol.appendChild(aa)
-                        let img = document.createElement("img");
-                        img.className = 'img-fluid rounded';
-                        img.onclick = showImage.bind(this, i);
-                        img.src = src;
-                        aa.appendChild(img);
-                        contentMedia.appendChild(divCol);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            }
-        }
+        addDivMedia(contentMedia, dataOut);
 
+    }
+}
+
+async function addDivMedia(contentMedia, dataOut) {
+    contentMedia.innerHTML = "";
+    if (dataOut.length > 0) {
+        for (let i = 0; i < dataOut.length; i++) {
+            let src = await getImageToGit(dataOut[i]);
+            let divCol = document.createElement("div");
+            divCol.className = 'col';
+            let aa = document.createElement("a");
+            aa.setAttribute('data-bs-toggle', 'modal');
+            aa.setAttribute('data-bs-target', '#modal-media-preview');
+            aa.setAttribute('data-theme-img-url', src);
+            divCol.appendChild(aa)
+            let img = document.createElement("img");
+            img.className = 'img-fluid rounded';
+            img.onclick = showImage.bind(this, i);
+            img.src = src;
+            aa.appendChild(img);
+            contentMedia.appendChild(divCol);
+        }
     }
 }
 
@@ -542,38 +491,7 @@ async function onLoadMedia1() {
         let dataOut = await callAjax('api/files', data, 'GET')
 
         let contentMedia = document.getElementById("contentMedia1");
-        if (dataOut.length > 0) {
-            for (let i = 0; i < dataOut.length; i++) {
-                let src = "";
-                await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + dataOut[i], {
-                    method: 'GET',
-                    headers: {
-                        "Authorization": TO + KEN,
-                        "Accept": "application/vnd.github.v3+json"
-                    },
-                })
-                    .then(response => response.json())
-                    .then(out => {
-                        src = "data:image/png;base64," + out.content;
-                        let divCol = document.createElement("div");
-                        divCol.className = 'col';
-                        let aa = document.createElement("a");
-                        aa.setAttribute('data-bs-toggle', 'modal');
-                        aa.setAttribute('data-bs-target', '#modal-media-preview');
-                        aa.setAttribute('data-theme-img-url', src);
-                        divCol.appendChild(aa)
-                        let img = document.createElement("img");
-                        img.className = 'img-fluid rounded';
-                        img.onclick = showImage.bind(this, i);
-                        img.src = src;
-                        aa.appendChild(img);
-                        contentMedia.appendChild(divCol);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            }
-        }
+        addDivMedia(contentMedia, dataOut);
     }
 }
 

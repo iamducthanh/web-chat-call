@@ -266,5 +266,41 @@ const callAjax = async (url, data, method) => {
     return out;
 }
 
+const getImageToGit = async (name) => {
+    let src = "";
+    await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + name, {
+        method: 'GET',
+        headers: {
+            "Authorization": TO + KEN,
+            "Accept": "application/vnd.github.v3+json"
+        },
+    })
+        .then(response => response.json())
+        .then(out => {
+            src = "data:image/png;base64," + out.content;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    return src;
+}
+
+async function uploadFileToGit(dataFile, fileName) {
+    await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + fileName, {
+        method: 'PUT',
+        headers: {
+            "Authorization": TO + KEN,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataFile),
+    })
+        .then(response => response.json())
+        .then(out => {
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
 
 
