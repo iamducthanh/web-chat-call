@@ -28,8 +28,8 @@ function onConnected() {
     document.getElementsByName(names)[3].innerText = 0;
     // reset số lượng tin nhắn
     let countMessage = document.getElementById('countMessage');
-    if(countMessage != null){
-        if(Number(countMessage.innerText) - 1 == 0){
+    if (countMessage != null) {
+        if (Number(countMessage.innerText) - 1 == 0) {
             let divCountMessage = document.getElementById('divCountMessage');
             divCountMessage.className = 'icon icon-xl ';
             divCountMessage.removeChild(document.getElementById('onRemoveCount'));
@@ -41,7 +41,7 @@ function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/' + room, onMessageReceived);
     // Tell your username to the server
-    if(document.getElementById("isGroup").value == 'true'){
+    if (document.getElementById("isGroup").value == 'true') {
         stompClient.send("/app/chat.addUser/" + room,
             {},
             JSON.stringify({sender: username, room: room, type: 'JOINGROUP'})
@@ -63,7 +63,7 @@ function onError() {
 async function sendMessage(event) {
     var messageContent = messageInput.value.trim();
     let first = document.querySelector("#first");
-    if(first.value == 'onFirst'){
+    if (first.value == 'onFirst') {
         first.value = "";
         changeStatusFirstMessage(messageContent);
     }
@@ -127,7 +127,7 @@ async function sendMessage(event) {
     event.preventDefault();
 }
 
-async function uploadFileToGit(dataFile, fileName){
+async function uploadFileToGit(dataFile, fileName) {
     await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + fileName, {
         method: 'PUT',
         headers: {
@@ -145,7 +145,7 @@ async function uploadFileToGit(dataFile, fileName){
         });
 }
 
-function changeStatusFirstMessage(messageContent){
+function changeStatusFirstMessage(messageContent) {
     $.ajax({
         url: 'message/change-status',
         data: {
@@ -155,7 +155,7 @@ function changeStatusFirstMessage(messageContent){
             console.log("error")
         },
         success: async function (data) {
-            if(data == 'done'){
+            if (data == 'done') {
                 let user = {
                     roomId: room,
                     fullname: document.querySelector("#fullname").value,
@@ -197,7 +197,7 @@ async function onMessageReceived(payload) {
                 })
             )
         }
-        if(username != message.sender){
+        if (username != message.sender) {
             document.getElementById('statusMessage').innerText = "Đã xem"
         }
     } else if (message.type === 'LEAVE') {
@@ -219,7 +219,7 @@ async function onMessageReceived(payload) {
             if (classRe != null) {
                 document.getElementsByName(names)[2].innerText = message.content.substring(0, 100);
             }
-            if(document.getElementById("isGroup")){
+            if (document.getElementById("isGroup")) {
                 $.ajax({
                     url: 'user/user-online',
                     data: {
@@ -230,7 +230,7 @@ async function onMessageReceived(payload) {
                     },
                     success: async function (data) {
                         console.log(data)
-                        for(let i=0;i<data.length;i++){
+                        for (let i = 0; i < data.length; i++) {
                             stompClientMessageListen.send("/app/system.onmessage/" + data[i],
                                 {},
                                 JSON.stringify({sender: room, reader: data[i], content: message.content})
@@ -257,15 +257,15 @@ async function onMessageReceived(payload) {
             }
             document.getElementById('statusMessage').innerText = "  "
         }
-    } else if(message.type === 'ATTACK'){
+    } else if (message.type === 'ATTACK') {
         let divAttack = document.getElementById(message.id);
         let data = '';
         console.log("file nameeee: " + message.urlFile)
         await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + message.urlFile, {
             method: 'GET',
             headers: {
-                "Authorization": TO+KEN,
-                "Accept":"application/vnd.github.v3+json"
+                "Authorization": TO + KEN,
+                "Accept": "application/vnd.github.v3+json"
             },
         })
             .then(response => response.json())
@@ -276,10 +276,10 @@ async function onMessageReceived(payload) {
                 console.error('Error:', error);
             });
         divAttack.innerHTML +=
-            "<div class='col'>"+
-                "<img class='img-fluid rounded'"+
-                     "src='"+data+"' data-action='zoom'"+
-                     "alt=''>"+
+            "<div class='col'>" +
+            "<img class='img-fluid rounded'" +
+            "src='" + data + "' data-action='zoom'" +
+            "alt=''>" +
             "</div>"
     }
 
@@ -290,7 +290,7 @@ async function onMessageReceived(payload) {
 let messForm = document.querySelector("#messForm")
 messForm.addEventListener("scroll", scrollFunction_ct);
 
-async function loadMessage(){
+async function loadMessage() {
     let messageArea = document.querySelector("#messageArea");
     messageArea.innerHTML = "<div id='loadingMess' class=\"line-clamp me-auto load-message-page\">\n" +
         "                          Đang tải<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span>\n" +
@@ -323,7 +323,7 @@ async function loadMessage(){
                         "<img class='avatar-img' src='" + message.image + "'" + " alt=''>" +
                         "</a>" + "<div class='message-inner'>" + "<div class='message-body'>";
 
-                    for(let a=0;a<message.content.length;a++){
+                    for (let a = 0; a < message.content.length; a++) {
                         messagePlus +=
                             "<div class='message-content'>" + "<div class='message-text'>" +
                             "<p>" + message.content[a] + "</p>" +
@@ -342,32 +342,32 @@ async function loadMessage(){
                             "</svg>" + "</div>" + "</a>" + "</li>" + "</ul>" + "</div>" + "</div>" + "</div>";
                     }
 
-                    if(message.listFile != null && message.listFile.length > 0){
+                    if (message.listFile != null && message.listFile.length > 0) {
                         messagePlus +=
-                            "<div class='message-content'>"+
-                            "<div class='message-gallery'>"+
-                            "<div class='row gx-3' id='"+message.id+"'>"+
+                            "<div class='message-content'>" +
+                            "<div class='message-gallery'>" +
+                            "<div class='row gx-3' id='" + message.id + "'>" +
 
-                            "</div>"+
-                            "</div>"+
+                            "</div>" +
+                            "</div>" +
                             "</div>";
 
-                        for(let i=0;i<message.listFile.length;i++){
+                        for (let i = 0; i < message.listFile.length; i++) {
                             fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + message.listFile[i], {
                                 method: 'GET',
                                 headers: {
-                                    "Authorization": TO+KEN,
-                                    "Accept":"application/vnd.github.v3+json"
+                                    "Authorization": TO + KEN,
+                                    "Accept": "application/vnd.github.v3+json"
                                 },
                             })
                                 .then(response => response.json())
                                 .then(out => {
                                     let divIPlus = document.getElementById(message.id);
                                     divIPlus.innerHTML +=
-                                        "<div class='col'>"+
-                                        "<img class='img-fluid rounded'"+
-                                        "src='"+"data:image/png;base64,"+out.content+"' data-action='zoom'"+
-                                        "alt=''>"+
+                                        "<div class='col'>" +
+                                        "<img class='img-fluid rounded'" +
+                                        "src='" + "data:image/png;base64," + out.content + "' data-action='zoom'" +
+                                        "alt=''>" +
                                         "</div>";
                                 })
                                 .catch((error) => {
@@ -384,44 +384,44 @@ async function loadMessage(){
                 } else {
                     messagePlus +=
                         "<div class='message'>" +
-                        "<a data-bs-toggle='modal' onclick='showUserProfile(\""+message.sender+"\")' data-bs-target='#modal-user-profile'" +
+                        "<a data-bs-toggle='modal' onclick='showUserProfile(\"" + message.sender + "\")' data-bs-target='#modal-user-profile'" +
                         "class='avatar avatar-responsive'>" +
                         "<img class='avatar-img' src='" + message.image + "'" + " alt=''>" +
                         "</a>" +
                         "<div class='message-inner'>" + "<div class='message-body'>";
 
-                    for(let a=0;a<message.content.length;a++){
+                    for (let a = 0; a < message.content.length; a++) {
                         messagePlus +=
                             "<div class='message-content'>" + "<div class='message-text'>" +
                             "<p>" + message.content[a] + "</p>" +
                             "</div>" + "</div>";
                     }
 
-                    if(message.listFile != null){
+                    if (message.listFile != null) {
                         messagePlus +=
-                            "<div class='message-content'>"+
-                            "<div class='message-gallery'>"+
-                            "<div class='row gx-3' id='"+message.id+"'>"+
+                            "<div class='message-content'>" +
+                            "<div class='message-gallery'>" +
+                            "<div class='row gx-3' id='" + message.id + "'>" +
 
-                            "</div>"+
-                            "</div>"+
+                            "</div>" +
+                            "</div>" +
                             "</div>";
-                        for(let i=0;i<message.listFile.length;i++){
+                        for (let i = 0; i < message.listFile.length; i++) {
                             fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + message.listFile[i], {
                                 method: 'GET',
                                 headers: {
-                                    "Authorization": TO+KEN,
-                                    "Accept":"application/vnd.github.v3+json"
+                                    "Authorization": TO + KEN,
+                                    "Accept": "application/vnd.github.v3+json"
                                 },
                             })
                                 .then(response => response.json())
                                 .then(out => {
                                     let divIPlus = document.getElementById(message.id);
                                     divIPlus.innerHTML +=
-                                        "<div class='col'>"+
-                                        "<img class='img-fluid rounded'"+
-                                        "src='"+"data:image/png;base64,"+out.content+"' data-action='zoom'"+
-                                        "alt=''>"+
+                                        "<div class='col'>" +
+                                        "<img class='img-fluid rounded'" +
+                                        "src='" + "data:image/png;base64," + out.content + "' data-action='zoom'" +
+                                        "alt=''>" +
                                         "</div>";
                                 })
                                 .catch((error) => {
@@ -446,156 +446,143 @@ async function loadMessage(){
     });
 }
 
-function scrollFunction_ct () {
+function scrollFunction_ct() {
     let page = document.querySelector("#pageIndex");
     if (messForm.scrollTop == 0 && page.value != -1) {
         loadMessage();
     }
 }
 
-function loadImage(){
+function loadImage() {
     let imageMessages = document.getElementsByClassName("imageMessage");
-    for(let i=0;i<imageMessages.length;i++){
+    for (let i = 0; i < imageMessages.length; i++) {
         fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + imageMessages[i].name, {
             method: 'GET',
             headers: {
-                "Authorization": TO+KEN,
-                "Accept":"application/vnd.github.v3+json"
+                "Authorization": TO + KEN,
+                "Accept": "application/vnd.github.v3+json"
             },
         })
             .then(response => response.json())
             .then(out => {
-                imageMessages[i].src = "data:image/png;base64,"+out.content;
+                imageMessages[i].src = "data:image/png;base64," + out.content;
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     }
 }
+
 messageForm.addEventListener('submit', sendMessage, true)
 
-function callVideo(){
+function callVideo() {
     console.log(document.querySelector("#statusOn").innerHTML)
-    if(document.querySelector("#statusOn").innerHTML == 'Không hoạt động'){
+    if (document.querySelector("#statusOn").innerHTML == 'Không hoạt động') {
         showi('Người dùng này hiện không hoạt động!');
     } else {
         showWaitCall();
     }
 }
 
-function onLoadMedia(){
+async function onLoadMedia() {
     let status = document.getElementById("statusMedia").value;
-    if(status == 0){
-        console.log("onload media")
+    if (status == 0) {
         document.getElementById("statusMedia").value = 1;
         let room = document.getElementById("room").value;
-        $.ajax({
-            url: 'api/files',
-            data: {
-                room: room
-            },
-            error: function () {
-                console.log("error")
-            },
-            success: async function (data) {
-                let contentMedia = document.getElementById("contentMedia");
-                if(data.length > 0){
-                    for(let i=0;i<data.length;i++){
-                        let src = "";
-                        await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + data[i], {
-                            method: 'GET',
-                            headers: {
-                                "Authorization": TO+KEN,
-                                "Accept":"application/vnd.github.v3+json"
-                            },
-                        })
-                            .then(response => response.json())
-                            .then(out => {
-                                src = "data:image/png;base64," + out.content;
-                                let divCol = document.createElement("div");
-                                divCol.className = 'col';
-                                let aa = document.createElement("a");
-                                aa.setAttribute('data-bs-toggle','modal');
-                                aa.setAttribute('data-bs-target','#modal-media-preview');
-                                aa.setAttribute('data-theme-img-url',src);
-                                divCol.appendChild(aa)
-                                let img = document.createElement("img");
-                                img.className = 'img-fluid rounded';
-                                img.onclick = showImage.bind(this,i);
-                                img.src = src;
-                                aa.appendChild(img);
-                                contentMedia.appendChild(divCol);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                    }
-                }
-            },
-            type: 'GET'
-        });
+        let data = {
+            room: room
+        }
+        let dataOut = await callAjax('api/files', data, 'GET')
+
+        let contentMedia = document.getElementById("contentMedia");
+        if (dataOut.length > 0) {
+            for (let i = 0; i < dataOut.length; i++) {
+                let src = "";
+                await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + dataOut[i], {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": TO + KEN,
+                        "Accept": "application/vnd.github.v3+json"
+                    },
+                })
+                    .then(response => response.json())
+                    .then(out => {
+                        src = "data:image/png;base64," + out.content;
+                        let divCol = document.createElement("div");
+                        divCol.className = 'col';
+                        let aa = document.createElement("a");
+                        aa.setAttribute('data-bs-toggle', 'modal');
+                        aa.setAttribute('data-bs-target', '#modal-media-preview');
+                        aa.setAttribute('data-theme-img-url', src);
+                        divCol.appendChild(aa)
+                        let img = document.createElement("img");
+                        img.className = 'img-fluid rounded';
+                        img.onclick = showImage.bind(this, i);
+                        img.src = src;
+                        aa.appendChild(img);
+                        contentMedia.appendChild(divCol);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
     }
 }
 
-function onLoadMedia1(){
+async function onLoadMedia1() {
     let status = document.getElementById("statusMedia").value;
-    if(status == 0){
+    if (status == 0) {
         console.log("onload media")
-        document.getElementById("statusMedia1").value = 1;
-        $.ajax({
-            url: 'api/files',
-            data: {
-                room: room
-            },
-            error: function () {
-                console.log("error")
-            },
-            success: async function (data) {
-                let contentMedia = document.getElementById("contentMedia1");
-                if(data.length > 0){
-                    for(let i=0;i<data.length;i++){
-                        let src = "";
-                        await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + data[i], {
-                            method: 'GET',
-                            headers: {
-                                "Authorization": TO+KEN,
-                                "Accept":"application/vnd.github.v3+json"
-                            },
-                        })
-                            .then(response => response.json())
-                            .then(out => {
-                                src = "data:image/png;base64," + out.content;
-                                let divCol = document.createElement("div");
-                                divCol.className = 'col';
-                                let aa = document.createElement("a");
-                                aa.setAttribute('data-bs-toggle','modal');
-                                aa.setAttribute('data-bs-target','#modal-media-preview');
-                                aa.setAttribute('data-theme-img-url',src);
-                                divCol.appendChild(aa)
-                                let img = document.createElement("img");
-                                img.className = 'img-fluid rounded';
-                                img.onclick = showImage.bind(this,i);
-                                img.src = src;
-                                aa.appendChild(img);
-                                contentMedia.appendChild(divCol);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                    }
-                }
-            },
-            type: 'GET'
-        });
+        document.getElementById("statusMedia").value = 1;
+        let data = {
+            room: room
+        }
+        let dataOut = await callAjax('api/files', data, 'GET')
+
+        let contentMedia = document.getElementById("contentMedia1");
+        if (dataOut.length > 0) {
+            for (let i = 0; i < dataOut.length; i++) {
+                let src = "";
+                await fetch('https://api.github.com/repos/iamducthanh/image_webchat/contents/' + dataOut[i], {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": TO + KEN,
+                        "Accept": "application/vnd.github.v3+json"
+                    },
+                })
+                    .then(response => response.json())
+                    .then(out => {
+                        src = "data:image/png;base64," + out.content;
+                        let divCol = document.createElement("div");
+                        divCol.className = 'col';
+                        let aa = document.createElement("a");
+                        aa.setAttribute('data-bs-toggle', 'modal');
+                        aa.setAttribute('data-bs-target', '#modal-media-preview');
+                        aa.setAttribute('data-theme-img-url', src);
+                        divCol.appendChild(aa)
+                        let img = document.createElement("img");
+                        img.className = 'img-fluid rounded';
+                        img.onclick = showImage.bind(this, i);
+                        img.src = src;
+                        aa.appendChild(img);
+                        contentMedia.appendChild(divCol);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
     }
 }
 
-function showImage(index){
+function showImage(index) {
     console.log(index)
-    document.getElementById("modal-media-preview").style.display='block'
+    document.getElementById("modal-media-preview").style.display = 'block'
 }
 
-function addDivMessageSender(messageArea, message, timeChat){
+function addDivMessageSender(messageArea, message, timeChat) {
     messageArea.innerHTML +=
         "<div class='message message-out'><a href='#' data-bs-toggle='modal' data-bs-target='#modal-profile' class='avatar avatar-responsive'>" +
         "<img class='avatar-img' src='" + document.getElementById("imageUserLogin").value + "'" + " alt=''>" +
@@ -634,20 +621,20 @@ function addDivMessageSender(messageArea, message, timeChat){
         "<line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line>" +
         "</svg>" + "</div>" + "</a>" + "</li>" + "</ul>" + "</div>" + "</div>" + "</div>" +
 
-        "<div class='message-content'>"+
-        "<div class='message-gallery'>"+
-        "<div class='row gx-3' id='"+message.id+"'>"+
+        "<div class='message-content'>" +
+        "<div class='message-gallery'>" +
+        "<div class='row gx-3' id='" + message.id + "'>" +
 
-        "</div>"+
-        "</div>"+
-        "</div>"+
+        "</div>" +
+        "</div>" +
+        "</div>" +
 
         "</div>" +
         "<div class='message-footer'>" +
         "<span class='extra-small text-muted'>" + timeChat + "</span>" + "</div>" + "</div>" + "</div>";
 }
 
-function addDivMessageReader(messageArea, message, timeChat){
+function addDivMessageReader(messageArea, message, timeChat) {
     messageArea.innerHTML +=
         "<div class='message'>" +
         "<a data-bs-toggle='modal' data-bs-target='#modal-user-profile'" +
@@ -659,13 +646,13 @@ function addDivMessageReader(messageArea, message, timeChat){
         "<div class='message-text'>" +
         "<p>" + message.content + "</p>" +
         "</div>" + "</div>" +
-        "<div class='message-content'>"+
-        "<div class='message-gallery'>"+
-        "<div class='row gx-3' id='"+message.id+"'>"+
+        "<div class='message-content'>" +
+        "<div class='message-gallery'>" +
+        "<div class='row gx-3' id='" + message.id + "'>" +
 
-        "</div>"+
-        "</div>"+
-        "</div>"+
+        "</div>" +
+        "</div>" +
+        "</div>" +
         "</div>" +
         "<div class='message-footer'>" +
         "<span class='extra-small text-muted'>" + timeChat + "</span>" +

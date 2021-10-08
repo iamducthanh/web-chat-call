@@ -250,5 +250,21 @@ function uuid() {
     return uuid.substr(uuid.lastIndexOf('/') + 1);
 }
 
+const callAjax = async (url, data, method) => {
+    let out;
+    await $.ajax({
+        url: url,
+        data: data,
+        error: function () {
+            console.log("error")
+        },
+        success: function (dataOut) {
+            out = dataOut;
+        },
+        type: method
+    });
+    return out;
+}
+
 
 

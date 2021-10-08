@@ -92,7 +92,8 @@
                 <ul class="dropdown-menu">
                     <li>
                         <a class="dropdown-item" href="#" data-bs-toggle="offcanvas"
-                           data-bs-target="#offcanvas-add-members" aria-controls="offcanvas-add-members" onclick="onAddMemmber()">Thêm thành
+                           data-bs-target="#offcanvas-add-members" aria-controls="offcanvas-add-members"
+                           onclick="onAddMemmber()">Thêm thành
                             viên</a>
                     </li>
                     <li>
@@ -106,95 +107,76 @@
 
     </div>
 
-  <script>
+    <script>
 
-      function addMember(){
-          let checkBoxAddMember = document.getElementsByName("checkBoxAddMember");
-          let addMember = [];
-          if(checkBoxAddMember != null){
-              for(let i=0;i<checkBoxAddMember.length;i++){
-                  if(checkBoxAddMember[i].checked){
-                      addMember.push(checkBoxAddMember[i].value)
-                  }
-              }
-          }
-          if(addMember.length != 0){
-              for(let i=0;i<addMember.length;i++){
-                  document.getElementById("containerMember").removeChild(document.getElementById("addMember" + addMember[i]));
-              }
-              $.ajax({
-                  url: 'api/room/add-member',
-                  data: {
-                      roomId: room,
-                      members: JSON.stringify(addMember)
-                  },
-                  error: function () {
-                      console.log("error")
-                  },
-                  success: function (data) {
-                      document.getElementById("btnShowMember").click();
-                      toastInfo("Thông báo","Thêm thành công!")
-                      console.log(data)
-                  },
-                  type: 'POST'
-              });
-          }
-      }
+        async function addMember() {
+            let checkBoxAddMember = document.getElementsByName("checkBoxAddMember");
+            let addMember = [];
+            if (checkBoxAddMember != null) {
+                for (let i = 0; i < checkBoxAddMember.length; i++) {
+                    if (checkBoxAddMember[i].checked) {
+                        addMember.push(checkBoxAddMember[i].value)
+                    }
+                }
+            }
+            if (addMember.length != 0) {
+                for (let i = 0; i < addMember.length; i++) {
+                    document.getElementById("containerMember").removeChild(document.getElementById("addMember" + addMember[i]));
+                }
+                let data = {
+                    roomId: room,
+                    members: JSON.stringify(addMember)
+                }
+                await callAjax('api/room/add-member', data, 'POST')
+                document.getElementById("btnShowMember").click();
+                toastInfo("Thông báo", "Thêm thành công!")
 
-    function onAddMemmber(){
-      $.ajax({
-        url: 'api/friend',
-        error: function () {
-          console.log("error")
-        },
-        success: function (friend) {
+            }
+        }
+
+        async function onAddMemmber() {
+            let friend = await callAjax('api/friend', null, 'GET')
             let containerMember = document.getElementById("containerMember");
             containerMember.innerHTML = "";
-            for(let i=0;i<friend.length;i++){
-                if(document.getElementById("member" + friend[i].username) == null){
+            for (let i = 0; i < friend.length; i++) {
+                if (document.getElementById("member" + friend[i].username) == null) {
                     containerMember.innerHTML += addDivAddMember(friend[i]);
                 }
             }
-            console.log(friend)
-        },
-        type: 'GET'
-      });
-    }
+        }
 
-    function addDivAddMember(friend){
-        let avtOnline = "";
-        let status = "";
-            if(friend.online){
+        function addDivAddMember(friend) {
+            let avtOnline = "";
+            let status = "";
+            if (friend.online) {
                 avtOnline = " avatar-online";
                 status = "Đang hoạt động";
             } else {
                 avtOnline = " avatar-offline";
                 status = friend.birthdayString;
             }
-
-
-        let divAdd =
-            "<li class=\"list-group-item\" id='addMember"+friend.id+"'>"+
-                "<div class=\"row align-items-center gx-5\">"+
-                    "<div class=\"col-auto\">"+
-                        "<div class=\"avatar "+avtOnline+"\">"+
-                            "<img class=\"avatar-img\" src=\""+friend.image+"\" alt=\"\">"+
-                        "</div>"+
-                    "</div>"+
-                    "<div class=\"col\">"+
-                        "<h5>"+friend.fullName+"</h5>"+
-                        "<p>"+status+"</p>"+
-                    "</div>"+
-                    "<div class=\"col-auto\">"+
-                        "<div class=\"form-check\">"+
-                            "<input class=\"form-check-input\" name='checkBoxAddMember' type=\"checkbox\" value=\""+friend.id+"\" id=\"id-add-user-user-1\">"+
-                                "<label class=\"form-check-label\" htmlFor=\"id-add-user-user-1\"></label>"+
-                        "</div>"+
-                    "</div>"+
-                "</div>"+
-            "</li>";
-        return divAdd;
-    }
-  </script>
+            let divAdd =
+                "<li class=\"list-group-item\" id='addMember" + friend.id + "'>" +
+                "<div class=\"row align-items-center gx-5\">" +
+                "<div class=\"col-auto\">" +
+                "<div class=\"avatar " + avtOnline + "\">" +
+                "<img class=\"avatar-img\" src=\"" + friend.image + "\" alt=\"\">" +
+                "</div>" +
+                "</div>" +
+                "<div class=\"col\">" +
+                "<h5>" + friend.fullName + "</h5>" +
+                "<p>" + status + "</p>" +
+                "</div>" +
+                "<div class=\"col-auto\">" +
+                "<div class=\"form-check\">" +
+                "<input class=\"form-check-input\" name='checkBoxAddMember' type=\"checkbox\" value=\"" + friend.id + "\" id=\"id-add-user-user-1\">" +
+                "<label class=\"form-check-label\" htmlFor=\"id-add-user-user-1\"></label>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</li>";
+            return divAdd;
+        }
+    </script>
 </div>
 </html>
