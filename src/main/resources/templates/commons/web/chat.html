@@ -70,7 +70,7 @@
                             <div class="card-body">
                                 <div class="row gx-5">
                                     <div class="col-auto">
-                                        <div class="avatar-group-trigon avatar-group-trigon-sm">
+                                        <div th:if="${messageUser.roomDetail.room.image == null}" class="avatar-group-trigon avatar-group-trigon-sm">
                                             <div class="avatar avatar-sm">
                                                 <img class="avatar-img" th:src="@{${messageUser.users.get(0).image}}" alt="#">
                                             </div>
@@ -86,6 +86,9 @@
                                             <div class="avatar avatar-sm" th:if="${messageUser.users.size() == 2}">
                                                 <span class="avatar-text bg-primary">+</span>
                                             </div>
+                                        </div>
+                                        <div class="avatar" th:if="${messageUser.roomDetail.room.image != null}">
+                                            <img th:src="@{${messageUser.roomDetail.room.image}}" alt="#" class="avatar-img">
                                         </div>
                                     </div>
 

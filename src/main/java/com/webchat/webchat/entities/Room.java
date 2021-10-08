@@ -40,4 +40,8 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<RoomDetail> roomDetails;
+
+    public String getImage() {
+        return "https://github.com/phonghotkgd2k1/image_public/blob/main/" + image + "?raw=true";
+    }
 }
