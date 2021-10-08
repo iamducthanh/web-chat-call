@@ -19,8 +19,48 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
     <script src="https://cdn.stringee.com/sdk/web/2.2.1/stringee-web-sdk.min.js"></script>
+    <style type="text/css">
+        a.gflag {
+            vertical-align: middle;
+            font-size: 15px;
+            padding: 0px;
+            background-repeat: no-repeat;
+            background-image: url(//gtranslate.net/flags/16.png);
+        }
+
+        a.gflag img {
+            border: 0;
+        }
+
+        a.gflag:hover {
+            background-image: url(//gtranslate.net/flags/16a.png);
+        }
+
+        #goog-gt-tt {
+            display: none !important;
+        }
+
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+        .goog-te-menu-value:hover {
+            text-decoration: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        #google_translate_element2 {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
+<div id="google_translate_element2">
+    xin chào
+</div>
 <input type="hidden" th:value="${userOnline}" id="userOnline">
 <input type="hidden" th:value="${userId}" id="userIdOnline">
 <input type="hidden" value="" id="isGroup">
@@ -58,10 +98,14 @@
 <script th:src="@{/assets/js/mainroom.js}"></script>
 <script th:src="@{/assets/js/template.js}"></script>
 <script th:src="@{/assets/js/mainlocation.js}"></script>
+<script th:src="@{/assets/js/language.js}"></script>
 <style>
     .messageSend{
         font-weight: 900;
     }
 </style>
+
+<!--<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>-->
+
 </body>
 </html>

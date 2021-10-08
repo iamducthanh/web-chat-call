@@ -17,7 +17,8 @@
                         <div class="row align-items-center gx-5">
                             <div class="col-auto">
                                 <div class="avatar">
-                                    <img onclick="chooseFile()" id="avatarView" class="avatar-img" th:src="@{${user.image}}" alt="">
+                                    <img onclick="chooseFile()" id="avatarView" class="avatar-img"
+                                         th:src="@{${user.image}}" alt="">
                                     <div class="badge badge-circle bg-secondary border-outline position-absolute bottom-0 end-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -83,50 +84,71 @@
                                     <div id="accordion-profile-body-1" class="accordion-collapse collapse"
                                          aria-labelledby="accordion-profile-1" data-parent="#accordion-profile">
                                         <form id="updateUser">
-                                        <div class="accordion-body">
-                                            <input type="hidden" name="id" th:value="${user.id}">
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <input onkeydown="onUpdateProfile()" name="username" th:value="${user.username}" type="text" class="form-control" placeholder="Tên người dùng">
-                                            </div>
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <input onkeydown="onUpdateProfile()" name="lastName" th:value="${user.lastName}" type="text" class="form-control" placeholder="Họ">
-                                            </div>
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <input onkeydown="onUpdateProfile()" name="firstName" th:value="${user.firstName}" type="text" class="form-control" placeholder="Tên">
-                                            </div>
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <input onkeydown="onUpdateProfile()" name="phone" th:value="${user.phone}" type="text" class="form-control" placeholder="Số điện thoại">
-                                            </div>
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <p>Ngày sinh</p>
-                                                <input name="birthday" onchange="onUpdateProfile()" th:value="${user.getBirthDayString()}" type="date" class="form-control">
-                                            </div>
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <div th:if="${user.gender == true}" class="row" style="padding: 0 20px">
-                                                    <div class="col-lg-5" style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
-                                                        <input name="gender" value="true" checked type="radio"> &ensp;Nam
-                                                    </div> &ensp;&ensp;
-                                                    <div class="col-lg-5" style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
-                                                        <input onclick="onUpdateProfile()" name="gender" value="false" type="radio">&ensp;Nữ
+                                            <div class="accordion-body">
+                                                <input type="hidden" name="id" th:value="${user.id}">
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <input onkeydown="onUpdateProfile()" name="username"
+                                                           th:value="${user.username}" type="text" class="form-control"
+                                                           placeholder="Tên người dùng">
+                                                </div>
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <input onkeydown="onUpdateProfile()" name="lastName"
+                                                           th:value="${user.lastName}" type="text" class="form-control"
+                                                           placeholder="Họ">
+                                                </div>
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <input onkeydown="onUpdateProfile()" name="firstName"
+                                                           th:value="${user.firstName}" type="text" class="form-control"
+                                                           placeholder="Tên">
+                                                </div>
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <input onkeydown="onUpdateProfile()" name="phone"
+                                                           th:value="${user.phone}" type="text" class="form-control"
+                                                           placeholder="Số điện thoại">
+                                                </div>
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <p>Ngày sinh</p>
+                                                    <input name="birthday" onchange="onUpdateProfile()"
+                                                           th:value="${user.getBirthDayString()}" type="date"
+                                                           class="form-control">
+                                                </div>
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <div th:if="${user.gender == true}" class="row"
+                                                         style="padding: 0 20px">
+                                                        <div class="col-lg-5"
+                                                             style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
+                                                            <input name="gender" value="true" checked type="radio">
+                                                            &ensp;Nam
+                                                        </div> &ensp;&ensp;
+                                                        <div class="col-lg-5"
+                                                             style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
+                                                            <input onclick="onUpdateProfile()" name="gender"
+                                                                   value="false" type="radio">&ensp;Nữ
+                                                        </div>
+                                                    </div>
+                                                    <div th:if="${user.gender != true}" class="row"
+                                                         style="padding: 0 20px">
+                                                        <div class="col-lg-5"
+                                                             style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
+                                                            <input name="gender" onclick="onUpdateProfile()"
+                                                                   value="true" type="radio"> &ensp;Nam
+                                                        </div> &ensp;&ensp;
+                                                        <div class="col-lg-5"
+                                                             style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
+                                                            <input name="gender" value="false" checked type="radio">&ensp;Nữ
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div th:if="${user.gender != true}" class="row" style="padding: 0 20px">
-                                                    <div class="col-lg-5" style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
-                                                        <input name="gender" onclick="onUpdateProfile()" value="true" type="radio"> &ensp;Nam
-                                                    </div> &ensp;&ensp;
-                                                    <div class="col-lg-5" style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
-                                                        <input name="gender" value="false" checked type="radio">&ensp;Nữ
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            <div class="col-lg-12" style="margin-bottom: 20px">
-                                                <p>Mô tả ngắn</p>
-                                                <textarea onclick="onUpdateProfile()" name="description" class="form-control" cols="8" maxlength="100">[[${user.description}]]</textarea>
+                                                <div class="col-lg-12" style="margin-bottom: 20px">
+                                                    <p>Mô tả ngắn</p>
+                                                    <textarea onclick="onUpdateProfile()" name="description"
+                                                              class="form-control" cols="8" maxlength="100">[[${user.description}]]</textarea>
+                                                </div>
+                                                <button type="submit" id="btnUpdateProfile" disabled
+                                                        class="btn btn-block btn-lg btn-primary w-100">Cập nhật
+                                                </button>
                                             </div>
-                                            <button type="submit" id="btnUpdateProfile" disabled class="btn btn-block btn-lg btn-primary w-100">Cập nhật
-                                            </button>
-                                        </div>
                                         </form>
                                     </div>
                                 </div>
@@ -202,15 +224,19 @@
                                         <div class="accordion-body">
                                             <form autocomplete="on" id="changePassword">
                                                 <div class="col-lg-12" style="margin-bottom: 20px">
-                                                    <input name="password" type="password" class="form-control" placeholder="Mật khẩu cũ">
+                                                    <input name="password" type="password" class="form-control"
+                                                           placeholder="Mật khẩu cũ">
                                                 </div>
                                                 <div class="col-lg-12" style="margin-bottom: 20px">
-                                                    <input name="newPassword" type="password" class="form-control" placeholder="Mật khẩu mới">
+                                                    <input name="newPassword" type="password" class="form-control"
+                                                           placeholder="Mật khẩu mới">
                                                 </div>
                                                 <div class="col-lg-12" style="margin-bottom: 20px">
-                                                    <input name="comfirmPassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu mới">
+                                                    <input name="comfirmPassword" type="password" class="form-control"
+                                                           placeholder="Nhập lại mật khẩu mới">
                                                 </div>
-                                                <button type="submit" class="btn btn-block btn-lg btn-primary w-100">Đổi mật khẩu
+                                                <button type="submit" class="btn btn-block btn-lg btn-primary w-100">Đổi
+                                                    mật khẩu
                                                 </button>
                                             </form>
                                         </div>
@@ -245,21 +271,7 @@
                 <!-- Storage -->
                 <div class="mt-8">
                     <div class="d-flex align-items-center my-4 px-6">
-                        <small class="text-muted me-auto">Storage</small>
-
-                        <div class="flex align-items-center text-muted">
-                            <a href="#" class="text-muted small">Clear storage</a>
-
-                            <div class="icon icon-xs">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-bar-chart-2">
-                                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                                </svg>
-                            </div>
-                        </div>
+                        <small class="text-muted me-auto">Hệ thống</small>
                     </div>
 
                     <div class="card border-0">
@@ -272,8 +284,8 @@
                                            data-bs-toggle="collapse" data-bs-target="#accordion-storage-body-1"
                                            aria-expanded="false" aria-controls="accordion-storage-body-1">
                                             <div>
-                                                <h5>Cache</h5>
-                                                <p>Maximum cache size</p>
+                                                <h5>Ngôn ngữ</h5>
+                                                <p>Thay đổi ngôn ngữ</p>
                                             </div>
                                         </a>
                                     </div>
@@ -281,39 +293,48 @@
                                     <div id="accordion-storage-body-1" class="accordion-collapse collapse"
                                          aria-labelledby="accordion-storage-1" data-parent="#accordion-storage">
                                         <div class="accordion-body">
-                                            <div class="row justify-content-between mb-4">
-                                                <div class="col-auto">
-                                                    <small>2 GB</small>
+                                            <div class="row align-items-center">
+                                                <div class="col-12 m-4">
+                                                    <a href="#" onclick="doGTranslate('vi|vi');return false;"
+                                                       title="Tiếng Việt"
+                                                    ><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_North_Vietnam_%281955%E2%80%931976%29.svg/230px-Flag_of_North_Vietnam_%281955%E2%80%931976%29.svg.png"
+                                                          style="width: 25px"
+                                                          alt="English"/> &ensp;Tiếng Việt</a>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <small>4 GB</small>
+                                                <div class="col-12 m-4">
+                                                    <a href="#" onclick="doGTranslate('vi|zh-CN');return false;"
+                                                       title="Tiếng Trung"
+                                                    ><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/225px-Flag_of_the_People%27s_Republic_of_China.svg.png"
+                                                          style="width: 25px"
+                                                          alt="English"/> &ensp;Tiếng Trung</a>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <small>6 GB</small>
+                                                <div class="col-12 m-4">
+                                                    <a href="#" onclick="doGTranslate('vi|en');return false;"
+                                                       title="Tiếng Anh"
+                                                    ><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/300px-Flag_of_the_United_Kingdom.svg.png"
+                                                          style="width: 25px"
+                                                          alt="English"/> &ensp;Tiếng Anh</a>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <small>8 GB</small>
+                                                <div class="col-12 m-4">
+                                                    <a href="#" onclick="doGTranslate('vi|ko');return false;"
+                                                       title="Tiếng Hàn"
+                                                    ><img src="https://globalmap.edu.vn/wp-content/uploads/2020/10/flag_of_the_provisional_government_of_the_republic_of_korea-svg.png"
+                                                          style="width: 25px"
+                                                          alt="English"/> &ensp;Tiếng Hàn</a>
                                                 </div>
-                                            </div>
-                                            <input type="range" class="form-range" min="1" max="4" step="1"
-                                                   id="custom-range-1">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                    <div class="accordion-header">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <h5>Keep media</h5>
-                                                <p>Photos, videos and other files</p>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           id="accordion-storage-check-1">
-                                                    <label class="form-check-label"
-                                                           for="accordion-storage-check-1"></label>
+                                                <div class="col-12 m-4">
+                                                    <a href="#" onclick="doGTranslate('vi|ja');return false;"
+                                                       title="Tiếng Nhật"
+                                                    ><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/225px-Flag_of_Japan.svg.png"
+                                                          style="width: 25px"
+                                                          alt="English"/> &ensp;Tiếng Nhật</a>
+                                                </div>
+                                                <div class="col-12 m-4">
+                                                    <a href="#" onclick="doGTranslate('vi|id');return false;"
+                                                       title="Tiếng Indonesian"
+                                                    ><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/225px-Flag_of_Indonesia.svg.png"
+                                                          style="width: 25px"
+                                                          alt="English"/> &ensp;Tiếng Indonesian</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -462,7 +483,7 @@
         document.querySelector("#updateUser").addEventListener('submit', updateUser, true)
         document.querySelector("#changePassword").addEventListener('submit', changePassword, true)
 
-        function changePassword(event){
+        function changePassword(event) {
             event.preventDefault();
             let formData = $("#changePassword").serializeArray();
             let changePassword = {};
@@ -477,7 +498,7 @@
                     console.log("error")
                 },
                 success: async function (data) {
-                    if(data.length != 0){
+                    if (data.length != 0) {
                         for (let i = 0; i < data.length; i++) {
                             toastDanger("Lỗi", data[i].message);
                         }
@@ -488,7 +509,8 @@
                 type: 'PUT'
             });
         }
-        function onUpdateProfile(){
+
+        function onUpdateProfile() {
             document.getElementById("btnUpdateProfile").disabled = false;
         }
 
@@ -512,7 +534,7 @@
             let type = image.substring(Number(pre) + 1, suf);
             let data = {
                 message: "upload",
-                content: image.substring(image.indexOf(',')+1, image.length)
+                content: image.substring(image.indexOf(',') + 1, image.length)
             }
             await fetch('https://api.github.com/repos/phonghotkgd2k1/image_public/contents/' + name + '.' + type, {
                 method: 'PUT',
@@ -524,9 +546,9 @@
             })
                 .then(response => response.json())
                 .then(out => {
-                    toastSuccess("Thành công","Thay đổi thành công!");
+                    toastSuccess("Thành công", "Thay đổi thành công!");
                     let avatarView = document.getElementsByClassName("avatarView");
-                    for(let i=0;i<avatarView.length;i++){
+                    for (let i = 0; i < avatarView.length; i++) {
                         avatarView[i].src = image;
                     }
                     $.ajax({
@@ -548,7 +570,7 @@
                 });
         }
 
-        function updateUser(event){
+        function updateUser(event) {
             event.preventDefault();
             let formData = $("#updateUser").serializeArray();
             let user = {};
@@ -562,7 +584,7 @@
                     console.log("error")
                 },
                 success: async function (data) {
-                    if(data.length != 0){
+                    if (data.length != 0) {
                         for (let i = 0; i < data.length; i++) {
                             toastDanger("Lỗi", data[i].message);
                         }
