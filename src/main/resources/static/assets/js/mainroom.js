@@ -5,7 +5,7 @@ function closeRoomMessage() {
     document.querySelector('#message-direct').style.display = 'none';
 }
 
-function onRoomMessage(roomId) {
+async function onRoomMessage(roomId) {
     if (stompClient != null) {
         stompClient.disconnect();
     }
@@ -15,23 +15,14 @@ function onRoomMessage(roomId) {
     document.querySelector('#header-message-direct').style.display = 'unset';
     document.querySelector('#header-message-group').style.display = 'none';
 
-    console.log(roomId)
-    $.ajax({
-        url: 'api/room/message-direct',
-        data: {
-            roomId: roomId
-        },
-        error: function () {
-            console.log("error")
-        },
-        success: function (roomDetail) {
-            setRoomDetail(roomDetail)
-        },
-        type: 'GET'
-    });
+    let data = {
+        roomId: roomId
+    }
+    let roomDetail = await callAjax('api/room/message-direct', data, 'GET');
+    setRoomDetail(roomDetail)
 }
 
-function onRoomMessageGroup(roomId) {
+async function onRoomMessageGroup(roomId) {
     if (stompClient != null) {
         stompClient.disconnect();
     }
@@ -40,20 +31,11 @@ function onRoomMessageGroup(roomId) {
     document.querySelector('#header-message-direct').style.display = 'none';
     document.querySelector('#header-message-group').style.display = 'unset';
     console.log(roomId)
-    $.ajax({
-        url: 'api/room/message-group',
-        data: {
-            roomId: roomId
-        },
-        error: function () {
-            console.log("error")
-        },
-        success: function (roomDetail) {
-            setRoomGroupDetail(roomDetail);
-            console.log(roomDetail)
-        },
-        type: 'GET'
-    });
+    let data = {
+        roomId: roomId
+    }
+    let roomDetail = await callAjax('api/room/message-group', data, 'GET');
+    setRoomGroupDetail(roomDetail);
 }
 
 function showMember() {
@@ -145,6 +127,15 @@ function setRoomDetail(roomDetail) {
 }
 
 function setRoomGroupDetail(roomDetail) {
+    console.log(roomDetail)
+    if (roomDetail.image != null){
+        document.getElementById("divImageGroup2").style.display = 'none';
+        document.getElementById("divImageGroup1").style.display = 'unset';
+        document.getElementsByName('imageGroup1')[0].src = roomDetail.image;
+    } else {
+        document.getElementById("divImageGroup1").style.display = 'none';
+        document.getElementById("divImageGroup2").style.display = 'unset';
+    }
     document.getElementById("isGroup").value = true;
     document.getElementsByName("nameMessageGroup")[0].innerText = roomDetail.name;
     document.getElementsByName("nameMessageGroup")[1].innerText = roomDetail.name;

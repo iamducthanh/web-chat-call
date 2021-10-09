@@ -175,6 +175,7 @@ public class RoomApi {
         }
         roomGroupDetail.setUserInRooms(userInRoomDtos);
         roomGroupDetail.setCountOnline(countOnline);
+        roomGroupDetail.setImage(room.getImage());
         return roomGroupDetail;
     }
 

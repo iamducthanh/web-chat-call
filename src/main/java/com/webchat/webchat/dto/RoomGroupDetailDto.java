@@ -18,4 +18,5 @@ public class RoomGroupDetailDto {
     private UserDto user;
     private List<UserInRoomDto> userInRooms;
     private int countOnline;
+    private String image;
 }
