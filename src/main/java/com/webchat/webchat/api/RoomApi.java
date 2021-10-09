@@ -218,7 +218,6 @@ public class RoomApi {
 
         List<User> userList = userService.findByGroupUserId(userIds);
         userList.add(0, user);
-        System.out.println(userList.size());
 //        roomService.saveRoom(room);
 
         List<RoomDetail> roomDetails = new ArrayList<>();
@@ -239,17 +238,22 @@ public class RoomApi {
 //        messageService.saveMessage(message);
 
         List<String> userOnlines = new ArrayList<>();
-        for(User user2 : userList){
-            if(UsersOnline.usersOnline.get(user2.getUsername()) != null){
-                userOnlines.add(user2.getUsername());
+        List<String> imageGroup = new ArrayList<>();
+        for(int i=0;i<userList.size();i++){
+            if(i < 3){
+                imageGroup.add(userList.get(i).getImage());
+            }
+            if(UsersOnline.usersOnline.get(userList.get(i).getUsername()) != null){
+                userOnlines.add(userList.get(i).getUsername());
             }
         }
         RoomGroupPojo roomGroupPojo = new RoomGroupPojo();
         roomGroupPojo.setUserOnline(userOnlines);
         roomGroupPojo.setNameGroup(name);
-        roomGroupPojo.setImage(image);
-
-
+        roomGroupPojo.setImage(room.getImage());
+        roomGroupPojo.setImageGroup(imageGroup);
+        roomGroupPojo.setTime(message.getTimeChat());
+        roomGroupPojo.setRoomId(roomId);
         return roomGroupPojo;
     }
 }

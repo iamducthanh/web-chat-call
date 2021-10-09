@@ -179,7 +179,12 @@
                 let type = null;
                 if(img.length != 0){
                     imgName = uuid();
-                    type = img.substring(img.indexOf('/') + 1, img.indexOf(';'))
+                    type = img.substring(img.indexOf('/') + 1, img.indexOf(';'));
+                    let dataUpload = {
+                        message: "upload",
+                        content: img.substring(img.indexOf(',') + 1, img.length)
+                    }
+                    await uploadFileToGit2(dataUpload, imgName + '.' + type);
                 }
                 let data = {
                     users: JSON.stringify(addMember),
@@ -187,9 +192,8 @@
                     image: img.length != 0 ? imgName + '.' + type : ''
                 }
                 let dataOut = await callAjax('api/room/create-room-group', data, 'POST');
+                console.log(dataOut);
             }
-
-            console.log(img.length)
         }
     </script>
 </div>

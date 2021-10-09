@@ -536,64 +536,38 @@
                 message: "upload",
                 content: image.substring(image.indexOf(',') + 1, image.length)
             }
-            await fetch('https://api.github.com/repos/phonghotkgd2k1/image_public/contents/' + name + '.' + type, {
-                method: 'PUT',
-                headers: {
-                    "Authorization": TO2 + KEN2,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-                .then(response => response.json())
-                .then(out => {
-                    toastSuccess("Thành công", "Thay đổi thành công!");
-                    let avatarView = document.getElementsByClassName("avatarView");
-                    for (let i = 0; i < avatarView.length; i++) {
-                        avatarView[i].src = image;
-                    }
-                    $.ajax({
-                        url: 'user/update/image',
-                        data: {
-                            image: name + '.' + type
-                        },
-                        error: function () {
-                            console.log("error")
-                        },
-                        success: async function (data) {
 
-                        },
-                        type: 'PUT'
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            await uploadFileToGit2(data, name + '.' + type);
+
+            toastSuccess("Thành công", "Thay đổi thành công!");
+            let avatarView = document.getElementsByClassName("avatarView");
+            for (let i = 0; i < avatarView.length; i++) {
+                avatarView[i].src = image;
+            }
+            let data2 = {
+                image: name + '.' + type
+            }
+            await callAjax('user/update/image', data2, 'PUT')
         }
 
-        function updateUser(event) {
+        async function updateUser(event) {
             event.preventDefault();
             let formData = $("#updateUser").serializeArray();
             let user = {};
             for (let i = 0; i < formData.length; i++) {
                 user[formData[i].name] = formData[i].value;
             }
-            $.ajax({
-                url: 'user/update/profile',
-                data: user,
-                error: function () {
-                    console.log("error")
-                },
-                success: async function (data) {
-                    if (data.length != 0) {
-                        for (let i = 0; i < data.length; i++) {
-                            toastDanger("Lỗi", data[i].message);
-                        }
-                    } else {
-                        toastSuccess("Success", "Cập nhật thành công!")
-                    }
-                },
-                type: 'PUT'
-            });
+            let data = user;
+            let result = await callAjax('user/update/profile', data, 'PUT')
+
+            if (result.length != 0) {
+                for (let i = 0; i < result.length; i++) {
+                    toastDanger("Lỗi", result[i].message);
+                }
+            } else {
+                toastSuccess("Success", "Cập nhật thành công!")
+            }
+
         }
     </script>
 </div>

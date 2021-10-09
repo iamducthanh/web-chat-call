@@ -302,5 +302,22 @@ async function uploadFileToGit(dataFile, fileName) {
         });
 }
 
+async function uploadFileToGit2(dataFile, fileName) {
+    await fetch('https://api.github.com/repos/phonghotkgd2k1/image_public/contents/' + fileName, {
+        method: 'PUT',
+        headers: {
+            "Authorization": TO2 + KEN2,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataFile),
+    })
+        .then(response => response.json())
+        .then(out => {
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
 
 
