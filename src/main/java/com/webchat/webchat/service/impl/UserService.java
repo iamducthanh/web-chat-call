@@ -30,6 +30,12 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> findByGroupUserId(List<Integer> userIds) {
+        List<User> list = userRepo.findUserByGroupUserId(userIds);
+        return list.isEmpty() ? null : list;
+    }
+
+    @Override
     public User findByUsernameAndPassword(String username, String password) {
         List<User> list = userRepo.findUserByUsernameAndPassword(username, password);
         return list.isEmpty() ? null : list.get(0);

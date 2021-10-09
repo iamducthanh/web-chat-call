@@ -2,6 +2,7 @@ package com.webchat.webchat.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.RoomDetailDto;
 import com.webchat.webchat.dto.RoomGroupDetailDto;
 import com.webchat.webchat.dto.UserDto;
@@ -10,6 +11,7 @@ import com.webchat.webchat.entities.Message;
 import com.webchat.webchat.entities.Room;
 import com.webchat.webchat.entities.RoomDetail;
 import com.webchat.webchat.entities.User;
+import com.webchat.webchat.pojo.RoomGroupPojo;
 import com.webchat.webchat.service.IMessageService;
 import com.webchat.webchat.service.IRoomDetailService;
 import com.webchat.webchat.service.IRoomService;
@@ -22,9 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class RoomApi {
@@ -45,6 +45,9 @@ public class RoomApi {
 
     @Autowired
     private SystemUtil systemUtil;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @GetMapping("/api/room/message-direct")
     @ResponseBody
@@ -178,7 +181,6 @@ public class RoomApi {
     @PostMapping("/api/room/add-member")
     @ResponseBody
     public String addMember(String roomId, String members) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         List<String> memberNews = new ArrayList<>();
         memberNews = Arrays.asList(objectMapper.readValue(members, String[].class));
         Room room = new Room();
@@ -204,5 +206,50 @@ public class RoomApi {
         RoomDetail roomDetail = roomDetailService.findRoomDetailByUserAndRoom(Integer.parseInt(userId), roomId);
         roomDetailService.deleteRoomDetail(roomDetail);
         return "";
+    }
+
+    @PostMapping("/api/room/create-room-group")
+    @ResponseBody
+    public RoomGroupPojo createRoomGroup(String users, String name, String image) throws JsonProcessingException {
+        List<Integer> userIds = Arrays.asList(objectMapper.readValue(users, Integer[].class));
+        User user = (User) sessionUtil.getObject("USER");
+        String roomId = String.valueOf(UUID.randomUUID());
+        Room room = new Room(roomId, image, name, "");
+
+        List<User> userList = userService.findByGroupUserId(userIds);
+        userList.add(0, user);
+        System.out.println(userList.size());
+//        roomService.saveRoom(room);
+
+        List<RoomDetail> roomDetails = new ArrayList<>();
+        for(User user1 : userList){
+            roomDetails.add(new RoomDetail(user1, room));
+        }
+//        roomDetailService.saveRoomDetail(roomDetails);
+
+        Message message = new Message();
+        message.setRoom(room);
+        message.setType("CREATE");
+        message.setTime(new Date());
+        message.setContent("Bắt đầu trò chuyện");
+        message.setUser(user);
+        message.setId(String.valueOf(UUID.randomUUID()));
+        message.setStatus("CREATE");
+
+//        messageService.saveMessage(message);
+
+        List<String> userOnlines = new ArrayList<>();
+        for(User user2 : userList){
+            if(UsersOnline.usersOnline.get(user2.getUsername()) != null){
+                userOnlines.add(user2.getUsername());
+            }
+        }
+        RoomGroupPojo roomGroupPojo = new RoomGroupPojo();
+        roomGroupPojo.setUserOnline(userOnlines);
+        roomGroupPojo.setNameGroup(name);
+        roomGroupPojo.setImage(image);
+
+
+        return roomGroupPojo;
     }
 }

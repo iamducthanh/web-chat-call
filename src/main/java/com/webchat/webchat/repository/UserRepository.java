@@ -14,6 +14,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select o from User o where o.id = ?1")
     List<User> findUserById(Integer id);
 
+    @Query("select o from User o where o.id in ?1")
+    List<User> findUserByGroupUserId(List<Integer> userIds);
+
     @Query("select o from User o where o.username = ?1 and o.password = ?2")
     List<User> findUserByUsernameAndPassword(String username, String password);
 

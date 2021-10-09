@@ -106,10 +106,10 @@
                                 <form autocomplete="off">
                                     <div class="row gy-6">
                                         <div class="col-12">
-                                            <div class="form-floating">
+                                            <div class="">
                                                 <input type="text" class="form-control" id="floatingInput"
-                                                       placeholder="Enter a chat name">
-                                                <label for="floatingInput">Tên nhóm</label>
+                                                       placeholder="Tên nhóm">
+<!--                                                <label for="floatingInput">Tên nhóm</label>-->
                                             </div>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
 
         <!-- Button -->
         <div class="container mt-n4 mb-8 position-relative">
-            <button class="btn btn-lg btn-primary w-100 d-flex align-items-center" type="button">
+            <button onclick="createRoomGroup()" class="btn btn-lg btn-primary w-100 d-flex align-items-center" type="button">
                 Bắt đầu chat
                 <span class="icon ms-auto">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -156,6 +156,40 @@
             let data = await toBase64(file);
             document.getElementById("image-group-review").src = data;
             document.getElementById("data-group-img").value = data;
+        }
+
+        async function createRoomGroup(){
+            let checkBoxAddMemberCreateChat = document.getElementsByName("checkBoxAddMemberCreateChat");
+            let nameGroup = document.getElementById("floatingInput").value;
+            let img = document.getElementById("data-group-img").value;
+            let addMember = [];
+            if (checkBoxAddMemberCreateChat != null) {
+                for (let i = 0; i < checkBoxAddMemberCreateChat.length; i++) {
+                    if (checkBoxAddMemberCreateChat[i].checked) {
+                        addMember.push(checkBoxAddMemberCreateChat[i].value)
+                    }
+                }
+            }
+            if(addMember.length < 2){
+                toastDanger("Lỗi", "Bạn phải chọn tối thiểu 2 thành viên!");
+            } else if(nameGroup.trim().length == 0){
+                toastDanger("Lỗi", "Bạn phải nhập tên nhóm!")
+            } else {
+                let imgName = null;
+                let type = null;
+                if(img.length != 0){
+                    imgName = uuid();
+                    type = img.substring(img.indexOf('/') + 1, img.indexOf(';'))
+                }
+                let data = {
+                    users: JSON.stringify(addMember),
+                    name: nameGroup,
+                    image: img.length != 0 ? imgName + '.' + type : ''
+                }
+                let dataOut = await callAjax('api/room/create-room-group', data, 'POST');
+            }
+
+            console.log(img.length)
         }
     </script>
 </div>

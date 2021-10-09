@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 02, 2021 lúc 05:57 AM
+-- Thời gian đã tạo: Th10 09, 2021 lúc 03:09 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -41,7 +41,26 @@ INSERT INTO `attach` (`id`, `messageId`, `filename`) VALUES
 (184, '6d22daba-fd7a-4989-9f56-c4ee5f30d399', '72a4e33e-d3e0-4006-a170-43b11f3c1bfa.jpg'),
 (185, 'fd3a5b06-8ef3-4bbb-b3e9-eaa8f04a6e06', 'b4e6e1ed-23a4-4373-9370-e5a54b6631ad.jpg'),
 (186, 'fd3a5b06-8ef3-4bbb-b3e9-eaa8f04a6e06', '8001bb44-1d20-4735-9e38-acce488928c2.jpg'),
-(187, 'fd3a5b06-8ef3-4bbb-b3e9-eaa8f04a6e06', '2513751d-18a7-40d3-ab75-57521905fd97.jpg');
+(187, 'fd3a5b06-8ef3-4bbb-b3e9-eaa8f04a6e06', '2513751d-18a7-40d3-ab75-57521905fd97.jpg'),
+(188, 'eb191a79-8a5b-405b-8196-9ba596a18f8f', '90ef8bc9-39d8-44d8-8e67-113ba20275b0.jpg'),
+(189, 'eb191a79-8a5b-405b-8196-9ba596a18f8f', '49586bec-5bcd-499e-afe0-79fa39330d4c.jpg'),
+(190, 'eb191a79-8a5b-405b-8196-9ba596a18f8f', '6386acb4-5e9f-4a69-89df-8649b4d0b092.jpg'),
+(191, 'd61aeca2-4b1d-4972-9f40-b73bf80ac63a', '1ff938d4-668b-4244-bb71-d6a580a2886b.png'),
+(192, '567ff970-f9be-436a-bf57-64b405d80183', '63a636f2-b414-4e63-95bc-69357af21e4c.png'),
+(193, 'b3bc206f-9183-4c1e-8096-bb93da5adae1', '1d945dfd-b1d8-47ed-96e0-d10a3caedae1.jpg'),
+(194, 'b3bc206f-9183-4c1e-8096-bb93da5adae1', '4197f9de-5881-4e6d-bf46-af9315bba1e7.jpg'),
+(195, 'db8c04a4-24b0-4369-a9e3-e15d517f9647', '213aaf1e-8cf5-4566-b8b3-eadc91c2a6bf.gif'),
+(196, 'db8c04a4-24b0-4369-a9e3-e15d517f9647', '874da73f-f29e-4143-bb4d-cb862e337a76.gif'),
+(197, 'b691f3be-d944-45d7-822d-8c1c4d693c73', '4aec1c8f-f7cf-47b4-90ca-767706d44293.gif'),
+(198, '3da67600-c363-4749-8175-a1f681a083be', '52ba28b1-8eb4-40be-8161-801e61a7c1ab.gif'),
+(199, '7d69905c-e321-4216-8420-f2c1479f0af0', '071ad469-f8ca-4240-8b13-6773f9a92cde.gif'),
+(200, '7d69905c-e321-4216-8420-f2c1479f0af0', '81876c2b-ae9a-4a0b-bc6b-6a353c19ccc6.jpg'),
+(201, '6eb29d48-44b6-4a3a-9e54-ed5b2ff18133', 'e2c5015c-e71a-499d-94c5-cd4ed52f65d4.jpg'),
+(202, '6eb29d48-44b6-4a3a-9e54-ed5b2ff18133', '0c6f355b-6bab-4ec4-93b3-3e807fc0d539.jpg'),
+(203, '758ed9b1-6886-4fa0-bc14-4f740921b199', 'b86d26f1-d7a7-4136-8bf2-260977b2049d.jfif'),
+(204, '758ed9b1-6886-4fa0-bc14-4f740921b199', '5ebf5214-f212-4767-b3b6-52450d676ce4.jpg'),
+(205, '758ed9b1-6886-4fa0-bc14-4f740921b199', '22b1c2fc-9297-421a-b95e-b8bea04bc69e.gif'),
+(206, 'ca6fca21-83b2-41e5-8aca-2f41686a1d74', '7258ca26-48b3-4e04-8d53-1904306ac0ad.jpg');
 
 -- --------------------------------------------------------
 
@@ -66,7 +85,49 @@ INSERT INTO `friend` (`id`, `userId`, `friendId`, `status`, `time`) VALUES
 (2, 3, 2, 'FRIEND', '2021-09-22 05:28:00'),
 (3, 1, 2, 'WAIT', '2021-10-02 10:22:52'),
 (4, 2, 4, 'FRIEND', '2021-10-01 22:07:24'),
-(28, 2, 5, 'WAIT', '2021-10-01 21:58:55');
+(28, 2, 5, 'WAIT', '2021-10-01 21:58:55'),
+(29, 6, 2, 'WAIT', '2021-10-02 14:40:33');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `location`
+--
+
+CREATE TABLE `location` (
+                            `id` int(11) NOT NULL,
+                            `userId` int(11) DEFAULT NULL,
+                            `ip` varchar(20) DEFAULT NULL,
+                            `longitude` varchar(20) DEFAULT NULL,
+                            `latitude` varchar(20) DEFAULT NULL,
+                            `address` varchar(50) DEFAULT NULL,
+                            `time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `location`
+--
+
+INSERT INTO `location` (`id`, `userId`, `ip`, `longitude`, `latitude`, `address`, `time`) VALUES
+(2, 2, '113.185.42.90', '105.81675720214844', '21.038360595703125', 'Chrome Hanoi, Vietnam', '2021-10-04 18:04:56'),
+(3, 1, '113.185.42.90', '105.81675720214844', '21.038360595703125', 'Chrome Hanoi, Vietnam', '2021-10-04 21:04:56'),
+(4, 2, '113.185.44.164', '105.81139373779297', '21.01689910888672', 'Chrome Hanoi, Vietnam', '2021-10-05 09:15:24'),
+(5, 2, '14.175.65.125', '106.16622924804688', '20.44470977783203', 'Chrome Nam Định, Vietnam', '2021-10-05 20:02:12'),
+(6, 2, '113.185.42.39', '105.82472229003906', '21.034820556640625', 'Chrome Hanoi, Vietnam', '2021-10-06 09:27:46'),
+(7, 3, '113.185.42.39', '105.82472229003906', '21.034820556640625', 'Chrome Hanoi, Vietnam', '2021-10-06 09:29:30'),
+(8, 1, '113.185.42.39', '105.82472229003906', '21.034820556640625', 'Chrome Hanoi, Vietnam', '2021-10-06 10:36:46'),
+(9, 2, '113.185.43.219', '105.87056732177734', '21.04545021057129', 'Chrome Hanoi, Vietnam', '2021-10-06 17:06:25'),
+(10, 1, '113.185.43.219', '105.87056732177734', '21.04545021057129', 'Chrome Hanoi, Vietnam', '2021-10-06 17:09:18'),
+(11, 2, '113.185.47.89', '105.8182601928711', '21.033470153808594', 'Chrome Hanoi, Vietnam', '2021-10-06 21:41:49'),
+(12, 2, '113.185.47.204', '105.81511688232422', '21.020580291748047', 'Safari Hanoi, Vietnam', '2021-10-07 15:09:43'),
+(13, 3, '113.185.47.204', '105.81511688232422', '21.020580291748047', 'Chrome Hanoi, Vietnam', '2021-10-07 15:32:46'),
+(14, 5, '113.185.47.204', '105.81511688232422', '21.020580291748047', 'Chrome Hanoi, Vietnam', '2021-10-07 15:33:16'),
+(15, 4, '113.185.47.204', '105.81511688232422', '21.020580291748047', 'Chrome Hanoi, Vietnam', '2021-10-07 15:33:39'),
+(16, 2, '113.185.47.63', '105.79093933105469', '21.047460556030273', 'Chrome Hanoi, Vietnam', '2021-10-07 21:52:53'),
+(17, 2, '113.185.40.176', '105.79161071777344', '21.03013038635254', 'Chrome Hanoi, Vietnam', '2021-10-08 10:40:17'),
+(18, 2, '113.185.40.81', '105.79093933105469', '21.047460556030273', 'Chrome Hanoi, Vietnam', '2021-10-08 20:25:19'),
+(19, 4, '113.185.40.81', '105.79093933105469', '21.047460556030273', 'Chrome Hanoi, Vietnam', '2021-10-08 21:03:34'),
+(20, 1, '113.185.40.81', '105.79093933105469', '21.047460556030273', 'Chrome Hanoi, Vietnam', '2021-10-08 21:04:11');
 
 -- --------------------------------------------------------
 
@@ -81,7 +142,7 @@ CREATE TABLE `message` (
                            `type` varchar(10) DEFAULT NULL,
                            `time` datetime DEFAULT NULL,
                            `content` text DEFAULT NULL,
-                           `status` varchar(10) NOT NULL
+                           `status` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -89,39 +150,100 @@ CREATE TABLE `message` (
 --
 
 INSERT INTO `message` (`id`, `userId`, `roomId`, `type`, `time`, `content`, `status`) VALUES
+('', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CREATE', '2021-10-02 15:00:04', 'Bắt đầu trò chuyện', 'CREATE'),
 ('00619e81-62a4-4164-af19-df888f3a6a43', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CREATE', '2021-09-28 16:34:24', 'Bắt đầu trò chuyện', 'CREATE'),
+('0111c4ed-f042-4b2a-ad4c-9999e735a9d6', 4, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 'CHAT', '2021-10-08 21:03:55', 'd', 'READ'),
+('02f6f496-98d0-47e3-a049-d1be13a803b1', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:44:00', 'ek ku', 'READ'),
+('09f80866-b3b1-4321-9ea4-409834ec9526', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-03 16:30:30', 'Chào lại phát', 'READ'),
 ('0b82cd99-71d3-4577-a3d7-dda78ffbd20e', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:48', 'wwwwwwwwww', 'READ'),
+('0d94c7f9-b360-4a83-b9a4-1880979065bc', 3, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:32:13', 'Alo alo', 'SEND'),
 ('11b94c20-3250-433d-8d1d-592b9aceb893', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 16:37:31', 'chào', 'READ'),
 ('181388c5-d852-47f3-83b8-008dbba95202', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 10:01:22', 'sao', 'READ'),
+('192ce162-e213-4c59-8150-d0b7ba18749d', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:38:13', 'alo', 'READ'),
+('19f96a77-a99f-4be5-859d-3fe6e626c223', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:26:10', 'eee', 'READ'),
+('1a5133cf-3a1c-479e-887e-f3958e1116c2', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:37:00', 'alo', 'READ'),
+('1c2d7b85-5896-4194-b517-5b4edad50c11', 3, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:58:06', 'Đâu hết r', 'SEND'),
+('230fc39d-c763-422a-b9b6-46c60f0447c6', 3, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'CHAT', '2021-10-06 13:28:13', 'cmm', 'READ'),
 ('36bcfd18-3acf-4967-a13e-ad2632bddfa1', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CREATE', '2021-09-30 21:06:04', 'Bắt đầu trò chuyện', 'CREATE'),
+('3babe235-bc73-436d-83f5-c1db96e47718', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:44:29', 'sao', 'READ'),
+('3c3e2f47-44cc-4775-aadc-518b96aa73cb', 6, 'c5318671-74bf-4c6c-bb24-71ba67de3cef', 'CREATE', '2021-10-02 14:40:59', 'Bắt đầu trò chuyện', 'CREATE'),
+('3da67600-c363-4749-8175-a1f681a083be', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'ATTACK', '2021-10-04 21:28:07', 'f', 'SEND'),
+('3ec64775-68fa-4305-b924-22c40a4c3db0', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:25:26', 'lddddddd', 'READ'),
 ('44abf221-0890-403d-aede-ae3c1e4e7fb2', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:46', 'wwwwwwwww', 'SEND'),
+('477aa761-166e-40b3-8635-7e1c407c1aca', 3, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:32:49', 'Chào ae', 'READ'),
+('4847c289-34b7-4ef1-8e71-5ad2f1cf9d18', 2, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:55:12', 'd', 'SEND'),
+('4934c438-d978-4dfb-a04f-3c5f0b364b2e', 3, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:07:07', 'Uk', 'READ'),
 ('4af86928-e475-42d3-92d8-bc0271f3c259', 4, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 'CREATE', '2021-09-28 16:53:13', 'Bắt đầu trò chuyện', 'CREATE'),
 ('4cff46fa-14b2-48cf-9c55-0ce42e316f62', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:37', 'aaa', 'READ'),
+('4e96f411-57a6-4b2f-8390-3543c30565fa', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CHAT', '2021-10-05 11:07:45', 'chafo', 'SEND'),
+('5339851e-b814-4f96-8857-cb3845493553', 2, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:34:03', 'q', 'SEND'),
+('567ff970-f9be-436a-bf57-64b405d80183', 2, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'ATTACK', '2021-10-04 13:00:31', 'Hello', 'READ'),
+('5b0ebe63-e609-4e49-a9e7-6f6bb9a83e43', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 10:37:17', 'alo 4', 'READ'),
 ('5de48281-a67c-4253-8730-12e7ac3f5443', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:55', 'dmmmmmmm', 'READ'),
+('611a42bb-4d05-40f3-b556-61dc7ef36ba6', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-02 19:21:59', 'oke', 'READ'),
 ('63af11a3-fbb1-455b-98a7-6c1836bbc64c', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:40', 'aaaaaaaa', 'READ'),
 ('64f7a89c-5f4c-426b-9d21-21e7432861c1', 2, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'CREATE', '2021-09-29 10:31:12', 'Bắt đầu trò chuyện', 'CREATE'),
+('658913c2-56db-444c-bebf-f034e80f0c7b', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 10:37:10', 'alo 2', 'READ'),
 ('6648ab5b-82b8-4e8f-baba-3f4bb9e5d89f', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:39', 'aaaaaaaaaa', 'READ'),
+('6ba9bddc-2657-42a5-bcfb-0ce80c982c49', 3, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 'CHAT', '2021-10-02 19:23:03', 'yep', 'SEND'),
 ('6d22daba-fd7a-4989-9f56-c4ee5f30d399', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'ATTACK', '2021-09-27 22:09:33', 'đẹp không', 'SEND'),
+('6d96b688-ba7f-4508-a133-a561289f7389', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:34:27', 'e', 'SEND'),
+('6e37ccc2-aa45-4750-9f7f-b302f93115f7', 3, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'CHAT', '2021-10-06 13:41:10', 'đâu r', 'READ'),
+('6eb29d48-44b6-4a3a-9e54-ed5b2ff18133', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'ATTACK', '2021-10-06 17:09:19', 'image', 'SEND'),
 ('6fca8ee5-4bf0-466d-ae31-f8690cd8d024', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:13', 'cũng đc', 'READ'),
 ('70a24114-3050-4b7c-9039-876ea4a2b300', 4, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 'CHAT', '2021-09-28 16:53:17', 'chào', 'READ'),
 ('713ca764-ccea-4708-91a8-2dd33b956286', 3, '8ea718ec-7bae-4fb5-82b8-6d13015c9c20', 'CREATE', '2021-09-29 17:08:00', 'Bắt đầu trò chuyện', 'CREATE'),
 ('7208acaa-01a6-4826-bdf7-ffcc684c5a0b', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 16:34:35', 'chào', 'READ'),
+('758ed9b1-6886-4fa0-bc14-4f740921b199', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'ATTACK', '2021-10-07 22:19:06', 'dd', 'SEND'),
+('7d624b48-b499-4642-8906-fabb0bc468c0', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:25:14', 'loo', 'READ'),
+('7d69905c-e321-4216-8420-f2c1479f0af0', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'ATTACK', '2021-10-04 21:33:06', 'ccc', 'READ'),
 ('7fd1af30-a1be-4b1f-acf7-d4164cd82d8b', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 22:03:47', 'đâu r', 'READ'),
+('89f8b808-5b47-44a2-a45a-c963554cdb30', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:22:32', 'chafo', 'READ'),
+('8cb416ca-cc0b-47b4-8903-8d4d299cf199', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 10:37:14', 'alo 3', 'READ'),
+('959bfa4d-8b27-4b4c-a483-fdfa101de8fe', 2, '02e06020-4cd3-4fba-9e54-59e6f33e285d', 'CREATE', '2021-10-08 21:57:14', 'Bắt đầu trò chuyện', 'CREATE'),
+('96e059e4-99f7-4e3a-905a-0e8a9c0ce933', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-06 13:35:41', 'hussss', 'SEND'),
+('96f6a03f-c4c7-4c93-aff6-8ace0ce5d73b', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CHAT', '2021-10-05 10:59:58', 'chafo', 'SEND'),
 ('983165dd-adb3-40d2-914a-f30504049e8f', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-27 22:11:41', 'hả', 'READ'),
+('99350a6a-3102-4e3c-a06a-2c47dd3a7786', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-02 19:21:56', 'yep', 'READ'),
 ('99740bab-7f87-47d8-91ff-b4f7f8997d35', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 16:37:10', 'chào lại', 'READ'),
+('998a05c8-4e28-4b5a-bc83-1eaf32b978bd', 3, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'CHAT', '2021-10-06 13:41:32', 'dddd', 'READ'),
 ('9b6afc92-d4f8-47e3-a4d2-8a4bc0afed08', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CREATE', '2021-09-27 22:00:58', 'Bắt đầu trò chuyện', 'CREATE'),
+('9c47af33-d593-404f-b72c-bbe6a7d2638c', 3, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:57:41', 'Hú', 'SEND'),
 ('a0f1af3c-1fa3-43db-8ed8-409cd77e8d6e', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:42', 'dddddđ', 'READ'),
 ('a31b002c-934d-406c-bbfa-e1ebe34e7dbc', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:58:02', 'oke luon', 'READ'),
+('af7d4a88-f99b-4497-bf77-abf15201f512', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-03 15:35:15', 'chào', 'READ'),
+('b31797eb-588e-436b-a25d-fa8821d971e3', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-06 13:38:26', 'đc ko', 'SEND'),
+('b3bc206f-9183-4c1e-8096-bb93da5adae1', 2, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'ATTACK', '2021-10-04 21:07:32', 'oke', 'READ'),
 ('b572f14d-bcf8-4620-9f4a-041fd5895d2d', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:57:56', 'teest nhiefu leen', 'READ'),
+('b691f3be-d944-45d7-822d-8c1c4d693c73', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'ATTACK', '2021-10-04 21:20:29', 'aaa', 'SEND'),
 ('b6bdbd15-701c-4fb4-8ebb-b6509f517e69', 3, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 'CREATE', '2021-09-29 17:03:30', 'Bắt đầu trò chuyện', 'CREATE'),
+('ba0b27a7-c0c5-443e-9822-3ebd43fd9245', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-02 15:26:49', 'chào ae', 'SEND'),
+('bbf11795-6a99-424f-894f-f68234be99db', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:23:04', 'ddm', 'READ'),
+('bf32d914-4302-4217-be5c-ed4e51d3bded', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:37:50', 'sao', 'READ'),
 ('bfb2b436-b71d-4201-9e6e-180fb3843dd4', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-27 22:09:05', 'dd', 'SEND'),
+('c0640c1a-d12a-4ade-8eb4-ee67c4424f19', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 10:37:06', 'alo 1', 'READ'),
+('c653cb8e-33b7-4530-a7ee-0089540cdc4b', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-02 19:20:44', 'hú', 'READ'),
+('ca6fca21-83b2-41e5-8aca-2f41686a1d74', 4, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 'ATTACK', '2021-10-08 21:03:42', 'okee', 'READ'),
+('caa72106-e138-4286-b5e4-ad7665f1b800', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-04 12:59:09', 'Ek ku', 'READ'),
+('ce2f701a-59d4-4602-b4dc-8f8e823505a8', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-06 13:37:10', 'hú hú', 'SEND'),
 ('cfd96605-43b3-455c-864b-96bb598c6395', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:59:36', 'aaaaaaaaaaa', 'READ'),
-('d0b5899e-6afc-4060-8e2b-bd2e79afdf18', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 21:11:37', 'chào bro', 'SEND'),
+('d0b5899e-6afc-4060-8e2b-bd2e79afdf18', 1, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-09-28 21:11:37', 'chào bro', 'READ'),
 ('d5a5dbf0-d1d7-4360-90e2-c053a800d1ab', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CHAT', '2021-10-01 21:59:48', 'Chào', 'SEND'),
+('d61aeca2-4b1d-4972-9f40-b73bf80ac63a', 2, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'ATTACK', '2021-10-04 12:59:43', 'Chào bro', 'READ'),
+('db8c04a4-24b0-4369-a9e3-e15d517f9647', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'ATTACK', '2021-10-04 21:13:12', 'hus', 'READ'),
+('dbdb02a7-bc8c-4e8b-9a56-b72cf8d54919', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-06 13:22:36', 'dau', 'READ'),
+('dcefc1b9-b25b-4475-aa82-f5246e9f231c', 2, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:55:27', 'q', 'SEND'),
+('df9d4602-011b-449f-93f4-4b81eabee1e3', 3, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 'CHAT', '2021-10-06 13:47:07', 'alo alo', 'READ'),
+('ea23d44f-1478-4e94-a89c-9f1cc6e08855', 3, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-04 21:05:42', 'Chào', 'READ'),
 ('ea8b14af-968d-45bb-8d04-3c16be91fb4b', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 21:58:06', 'nhan de', 'READ'),
+('eb191a79-8a5b-405b-8196-9ba596a18f8f', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'ATTACK', '2021-10-02 19:21:35', 'chào', 'READ'),
 ('ed20c3fd-e8a2-406e-aa8b-88bb2c5392df', 4, '91467c30-afd4-47e4-98c7-a27c6ca5ce2d', 'CREATE', '2021-09-28 16:42:57', 'Bắt đầu trò chuyện', 'CREATE'),
+('ed444569-3883-47ae-ae1f-425a029ae2fc', 2, '524f7546-9984-4e44-906f-e15c492d3c76', 'CHAT', '2021-10-04 21:57:54', 'ds', 'SEND'),
 ('f463b22d-322a-4586-8ff7-ad35dcfafd9a', 3, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'CHAT', '2021-09-28 22:03:28', 'aloooo', 'READ'),
+('f6059961-3955-47dc-bcf8-3ee2152e8c22', 2, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-07 17:22:20', 'ồ', 'SEND'),
+('f87c7a1c-03b1-4271-ac4d-d3fe3585fa5c', 2, '19f4723a-0c86-4da4-940b-df3c32280f57', 'CHAT', '2021-10-03 16:10:50', 'chào phát nữa', 'READ'),
 ('fd3a5b06-8ef3-4bbb-b3e9-eaa8f04a6e06', 1, '5c3b7026-3856-4d86-8630-ddedcc1ea5c7', 'ATTACK', '2021-09-28 21:58:30', 'phim phim', 'READ'),
+('fde7bc7b-2f01-4ac4-9342-9590740d911c', 1, '91467c30-afd4-47e4-98c7-a27c6ca52608', 'CHAT', '2021-10-08 21:04:29', 'sao', 'SEND'),
 ('fee43325-3d32-4f55-97c9-39bd80143659', 4, '91467c30-afd4-47e4-98c7-a27c6ca5ce2d', 'CHAT', '2021-09-28 16:53:03', 'chào', 'READ');
 
 -- --------------------------------------------------------
@@ -146,8 +268,8 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`id`, `userId`, `title`, `image`, `content`, `status`, `type`, `time`) VALUES
-(1, 2, 'Đặng Tiến Quang', 'avt.png', 'Đặng Tiến Quang đã chấp nhận lời mời kết bạn.', 'ON', 'AGREE', '2021-10-02 05:37:00'),
-(2, 1, 'Nguyễn Đức Trung', 'avt.png', 'Nguyễn Đức Trung đã chấp nhận lời mời kết bạn.', 'ON', 'AGREE', '2021-10-02 10:56:42');
+(1, 2, 'Đặng Tiến Quang', 'avt.png', 'Đặng Tiến Quang đã chấp nhận lời mời kết bạn.', 'OFF', 'AGREE', '2021-10-02 05:37:00'),
+(2, 1, 'Nguyễn Đức Trung', 'avt.png', 'Nguyễn Đức Trung đã chấp nhận lời mời kết bạn.', 'OFF', 'AGREE', '2021-10-02 10:56:42');
 
 -- --------------------------------------------------------
 
@@ -157,7 +279,7 @@ INSERT INTO `notification` (`id`, `userId`, `title`, `image`, `content`, `status
 
 CREATE TABLE `room` (
                         `id` varchar(50) NOT NULL,
-                        `groupchat` bit(1) DEFAULT NULL,
+                        `image` varchar(50) DEFAULT NULL,
                         `name` varchar(100) NOT NULL,
                         `username` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -166,15 +288,18 @@ CREATE TABLE `room` (
 -- Đang đổ dữ liệu cho bảng `room`
 --
 
-INSERT INTO `room` (`id`, `groupchat`, `name`, `username`) VALUES
-('19f4723a-0c86-4da4-940b-df3c32280f57', b'0', '', ''),
-('524f7546-9984-4e44-906f-e15c492d3c76', b'0', '', ''),
-('5c3b7026-3856-4d86-8630-ddedcc1ea5c7', b'0', '', ''),
-('8ea718ec-7bae-4fb5-82b8-6d13015c9c20', b'0', '', 'quang'),
-('91467c30-afd4-47e4-98c7-a27c6ca5ce2d', b'0', '', ''),
-('c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', b'0', '', 'quang'),
-('e00cece0-d368-4a3f-8bc9-e58952859afe', b'0', '', 'trung'),
-('fae804e8-8aa4-4583-8f25-c170da39c0d9', b'0', '', '');
+INSERT INTO `room` (`id`, `image`, `name`, `username`) VALUES
+('02e06020-4cd3-4fba-9e54-59e6f33e285d', '', '', 'trung'),
+('19f4723a-0c86-4da4-940b-df3c32280f57', '', '', ''),
+('524f7546-9984-4e44-906f-e15c492d3c76', '', '', ''),
+('5c3b7026-3856-4d86-8630-ddedcc1ea5c7', '', '', ''),
+('8ea718ec-7bae-4fb5-82b8-6d13015c9c20', '', '', 'quang'),
+('91467c30-afd4-47e4-98c7-a27c6ca52608', '57f255c6-83b1-4539-9fb4-c5a67584e990.jpg', 'Nhóm test', ''),
+('91467c30-afd4-47e4-98c7-a27c6ca5ce2d', '', '', ''),
+('c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', '', '', ''),
+('c5318671-74bf-4c6c-bb24-71ba67de3cef', '', '', 'huyhuy'),
+('e00cece0-d368-4a3f-8bc9-e58952859afe', '', '', ''),
+('fae804e8-8aa4-4583-8f25-c170da39c0d9', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -203,12 +328,18 @@ INSERT INTO `roomdetail` (`id`, `roomId`, `userId`) VALUES
 (46, 'fae804e8-8aa4-4583-8f25-c170da39c0d9', 2),
 (47, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 2),
 (48, 'e00cece0-d368-4a3f-8bc9-e58952859afe', 3),
-(49, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 3),
-(50, 'c0f2973a-6acb-41b5-8ee7-1079bad0d9dd', 2),
 (51, '8ea718ec-7bae-4fb5-82b8-6d13015c9c20', 3),
 (52, '8ea718ec-7bae-4fb5-82b8-6d13015c9c20', 4),
 (53, '524f7546-9984-4e44-906f-e15c492d3c76', 2),
-(54, '524f7546-9984-4e44-906f-e15c492d3c76', 5);
+(54, '524f7546-9984-4e44-906f-e15c492d3c76', 5),
+(55, 'c5318671-74bf-4c6c-bb24-71ba67de3cef', 6),
+(56, 'c5318671-74bf-4c6c-bb24-71ba67de3cef', 2),
+(57, '91467c30-afd4-47e4-98c7-a27c6ca52608', 1),
+(58, '91467c30-afd4-47e4-98c7-a27c6ca52608', 2),
+(67, '91467c30-afd4-47e4-98c7-a27c6ca52608', 4),
+(68, '91467c30-afd4-47e4-98c7-a27c6ca52608', 3),
+(69, '02e06020-4cd3-4fba-9e54-59e6f33e285d', 2),
+(70, '02e06020-4cd3-4fba-9e54-59e6f33e285d', 6);
 
 -- --------------------------------------------------------
 
@@ -237,11 +368,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `firstname`, `lastname`, `email`, `password`, `phone`, `image`, `birthdate`, `gender`, `role`, `description`, `lastonline`) VALUES
-(1, 'admin', 'Thành', 'Nguyễn Đức', 'admin@gmail.com', '$2a$10$OHafDhpuGk9SQvtAPqnJK.cayB5/VgV3GbfXA6sriEg8wYFfc.Zuu', '0944485574', '0bd8982d-1561-4432-9fae-a4f4dac91b20.gif', '2005-06-17', b'1', 'ROLE_ADMIN', 'Hello Iam Duc Thanh', '2021-10-02 10:57:22'),
-(2, 'trung', 'Trung', 'Nguyễn Đức', 'trung@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-08-01', b'1', 'ROLE_ADMIN', '', '2021-10-02 10:57:25'),
-(3, 'quang', 'Quang', 'Đặng Tiến', 'quang@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-07-12', b'1', 'ROLE_ADMIN', '', '2021-09-30 17:18:50'),
-(4, 'fpoly', 'Nguyễn', 'Duy', 'ducthanh@gmail.com', '$2a$10$KBp6/YrR8loiY57gfk2JjeNZwR7v5JDGNHLH3AhG/CNnXQMLvOwfe', '', 'avt.png', '2007-06-12', b'1', 'ROLE_USER', '', '2021-10-01 22:07:32'),
-(5, 'fpoly1', 'Trung', 'Nguyễn', 'ducthanh260801@gmail.com', '$2a$10$sl5C66UwdHFNd0XNAVA7fOD8FJVoeOT8MohshjvgAr5gs2FXnc3HS', '', 'avt.png', '2021-09-07', b'1', 'ROLE_USER', '', '2021-10-01 22:08:26');
+(1, 'admin', 'Thành', 'Nguyễn Đức', 'admin@gmail.com', '$2a$10$OHafDhpuGk9SQvtAPqnJK.cayB5/VgV3GbfXA6sriEg8wYFfc.Zuu', '0944485574', '0bd8982d-1561-4432-9fae-a4f4dac91b20.gif', '2005-06-17', b'1', 'ROLE_ADMIN', 'Hello Iam Duc Thanh', '2021-10-08 21:04:34'),
+(2, 'trung', 'Trung', 'Nguyễn Đức', 'trung@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-08-01', b'1', 'ROLE_ADMIN', '', '2021-10-08 22:12:43'),
+(3, 'quang', 'Quang', 'Đặng Tiến', 'quang@gmail.com', '$2a$10$6LZucgkwCfXT8c0UWxp4tOYY1dH0frALxeFW4GnEJJwqU0f5epDgC', '', 'avt.png', '2021-07-12', b'1', 'ROLE_ADMIN', '', '2021-10-07 15:33:03'),
+(4, 'fpoly', 'Nguyễn', 'Duy', 'ducthanh@gmail.com', '$2a$10$KBp6/YrR8loiY57gfk2JjeNZwR7v5JDGNHLH3AhG/CNnXQMLvOwfe', '', 'avt.png', '2007-06-12', b'1', 'ROLE_USER', '', '2021-10-08 21:04:02'),
+(5, 'fpoly1', 'Trung', 'Nguyễn', 'ducthanh26@gmail.com', '$2a$10$sl5C66UwdHFNd0XNAVA7fOD8FJVoeOT8MohshjvgAr5gs2FXnc3HS', '', 'avt.png', '2021-09-07', b'1', 'ROLE_USER', '', '2021-10-07 15:33:21'),
+(6, 'huyhuy', 'Đức Huy', 'Trương', 'ducthanh260801@gmail.com', '$2a$10$2OAixjfdtSzW6wPPL9EDC.sk.usrKmgT9GyJdia129aVcU.sJGYpK', '', 'avt.png', '2010-06-09', b'0', 'ROLE_USER', '', '2021-10-02 14:40:19');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -261,6 +393,13 @@ ALTER TABLE `friend`
     ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`),
   ADD KEY `friendId` (`friendId`);
+
+--
+-- Chỉ mục cho bảng `location`
+--
+ALTER TABLE `location`
+    ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`);
 
 --
 -- Chỉ mục cho bảng `message`
@@ -305,13 +444,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `attach`
 --
 ALTER TABLE `attach`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT cho bảng `friend`
 --
 ALTER TABLE `friend`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT cho bảng `location`
+--
+ALTER TABLE `location`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `notification`
@@ -323,13 +468,13 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT cho bảng `roomdetail`
 --
 ALTER TABLE `roomdetail`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -347,6 +492,12 @@ ALTER TABLE `attach`
 ALTER TABLE `friend`
     ADD CONSTRAINT `friend_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `friend_ibfk_2` FOREIGN KEY (`friendId`) REFERENCES `users` (`id`);
+
+--
+-- Các ràng buộc cho bảng `location`
+--
+ALTER TABLE `location`
+    ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
 -- Các ràng buộc cho bảng `message`
