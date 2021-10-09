@@ -128,14 +128,6 @@ function setRoomDetail(roomDetail) {
 
 function setRoomGroupDetail(roomDetail) {
     console.log(roomDetail)
-    if (roomDetail.image != null){
-        document.getElementById("divImageGroup2").style.display = 'none';
-        document.getElementById("divImageGroup1").style.display = 'unset';
-        document.getElementsByName('imageGroup1')[0].src = roomDetail.image;
-    } else {
-        document.getElementById("divImageGroup1").style.display = 'none';
-        document.getElementById("divImageGroup2").style.display = 'unset';
-    }
     document.getElementById("isGroup").value = true;
     document.getElementsByName("nameMessageGroup")[0].innerText = roomDetail.name;
     document.getElementsByName("nameMessageGroup")[1].innerText = roomDetail.name;
@@ -156,6 +148,24 @@ function setRoomGroupDetail(roomDetail) {
 
     loadMessage();
     connect();
+
+    if (roomDetail.image != null){
+        document.getElementById("divImageGroup2").style.display = 'none';
+        document.getElementById("divImageGroup1").style.display = 'unset';
+        document.getElementsByName('imageGroup1')[0].src = roomDetail.image;
+    } else {
+        document.getElementById("divImageGroup1").style.display = 'none';
+        document.getElementById("divImageGroup2").style.display = 'unset';
+        document.getElementsByName('imageGroup2')[0].src = roomDetail.userInRooms[0].image;
+        document.getElementsByName('imageGroup2')[1].src = roomDetail.userInRooms[1].image;
+        if(roomDetail.userInRooms.length == 2){
+            document.getElementsByName('imageGroup2')[2].src = roomDetail.user.image;
+        } else {
+            document.getElementsByName('imageGroup2')[2].src = roomDetail.userInRooms[2].image;
+        }
+    }
+
+    document.getElementById('btnLeaveGroup').onclick = deleteUserInGroup.bind(this, roomDetail.user.id);
 }
 
 function addDivMember(user) {
@@ -220,7 +230,8 @@ async function deleteUserInGroup(userId) {
     }
     let dataOut = await callAjax('api/room/delete-member', data, 'POST');
     document.getElementById("btnShowMember").click();
-    toastInfo("Thông báo", "Xóa thành công!")
+    toastInfo("Thông báo", "Xóa thành công!");
+    console.log(dataOut);
 }
 
 async function showUserProfile(username) {

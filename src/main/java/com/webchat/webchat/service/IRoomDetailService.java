@@ -11,4 +11,5 @@ public interface IRoomDetailService {
     RoomDetail findRoomDetailBy2User(Integer userId1, Integer userId2);
     void saveRoomDetail(List<RoomDetail> roomDetails);
     void deleteRoomDetail(RoomDetail roomDetails);
+    void deleteAllRoomDetail(List <RoomDetail> roomDetails);
 }

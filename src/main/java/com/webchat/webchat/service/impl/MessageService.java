@@ -24,8 +24,19 @@ public class MessageService implements IMessageService {
     }
 
     @Override
+    public List<Message> findAllByRoom(String roomId) {
+        List<Message> list = messageRepo.findAllByRoom(roomId);
+        return list.isEmpty() ? null : list;
+    }
+
+    @Override
     public void saveMessage(Message message) {
         messageRepo.save(message);
+    }
+
+    @Override
+    public void deleteMessage(List<Message> messages) {
+        messageRepo.deleteAll(messages);
     }
 
     @Override

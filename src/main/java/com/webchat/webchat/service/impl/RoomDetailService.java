@@ -46,4 +46,9 @@ public class RoomDetailService implements IRoomDetailService {
     public void deleteRoomDetail(RoomDetail roomDetails) {
         roomDetailRepo.delete(roomDetails);
     }
+
+    @Override
+    public void deleteAllRoomDetail(List<RoomDetail> roomDetails) {
+        roomDetailRepo.deleteAll(roomDetails);
+    }
 }

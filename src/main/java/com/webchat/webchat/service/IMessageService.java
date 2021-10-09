@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface IMessageService {
     List<Message> findByRoom(String roomId, Pageable pageable);
+    List<Message> findAllByRoom(String roomId);
     void saveMessage(Message message);
+    void deleteMessage(List<Message> messages);
     void setStatusMessage(String roomId, String username, String status);
     List<Message> findByRoomAndUserAndStatus(String roomId, String username, String status);
     Message findMessageLast(String roomId);

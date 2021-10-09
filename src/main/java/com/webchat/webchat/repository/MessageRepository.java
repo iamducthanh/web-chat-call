@@ -11,6 +11,9 @@ public interface MessageRepository extends JpaRepository<Message, String> {
     @Query("select o from Message o where o.room.id = ?1 and o.type <> 'CREATE' order by o.time desc")
     List<Message> findByRoom(String id, Pageable pageable);
 
+    @Query("select o from Message o where o.room.id = ?1")
+    List<Message> findAllByRoom(String id);
+
     @Query("select o from Message  o where o.room.id = ?1 and o.user.username = ?2 and o.status = ?3")
     List<Message> findByRoomAndUserAndStatus(String roomId, String username, String status);
 

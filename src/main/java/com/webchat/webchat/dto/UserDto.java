@@ -11,4 +11,5 @@ public class UserDto {
     private String username;
     private String fullname;
     private String image;
+    private Integer id;
 }

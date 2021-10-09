@@ -93,7 +93,7 @@ public class RoomApi {
             if(user1.getUsername().equals(username)){
                 isFriend = systemUtil.isFriend(user2, friends);
                 System.out.println("là bạn bè " + isFriend);
-                userDto = new UserDto(username, user1.getFullname(), user1.getImage());
+                userDto = new UserDto(username, user1.getFullname(), user1.getImage(), user1.getId());
                 userInRoomDto = new UserInRoomDto(
                         user2.getUsername(),
                         user2.getFullname(),
@@ -113,7 +113,7 @@ public class RoomApi {
             } else {
                 System.out.println("là bạn bè "+ isFriend);
                 isFriend = systemUtil.isFriend(user1, friends);
-                userDto = new UserDto(username, user2.getFullname(), user2.getImage());
+                userDto = new UserDto(username, user2.getFullname(), user2.getImage(), user2.getId());
                 userInRoomDto = new UserInRoomDto(
                         user1.getUsername(),
                         user1.getFullname(),
@@ -148,7 +148,7 @@ public class RoomApi {
         List<User> userInrooms = userService.findInRoom(user.getId(), roomId);
         RoomGroupDetailDto roomGroupDetail = new RoomGroupDetailDto();
         roomGroupDetail.setName(room.getName());
-        roomGroupDetail.setUser(new UserDto(user.getUsername(), user.getFullname(), user.getImage()));
+        roomGroupDetail.setUser(new UserDto(user.getUsername(), user.getFullname(), user.getImage(), user.getId()));
         roomGroupDetail.setRoomId(roomId);
         List<UserInRoomDto> userInRoomDtos = new ArrayList<>();
         for(User user1 : userInrooms){
@@ -201,12 +201,25 @@ public class RoomApi {
 
     @PostMapping("/api/room/delete-member")
     @ResponseBody
-    public String deleteMember(String roomId, String userId) {
-        System.out.println(roomId);
-        System.out.println(userId);
-        RoomDetail roomDetail = roomDetailService.findRoomDetailByUserAndRoom(Integer.parseInt(userId), roomId);
-        roomDetailService.deleteRoomDetail(roomDetail);
-        return "";
+    public List<String> deleteMember(String roomId, String userId) {
+        List<String> usernames = new ArrayList<>();
+        List<RoomDetail> roomDetails = roomDetailService.findByRoomId(roomId);
+        if(roomDetails.size() <= 3){
+            for(RoomDetail roomDetail1 : roomDetails){
+                usernames.add(roomDetail1.getUser().getUsername());
+            }
+            List<Message> messages = messageService.findAllByRoom(roomId);
+//            messageService.deleteMessage(messages);
+//            roomDetailService.deleteAllRoomDetail(roomDetails);
+            Room room = new Room();
+            room.setId(roomId);
+//            roomService.deleteRoom(room);
+        } else {
+            RoomDetail roomDetail = roomDetailService.findRoomDetailByUserAndRoom(Integer.parseInt(userId), roomId);
+//        roomDetailService.deleteRoomDetail(roomDetail);
+            usernames.add(roomDetail.getUser().getUsername());
+        }
+        return usernames;
     }
 
     @PostMapping("/api/room/create-room-group")

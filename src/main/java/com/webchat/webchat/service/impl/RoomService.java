@@ -19,6 +19,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    public void deleteRoom(Room room) {
+        roomRepositoty.delete(room);
+    }
+
+    @Override
     public Room findRoomById(String id) {
         List<Room> list = roomRepositoty.findRoomById(id);
         return list.isEmpty() ? null : list.get(0);
