@@ -6,6 +6,9 @@ function closeRoomMessage() {
 }
 
 function onRoomMessage(roomId) {
+    if (stompClient != null) {
+        stompClient.disconnect();
+    }
     document.getElementById("contentMedia").innerHTML = "";
     document.querySelector('#trang-chu').style.display = 'none';
     document.querySelector('#message-direct').style.display = 'unset';
@@ -29,6 +32,9 @@ function onRoomMessage(roomId) {
 }
 
 function onRoomMessageGroup(roomId) {
+    if (stompClient != null) {
+        stompClient.disconnect();
+    }
     document.querySelector('#trang-chu').style.display = 'none';
     document.querySelector('#message-direct').style.display = 'unset';
     document.querySelector('#header-message-direct').style.display = 'none';

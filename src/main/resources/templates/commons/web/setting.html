@@ -527,6 +527,7 @@
         }
 
         async function saveUploadImage() {
+            document.getElementById("loader").style.display = 'unset'
             let image = document.getElementById("avatarView").src;
             let name = uuid();
             let pre = image.indexOf("/");
@@ -539,7 +540,6 @@
 
             await uploadFileToGit2(data, name + '.' + type);
 
-            toastSuccess("Thành công", "Thay đổi thành công!");
             let avatarView = document.getElementsByClassName("avatarView");
             for (let i = 0; i < avatarView.length; i++) {
                 avatarView[i].src = image;
@@ -547,7 +547,9 @@
             let data2 = {
                 image: name + '.' + type
             }
-            await callAjax('user/update/image', data2, 'PUT')
+            await callAjax('user/update/image', data2, 'PUT');
+            document.getElementById('loader').style.display = 'none';
+            toastSuccess("Thành công", "Thay đổi thành công!");
         }
 
         async function updateUser(event) {

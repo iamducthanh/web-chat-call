@@ -4,14 +4,19 @@ let stompClientSystem = null;
 let stompClientMessageListen = null;
 let stompClientCall = null;
 let stompClientRoom = null;
+let stompClientRoomGroup = null;
 let stompClientFriend = null;
+
 let userOnline = null;
 let userIdOnline = null;
+
 let socketClient = null;
 let socketSystem = null;
 let socketCall = null;
 let socketRoom = null;
+let socketRoomGroup = null;
 let socketFriend = null;
+
 userOnline = document.querySelector('#userOnline').value.trim();
 userIdOnline = document.querySelector('#userIdOnline').value.trim();
 
@@ -37,27 +42,39 @@ function online(event) {
         socketFriend = new SockJS('/chatroom/wss');
         stompClientFriend = Stomp.over(socketFriend);
         stompClientFriend.connect({}, socketFriendConected, onError5);
+
+        socketRoomGroup = new SockJS('/chatroom/system');
+        stompClientRoomGroup = Stomp.over(socketRoomGroup);
+        stompClientRoomGroup.connect({}, socketRoomGroupConected, onError6);
     }
 }
 
-function socketClientConected(){
+function socketClientConected() {
     stompClientSystem.subscribe('/topic/system.adduser', onMessageReceivedOnline);
     stompClientSystem.send("/app/system.adduser",
         {},
         JSON.stringify({username: userOnline, type: 'ONLINE'})
     );
 }
-function socketSystemConected(){
+
+function socketSystemConected() {
     stompClientMessageListen.subscribe('/topic/system.onmessage/' + userOnline, onMessageRealtime);
 }
-function socketCallConected(){
+
+function socketCallConected() {
     stompClientCall.subscribe('/topic/call/' + userOnline, onCall);
 }
-function socketRoomConected(){
+
+function socketFriendConected() {
+    stompClientRoom.subscribe('/topic/system/friend/' + userIdOnline, onFriendRequest);
+}
+
+function socketRoomConected() {
     stompClientRoom.subscribe('/topic/system/' + userOnline, onAddRoom);
 }
-function socketFriendConected(){
-    stompClientRoom.subscribe('/topic/system/friend/' + userIdOnline, onFriendRequest);
+
+function socketRoomGroupConected() {
+    stompClientRoomGroup.subscribe('/topic/system.onroomGroup/' + userOnline, onAddRoomGroup);
 }
 
 function onError1() {
@@ -80,35 +97,39 @@ function onError5() {
     console.log("error ------ stompClientFriend")
 }
 
+function onError6() {
+    console.log("error ------ stompClientFriend")
+}
+
 function onAddRoom(payload) {
     let messageUser = JSON.parse(payload.body);
     console.log(messageUser)
     let contentUserMessage = document.getElementById("contentUserMessage");
-    let name = 'messUser' + document.querySelector("#userOnline").value + messageUser.sender;
+    let name = 'messUser' + document.querySelector("#userOnline").value + messageUser.roomId;
     let idUsername = messageUser.sender + "NotFriend";
     let statusOnline = "avatar";
-    if(messageUser.friend){
+    if (messageUser.friend) {
         idUsername = messageUser.sender;
-        if(messageUser.online){
+        if (messageUser.online) {
             statusOnline = "avatar avatar-online";
         } else {
             statusOnline = "avatar avatar-offline";
         }
     }
     contentUserMessage.innerHTML =
-        "<div onclick='onRoomMessage(\""+messageUser.roomId+"\")' " +
-        "class='card border-0 text-reset' id='"+name+"'>" +
+        "<div onclick='onRoomMessage(\"" + messageUser.roomId + "\")' " +
+        "class='card border-0 text-reset' id='" + name + "'>" +
         "<div class='card-body'>" +
         "<div class='row gx-5'>" +
         "<div class='col-auto'>" +
-        "<div class='"+statusOnline+"' id='" + idUsername + "'>" +
+        "<div class='" + statusOnline + "' id='" + idUsername + "'>" +
         "<img src='" + messageUser.image + "' alt='#' class='avatar-img'>" +
         "</div>" +
         "</div>" +
         "<div class='col'>" +
         "<div class='d-flex align-items-center mb-3'>" +
         "<h5 class='me-auto mb-0 messageSend' name='" + name + "'>" + messageUser.fullname + "</h5>" +
-        "<span class='text-muted extra-small ms-2 messageSend' name='" + name + "'>"+messageUser.time+"</span>" +
+        "<span class='text-muted extra-small ms-2 messageSend' name='" + name + "'>" + messageUser.time + "</span>" +
         "</div>" +
         "<div class='d-flex align-items-center'>" +
         "<div class='line-clamp me-auto messageSend' name='" + name + "'>" +
@@ -123,6 +144,60 @@ function onAddRoom(payload) {
         "</div>" +
         "</div>" + contentUserMessage.innerHTML;
 
+}
+
+function onAddRoomGroup(payload) {
+    let roomGroup = JSON.parse(payload.body);
+    console.log(roomGroup);
+    let contentUserMessage = document.getElementById("contentUserMessage");
+    let name = 'messUser' + document.querySelector("#userOnline").value + roomGroup.roomId;
+
+    let divAvt = '';
+
+    if (roomGroup.imageGroup.length == 1) {
+        divAvt = "<div class='avatar'>" +
+            "<img src='" + roomGroup.imageGroup[0] + "' alt='#' class='avatar-img'>" +
+            "</div>";
+    } else {
+        divAvt =
+            "<div class=\"avatar-group-trigon avatar-group-trigon-sm\">" +
+            "<div class=\"avatar avatar-sm\">" +
+            "<img class=\"avatar-img\" src=\"" + roomGroup.imageGroup[0] + "\" alt=\"#\">" +
+            "</div>" +
+            "<div class=\"avatar avatar-sm\">" +
+            "<img class=\"avatar-img\" src=\"" + roomGroup.imageGroup[1] + "\" alt=\"#\">" +
+            "</div>" +
+            "<div class=\"avatar avatar-sm\">" +
+            "<img class=\"avatar-img\" src=\"" + roomGroup.imageGroup[2] + "\" alt=\"#\">" +
+            "</div>" +
+            "</div>";
+    }
+
+    contentUserMessage.innerHTML =
+        "<div onclick='onRoomMessageGroup(\"" + roomGroup.roomId + "\")' " +
+        "class='card border-0 text-reset' id='" + name + "'>" +
+        "<div class='card-body'>" +
+        "<div class='row gx-5'>" +
+        "<div class='col-auto'>" +
+        divAvt +
+        "</div>" +
+        "<div class='col'>" +
+        "<div class='d-flex align-items-center mb-3'>" +
+        "<h5 class='me-auto mb-0 messageSend' name='" + name + "'>" + roomGroup.nameGroup + "</h5>" +
+        "<span class='text-muted extra-small ms-2 messageSend' name='" + name + "'>" + roomGroup.time + "</span>" +
+        "</div>" +
+        "<div class='d-flex align-items-center'>" +
+        "<div class='line-clamp me-auto messageSend' name='" + name + "'>" +
+        'Bắt đầu trò chuyện' +
+        "</div>" +
+        "<div class='badge badge-circle bg-primary ms-5'>" +
+        "<span name='" + name + "'>1</span>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" + contentUserMessage.innerHTML;
 }
 
 function onCall(payload) {
@@ -149,7 +224,7 @@ function onMessageRealtime(payload) {
     console.log(classname)
     let contentUserMessage = document.getElementById("contentUserMessage");
     let userMessage = document.getElementById(classname);
-    if(userMessage != null){
+    if (userMessage != null) {
         contentUserMessage.removeChild(userMessage);
     }
     let divAdd = document.createElement("div");

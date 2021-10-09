@@ -218,13 +218,13 @@ public class RoomApi {
 
         List<User> userList = userService.findByGroupUserId(userIds);
         userList.add(0, user);
-//        roomService.saveRoom(room);
+        roomService.saveRoom(room);
 
         List<RoomDetail> roomDetails = new ArrayList<>();
         for(User user1 : userList){
             roomDetails.add(new RoomDetail(user1, room));
         }
-//        roomDetailService.saveRoomDetail(roomDetails);
+        roomDetailService.saveRoomDetail(roomDetails);
 
         Message message = new Message();
         message.setRoom(room);
@@ -235,13 +235,18 @@ public class RoomApi {
         message.setId(String.valueOf(UUID.randomUUID()));
         message.setStatus("CREATE");
 
-//        messageService.saveMessage(message);
+        messageService.saveMessage(message);
 
         List<String> userOnlines = new ArrayList<>();
         List<String> imageGroup = new ArrayList<>();
+        if(!image.isEmpty()){
+            imageGroup.add(room.getImage());
+        }
         for(int i=0;i<userList.size();i++){
-            if(i < 3){
-                imageGroup.add(userList.get(i).getImage());
+            if(image.isEmpty()){
+                if(i < 3){
+                    imageGroup.add(userList.get(i).getImage());
+                }
             }
             if(UsersOnline.usersOnline.get(userList.get(i).getUsername()) != null){
                 userOnlines.add(userList.get(i).getUsername());
@@ -250,7 +255,6 @@ public class RoomApi {
         RoomGroupPojo roomGroupPojo = new RoomGroupPojo();
         roomGroupPojo.setUserOnline(userOnlines);
         roomGroupPojo.setNameGroup(name);
-        roomGroupPojo.setImage(room.getImage());
         roomGroupPojo.setImageGroup(imageGroup);
         roomGroupPojo.setTime(message.getTimeChat());
         roomGroupPojo.setRoomId(roomId);

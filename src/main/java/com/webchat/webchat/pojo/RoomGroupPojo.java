@@ -12,8 +12,8 @@ import java.util.List;
 public class RoomGroupPojo {
     private List<String> userOnline;
     private String nameGroup;
-    private String image;
     private List<String> imageGroup;
     private String time;
     private String roomId;
+    private String user;
 }

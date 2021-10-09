@@ -139,7 +139,7 @@
                     success: function (data) {
                         console.log(data)
                         let contentUserMessage = document.getElementById("contentUserMessage");
-                        let name = 'messUser' + document.querySelector("#userOnline").value + data.username;
+                        let name = 'messUser' + document.querySelector("#userOnline").value + data.roomCode;
                         let idUsername = data.username + "NotFriend";
                         let statusOnline = "avatar";
                         if(data.friend){

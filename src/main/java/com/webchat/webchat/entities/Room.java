@@ -42,6 +42,10 @@ public class Room {
     private List<RoomDetail> roomDetails;
 
     public String getImage() {
-        return "https://github.com/phonghotkgd2k1/image_public/blob/main/" + image + "?raw=true";
+        if(image.isEmpty()){
+            return null;
+        } else {
+            return "https://github.com/phonghotkgd2k1/image_public/blob/main/" + image + "?raw=true";
+        }
     }
 }

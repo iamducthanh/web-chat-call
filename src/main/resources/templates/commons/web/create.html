@@ -93,9 +93,11 @@
                                             </svg>
                                         </div>
 
-                                        <input id="upload-chat-group-img" onchange="setDataImageGroup()" class="d-none" type="file">
+                                        <input id="upload-chat-group-img" onchange="setDataImageGroup()" class="d-none"
+                                               type="file">
                                         <input id="data-group-img" class="d-none" type="hidden">
-                                        <label class="stretched-label mb-0" id="lbSelect" onclick="selectImageGroupChat()">
+                                        <label class="stretched-label mb-0" id="lbSelect"
+                                               onclick="selectImageGroupChat()">
                                         </label>
                                         <img class="avatar-img avatarView" id="image-group-review" src="" alt="">
                                     </div>
@@ -109,7 +111,7 @@
                                             <div class="">
                                                 <input type="text" class="form-control" id="floatingInput"
                                                        placeholder="Tên nhóm">
-<!--                                                <label for="floatingInput">Tên nhóm</label>-->
+                                                <!--                                                <label for="floatingInput">Tên nhóm</label>-->
                                             </div>
                                         </div>
                                     </div>
@@ -133,7 +135,8 @@
 
         <!-- Button -->
         <div class="container mt-n4 mb-8 position-relative">
-            <button onclick="createRoomGroup()" class="btn btn-lg btn-primary w-100 d-flex align-items-center" type="button">
+            <button onclick="createRoomGroup()" class="btn btn-lg btn-primary w-100 d-flex align-items-center"
+                    type="button">
                 Bắt đầu chat
                 <span class="icon ms-auto">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -148,17 +151,18 @@
     </div>
 
     <script>
-        function selectImageGroupChat(){
+        function selectImageGroupChat() {
             document.getElementById('upload-chat-group-img').click();
         }
-        async function setDataImageGroup(){
+
+        async function setDataImageGroup() {
             let file = document.getElementById('upload-chat-group-img').files[0];
             let data = await toBase64(file);
             document.getElementById("image-group-review").src = data;
             document.getElementById("data-group-img").value = data;
         }
 
-        async function createRoomGroup(){
+        async function createRoomGroup() {
             let checkBoxAddMemberCreateChat = document.getElementsByName("checkBoxAddMemberCreateChat");
             let nameGroup = document.getElementById("floatingInput").value;
             let img = document.getElementById("data-group-img").value;
@@ -170,14 +174,15 @@
                     }
                 }
             }
-            if(addMember.length < 2){
+            if (addMember.length < 2) {
                 toastDanger("Lỗi", "Bạn phải chọn tối thiểu 2 thành viên!");
-            } else if(nameGroup.trim().length == 0){
+            } else if (nameGroup.trim().length == 0) {
                 toastDanger("Lỗi", "Bạn phải nhập tên nhóm!")
             } else {
+                document.getElementById('loader').style.display = 'unset';
                 let imgName = null;
                 let type = null;
-                if(img.length != 0){
+                if (img.length != 0) {
                     imgName = uuid();
                     type = img.substring(img.indexOf('/') + 1, img.indexOf(';'));
                     let dataUpload = {
@@ -193,6 +198,15 @@
                 }
                 let dataOut = await callAjax('api/room/create-room-group', data, 'POST');
                 console.log(dataOut);
+                document.getElementById('loader').style.display = 'none';
+
+                for (let i = 0; i < dataOut.userOnline.length; i++) {
+                    dataOut.user = dataOut.userOnline[i];
+                    stompClientRoomGroup.send("/app/system.onroomGroup/" + dataOut.userOnline[i],
+                        {},
+                        JSON.stringify(dataOut)
+                    );
+                }
             }
         }
     </script>
