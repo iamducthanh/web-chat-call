@@ -5,6 +5,7 @@ let stompClientMessageListen = null;
 let stompClientCall = null;
 let stompClientRoom = null;
 let stompClientRoomGroup = null;
+let stompClientDelRoomGroup = null;
 let stompClientFriend = null;
 
 let userOnline = null;
@@ -15,6 +16,7 @@ let socketSystem = null;
 let socketCall = null;
 let socketRoom = null;
 let socketRoomGroup = null;
+let socketDelRoomGroup = null;
 let socketFriend = null;
 
 userOnline = document.querySelector('#userOnline').value.trim();
@@ -46,6 +48,10 @@ function online(event) {
         socketRoomGroup = new SockJS('/chatroom/system');
         stompClientRoomGroup = Stomp.over(socketRoomGroup);
         stompClientRoomGroup.connect({}, socketRoomGroupConected, onError6);
+
+        socketDelRoomGroup = new SockJS('/chatroom/system');
+        stompClientDelRoomGroup = Stomp.over(socketDelRoomGroup);
+        stompClientDelRoomGroup.connect({}, socketDelRoomGroupConected, onError7);
     }
 }
 
@@ -77,6 +83,10 @@ function socketRoomGroupConected() {
     stompClientRoomGroup.subscribe('/topic/system.onroomGroup/' + userOnline, onAddRoomGroup);
 }
 
+function socketDelRoomGroupConected() {
+    stompClientDelRoomGroup.subscribe('/topic/system.deleteRoomGroup/' + userOnline, onDelRoomGroup);
+}
+
 function onError1() {
     console.log("error ------ stompClientSystem")
 }
@@ -98,7 +108,11 @@ function onError5() {
 }
 
 function onError6() {
-    console.log("error ------ stompClientFriend")
+    console.log("error ------ stompClientRoomGroup")
+}
+
+function onError7() {
+    console.log("error ------ stompClientDelRoomGroup")
 }
 
 function onAddRoom(payload) {
@@ -289,6 +303,18 @@ function onMessageReceivedOnline(payload) {
             userClassFriend.className = 'avatar avatar-offline';
         }
     }
+}
+
+function onDelRoomGroup(payload){
+    let roomGroup = JSON.parse(payload.body);
+    let contentUserMessage = document.getElementById('contentUserMessage');
+    let divDel = document.getElementById('messUser' + roomGroup.username + roomGroup.roomId);
+    contentUserMessage.removeChild(divDel);
+    if(roomGroup.connect){
+        document.getElementById('btnCloseRoom').click();
+        document.getElementById('btnBackGroup').click();
+    }
+    console.log(roomGroup)
 }
 
 online();

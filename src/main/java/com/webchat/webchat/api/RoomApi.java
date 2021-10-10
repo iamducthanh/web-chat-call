@@ -12,6 +12,7 @@ import com.webchat.webchat.entities.Room;
 import com.webchat.webchat.entities.RoomDetail;
 import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.RoomGroupPojo;
+import com.webchat.webchat.pojo.UserDeleteGroupPojo;
 import com.webchat.webchat.service.IMessageService;
 import com.webchat.webchat.service.IRoomDetailService;
 import com.webchat.webchat.service.IRoomService;
@@ -51,7 +52,7 @@ public class RoomApi {
 
     @GetMapping("/api/room/message-direct")
     @ResponseBody
-    public RoomDetailDto getRoomDetail(String roomId){
+    public RoomDetailDto getRoomDetail(String roomId) {
         User user = (User) sessionUtil.getObject("USER");
         List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
         System.out.println(roomId);
@@ -65,32 +66,32 @@ public class RoomApi {
         // check first message
         Room room = roomDetails.get(0).getRoom();
         String first = "";
-        if(!room.getUsername().isEmpty()){
+        if (!room.getUsername().isEmpty()) {
             first = "onFirst";
         }
         UserDto userDto = null;
         UserInRoomDto userInRoomDto = null;
-        if(user1.getUsername().equals(username) || user2.getUsername().equals(username)){
+        if (user1.getUsername().equals(username) || user2.getUsername().equals(username)) {
             Message message = messageService.findMessageLast(roomId);
             String statusMessage = ""; // check trạng thái tin nhắn
             boolean isFriend = false; // check bạn bè hay không
-            if(message != null && message.getUser().getUsername().equals(username)){
-                if(message.getStatus().equals("SEND")){
+            if (message != null && message.getUser().getUsername().equals(username)) {
+                if (message.getStatus().equals("SEND")) {
                     System.out.println("đã gửi");
                     statusMessage = "SEND";
-                } else if(message.getStatus().equals("READ")){
+                } else if (message.getStatus().equals("READ")) {
                     System.out.println(message.getStatus());
                     System.out.println("Đã xem");
                     statusMessage = "READ";
                 }
             } else {
-             //   if(message.getStatus().equals("SEND")){ // sửa thành tin nhắn đã xem
-                    messageService.setStatusMessage(roomId, message.getUser().getUsername(), "SEND");
-            //    }
+                //   if(message.getStatus().equals("SEND")){ // sửa thành tin nhắn đã xem
+                messageService.setStatusMessage(roomId, message.getUser().getUsername(), "SEND");
+                //    }
                 System.out.println("là của người khác gửi");
             }
             System.out.println(statusMessage);
-            if(user1.getUsername().equals(username)){
+            if (user1.getUsername().equals(username)) {
                 isFriend = systemUtil.isFriend(user2, friends);
                 System.out.println("là bạn bè " + isFriend);
                 userDto = new UserDto(username, user1.getFullname(), user1.getImage(), user1.getId());
@@ -111,7 +112,7 @@ public class RoomApi {
                         user2.getId()
                 );
             } else {
-                System.out.println("là bạn bè "+ isFriend);
+                System.out.println("là bạn bè " + isFriend);
                 isFriend = systemUtil.isFriend(user1, friends);
                 userDto = new UserDto(username, user2.getFullname(), user2.getImage(), user2.getId());
                 userInRoomDto = new UserInRoomDto(
@@ -140,7 +141,7 @@ public class RoomApi {
 
     @GetMapping("/api/room/message-group")
     @ResponseBody
-    public RoomGroupDetailDto getRoomGroupDetail(String roomId){
+    public RoomGroupDetailDto getRoomGroupDetail(String roomId) {
         int countOnline = 0;
         Room room = roomService.findRoomById(roomId);
         User user = (User) sessionUtil.getObject("USER");
@@ -151,9 +152,9 @@ public class RoomApi {
         roomGroupDetail.setUser(new UserDto(user.getUsername(), user.getFullname(), user.getImage(), user.getId()));
         roomGroupDetail.setRoomId(roomId);
         List<UserInRoomDto> userInRoomDtos = new ArrayList<>();
-        for(User user1 : userInrooms){
-            if(user1.isOnline()){
-                countOnline ++;
+        for (User user1 : userInrooms) {
+            if (user1.isOnline()) {
+                countOnline++;
             }
             UserInRoomDto userInRoomDto = new UserInRoomDto(
                     user1.getUsername(),
@@ -187,7 +188,7 @@ public class RoomApi {
         Room room = new Room();
         room.setId(roomId);
         List<RoomDetail> roomDetails = new ArrayList<>();
-        for(String userId : memberNews){
+        for (String userId : memberNews) {
             User user = new User();
             user.setId(Integer.parseInt(userId));
             RoomDetail roomDetail = new RoomDetail();
@@ -201,24 +202,37 @@ public class RoomApi {
 
     @PostMapping("/api/room/delete-member")
     @ResponseBody
-    public List<String> deleteMember(String roomId, String userId) {
-        List<String> usernames = new ArrayList<>();
+    public List<UserDeleteGroupPojo> deleteMember(String roomId, String userId) {
+        List<UserDeleteGroupPojo> usernames = new ArrayList<>();
         List<RoomDetail> roomDetails = roomDetailService.findByRoomId(roomId);
-        if(roomDetails.size() <= 3){
-            for(RoomDetail roomDetail1 : roomDetails){
-                usernames.add(roomDetail1.getUser().getUsername());
+
+        List<String> userConnect = UsersOnline.userConnectGroup.get(roomId);
+        if (roomDetails.size() <= 3) {
+            for (RoomDetail roomDetail1 : roomDetails) {
+                String username = roomDetail1.getUser().getUsername();
+                if (userConnect.contains(roomDetail1.getUser().getUsername())) {
+                    usernames.add(new UserDeleteGroupPojo(username, true, systemUtil.isOnline(username)));
+                } else {
+                    usernames.add(new UserDeleteGroupPojo(username, false, systemUtil.isOnline(username)));
+                }
             }
             List<Message> messages = messageService.findAllByRoom(roomId);
-//            messageService.deleteMessage(messages);
-//            roomDetailService.deleteAllRoomDetail(roomDetails);
+            messageService.deleteMessage(messages); // delete message in room
+            roomDetailService.deleteAllRoomDetail(roomDetails); // delete roomDetail
             Room room = new Room();
             room.setId(roomId);
-//            roomService.deleteRoom(room);
+            roomService.deleteRoom(room); //delete room
         } else {
             RoomDetail roomDetail = roomDetailService.findRoomDetailByUserAndRoom(Integer.parseInt(userId), roomId);
-//        roomDetailService.deleteRoomDetail(roomDetail);
-            usernames.add(roomDetail.getUser().getUsername());
+            roomDetailService.deleteRoomDetail(roomDetail);
+            String username = roomDetail.getUser().getUsername();
+            if (userConnect.contains(roomDetail.getUser().getUsername())) {
+                usernames.add(new UserDeleteGroupPojo(username, true, systemUtil.isOnline(username)));
+            } else {
+                usernames.add(new UserDeleteGroupPojo(username, false, systemUtil.isOnline(username)));
+            }
         }
+
         return usernames;
     }
 
@@ -235,7 +249,7 @@ public class RoomApi {
         roomService.saveRoom(room);
 
         List<RoomDetail> roomDetails = new ArrayList<>();
-        for(User user1 : userList){
+        for (User user1 : userList) {
             roomDetails.add(new RoomDetail(user1, room));
         }
         roomDetailService.saveRoomDetail(roomDetails);
@@ -253,16 +267,16 @@ public class RoomApi {
 
         List<String> userOnlines = new ArrayList<>();
         List<String> imageGroup = new ArrayList<>();
-        if(!image.isEmpty()){
+        if (!image.isEmpty()) {
             imageGroup.add(room.getImage());
         }
-        for(int i=0;i<userList.size();i++){
-            if(image.isEmpty()){
-                if(i < 3){
+        for (int i = 0; i < userList.size(); i++) {
+            if (image.isEmpty()) {
+                if (i < 3) {
                     imageGroup.add(userList.get(i).getImage());
                 }
             }
-            if(UsersOnline.usersOnline.get(userList.get(i).getUsername()) != null){
+            if (UsersOnline.usersOnline.get(userList.get(i).getUsername()) != null) {
                 userOnlines.add(userList.get(i).getUsername());
             }
         }

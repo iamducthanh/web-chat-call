@@ -1,6 +1,7 @@
 package com.webchat.webchat.controller.web;
 
 import com.webchat.webchat.constant.UsersOnline;
+import com.webchat.webchat.dto.UserDeleteGroupDto;
 import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.MessageUserConnectPojo;
 import com.webchat.webchat.pojo.MessageUserRealtime;
@@ -62,5 +63,11 @@ public class SystemController {
     public RoomGroupPojo onRoomGroup(@Payload RoomGroupPojo roomGroupPojo, @PathVariable("username") String username) {
         System.out.println("user: " + username);
         return roomGroupPojo;
+    }
+
+    @MessageMapping("/system.deleteRoomGroup/{username}")
+    @SendTo("/topic/system.deleteRoomGroup/{username}")
+    public UserDeleteGroupDto deleteRoomGroup(@Payload UserDeleteGroupDto userDeleteGroupDto) {
+        return userDeleteGroupDto;
     }
 }

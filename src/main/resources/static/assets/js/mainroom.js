@@ -232,6 +232,19 @@ async function deleteUserInGroup(userId) {
     document.getElementById("btnShowMember").click();
     toastInfo("Thông báo", "Xóa thành công!");
     console.log(dataOut);
+    for(let i=0;i<dataOut.length;i++){
+        if(dataOut[i].online){
+            let data = {
+                username: dataOut[i].username,
+                roomId: room,
+                connect: dataOut[i].connect
+            }
+            stompClientDelRoomGroup.send("/app/system.deleteRoomGroup/" + dataOut[i].username,
+                {},
+                JSON.stringify(data)
+            );
+        }
+    }
 }
 
 async function showUserProfile(username) {

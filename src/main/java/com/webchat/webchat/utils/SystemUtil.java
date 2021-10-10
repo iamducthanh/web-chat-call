@@ -26,6 +26,14 @@ public class SystemUtil {
         return false;
     }
 
+    public boolean isOnline(String username){
+        if(UsersOnline.usersOnline.get(username) != null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getIp() throws UnknownHostException {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
