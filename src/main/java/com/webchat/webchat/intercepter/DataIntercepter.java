@@ -42,6 +42,9 @@ public class DataIntercepter implements HandlerInterceptor {
         User user = (User) sessionUtil.getObject("USER");
         System.out.println("run");
         req.setAttribute("user", user);
+        if(user.getRole().equals("ROLE_ADMIN")){
+            req.setAttribute("isAdmin", "on");
+        }
         getUserOnline(req, user);
         getFriendUser(req, user);
         getNotification(req, user);

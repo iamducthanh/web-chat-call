@@ -30,6 +30,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> findAll() {
+        return userRepo.findAll();
+    }
+
+    @Override
     public List<User> findByGroupUserId(List<Integer> userIds) {
         List<User> list = userRepo.findUserByGroupUserId(userIds);
         return list.isEmpty() ? null : list;

@@ -191,6 +191,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="accordion-item" th:if="${isAdmin != null}">
+                                    <div class="accordion-header">
+                                        <a th:href="@{/admin/trang-chu}" class="accordion-button text-reset collapsed">
+                                            <div>
+                                                <h5>Quản trị</h5>
+                                                <p>Chuyển đến trang quản trị</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
