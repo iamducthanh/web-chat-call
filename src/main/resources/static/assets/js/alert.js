@@ -6,8 +6,17 @@ function closei(){
     document.getElementById("showI").style.display = 'none';
 }
 
-function closeWaitCall(){
+function closeWaitCall(status){
     document.getElementById("waitcall").style.display = 'none';
+    if(status == 'REFUSE'){
+        stompClientCall.send("/app/call/" + document.getElementById("caller1").value,
+            {},
+            JSON.stringify({
+                status: 'REFUSE'
+            })
+        );
+    }
+
 }
 function nghe(){
     document.getElementById("joinMeet").click();
@@ -17,7 +26,7 @@ function nghe(){
     document.getElementsByClassName("waitCall1")[0].style.display = 'none';
     document.getElementById("containerCall").style.display = 'unset';
     document.getElementById("inCall").style.display = 'unset';
-    closeWaitCall();
+    closeWaitCall('ddd');
     stompClientCall.send("/app/call/" + document.getElementById("caller1").value,
         {},
         JSON.stringify({
@@ -31,7 +40,16 @@ function konghe(){
         closeCall();
     }
 }
-function closeCall(){
+async function closeCall(){
     document.getElementById("call").style.display = 'none';
-
+    stompClientCall.send("/app/call/" + document.getElementById("userInCallRoom").value,
+        {},
+        JSON.stringify({
+            status: 'END2'
+        })
+    );
+    let roomId = document.getElementById('idRoomMeet').value;
+    await api.deleteRoom(roomId);
+    // api = new API(PROJECT_ID, PROJECT_SECRET);
+    // await api.setRestToken();
 }

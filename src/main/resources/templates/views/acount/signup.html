@@ -8,96 +8,104 @@
     <title layout:fragment="title">Đăng kí</title>
 </head>
 <div class="container" layout:fragment="acount-content">
-        <div class="row align-items-center justify-content-center min-vh-100 gx-0" style="margin-top: 10%; margin-bottom: 10%">
-            <div class="col-12 col-md-5 col-lg-6">
-                <div class="card card-shadow border-0">
-                    <div class="card-body">
-                        <div class="row g-6">
-                            <div class="col-12">
-                                <div class="text-center">
-                                    <h3 class="fw-bold mb-2">Tạo tài khoản mới</h3>
-                                    <p>Nhanh chóng và dễ dàng</p>
+    <div class="row align-items-center justify-content-center min-vh-100 gx-0"
+         style="margin-top: 10%; margin-bottom: 10%">
+        <div class="col-12 col-md-5 col-lg-6">
+            <div class="card card-shadow border-0">
+                <div class="card-body">
+                    <div class="row g-6">
+                        <div class="col-12">
+                            <div class="text-center">
+                                <h3 class="fw-bold mb-2">Tạo tài khoản mới</h3>
+                                <p>Nhanh chóng và dễ dàng</p>
+                            </div>
+                        </div>
+                        <form method="post" id="signupform">
+                            <div class="col-12" style="margin-bottom: 20px">
+                                <div class="">
+                                    <input class="form-control" name="username" type="text"
+                                           placeholder="Tên người dùng">
                                 </div>
                             </div>
-                            <form method="post" id="signupform">
-                                <div class="col-12" style="margin-bottom: 20px">
-                                    <div class="">
-                                        <input class="form-control" name="username" type="text" placeholder="Tên người dùng">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-lg-6" style="margin-bottom: 20px">
+                                        <input name="lastName" type="text" class="form-control" id="lastname"
+                                               placeholder="Họ">
+                                    </div>
+                                    <div class="col-lg-6" style="margin-bottom: 20px">
+                                        <input name="firstName" type="text" class="form-control" id="firstname"
+                                               placeholder="Tên">
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-lg-6" style="margin-bottom: 20px">
-                                            <input name="lastName" type="text" class="form-control" id="lastname" placeholder="Họ">
+                            </div>
+                            <div class="col-12" style="margin-bottom: 20px">
+                                <div class="">
+                                    <input class="form-control" name="email" type="text" placeholder="Địa chỉ email">
+                                </div>
+                            </div>
+                            <div class="col-12" style="margin-bottom: 20px">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-control" name="code" type="text" placeholder="Mã xác nhận">
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="btn btn-primary" id="btnSend" onclick="sendCode()">Gửi</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" style="margin-bottom: 20px">
+                                <div class="">
+                                    <input class="form-control" name="password" type="password" placeholder="Mật khẩu">
+                                </div>
+                            </div>
+                            <div class="col-12" style="margin-bottom: 20px">
+                                <div class="">
+                                    <input class="form-control" name="comfirmPassword" type="password"
+                                           placeholder="Nhập lại mật khẩu">
+                                </div>
+                            </div>
+                            <div class="col-12" style="margin-bottom: 20px">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p>Ngày sinh</p>
+                                        <div class="">
+                                            <input name="birthDate" class="form-control" type="date">
                                         </div>
-                                        <div class="col-lg-6" style="margin-bottom: 20px">
-                                            <input name="firstName" type="text" class="form-control" id="firstname" placeholder="Tên">
-                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12" style="margin-bottom: 20px">
-                                    <div class="">
-                                        <input class="form-control" name="email" type="text" placeholder="Địa chỉ email">
-                                    </div>
-                                </div>
-                                <div class="col-12" style="margin-bottom: 20px">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <input class="form-control" name="code" type="text" placeholder="Mã xác nhận">
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="btn btn-primary" id="btnSend" onclick="sendCode()">Gửi</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12" style="margin-bottom: 20px">
-                                    <div class="">
-                                        <input class="form-control" name="password" type="password" placeholder="Mật khẩu">
-                                    </div>
-                                </div>
-                                <div class="col-12" style="margin-bottom: 20px">
-                                    <div class="">
-                                        <input class="form-control" name="comfirmPassword" type="password" placeholder="Nhập lại mật khẩu">
-                                    </div>
-                                </div>
-                                <div class="col-12" style="margin-bottom: 20px">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <p>Ngày sinh</p>
-                                            <div class="">
-                                                <input name="birthDate" class="form-control" type="date">
+                                    <div class="col-lg-6">
+                                        <p>Giới tính</p>
+                                        <div class="row" style="padding: 0 20px">
+                                            <div class="col-lg-5"
+                                                 style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
+                                                <input name="gender" value="true" type="radio" checked> &ensp;Nam
+                                            </div> &ensp;&ensp;
+                                            <div class="col-lg-5"
+                                                 style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
+                                                <input name="gender" value="false" type="radio">&ensp;Nữ
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <p>Giới tính</p>
-                                            <div class="row" style="padding: 0 20px">
-                                                <div class="col-lg-5" style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
-                                                    <input name="gender" value="true" type="radio" checked> &ensp;Nam
-                                                </div> &ensp;&ensp;
-                                                <div class="col-lg-5" style="padding: 10px; border: 1px solid #a0b3ce; border-radius: 10px">
-                                                    <input name="gender" value="false" type="radio">&ensp;Nữ
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12 text-center" style="margin-bottom: 20px">
-                                    <button class="btn btn-block btn-lg btn-primary w-50" type="submit">Đăng kí</button>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="col-12 text-center" style="margin-bottom: 20px">
+                                <button class="btn btn-block btn-lg btn-primary w-50" type="submit">Đăng kí</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <!-- Text -->
-                <div class="text-center mt-8">
-                    <p>Bạn đã có tài khoản? <a th:href="@{/signin}">Đăng nhập</a></p>
-                    <p><a href="./password-reset.html">Forgot Password?</a></p>
-                </div>
             </div>
-        </div> <!-- / .row -->
+
+            <!-- Text -->
+            <div class="text-center mt-8">
+                <p>Bạn đã có tài khoản? <a th:href="@{/signin}">Đăng nhập</a></p>
+                <p><a href="./password-reset.html">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div> <!-- / .row -->
     <script>
         document.querySelector("#signupform").addEventListener('submit', signup, true)
+
         function signup(event) {
             event.preventDefault();
             let formData = $("#signupform").serializeArray();
@@ -114,14 +122,14 @@
                 success: async function (data) {
                     closeError();
                     console.log(data)
-                    if(data.length != 0){
+                    if (data.length != 0) {
                         for (let i = 0; i < data.length; i++) {
                             document.getElementsByName(data[i].field)[0].style.border = '1px solid red';
                             toastDanger("Lỗi", data[i].message);
                         }
                     } else {
                         toastSuccess("Success", "Đăng kí thành công!")
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             window.location.href = 'signin'
                         }, 1000)
                     }
@@ -132,48 +140,43 @@
 
         let wait = 60;
 
-        function sendCode(){
+        async function sendCode() {
             let email = document.getElementsByName("email")[0].value;
             if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
-                $.ajax({
-                    url: 'signup/get-code',
-                    data: {
-                        email: email
-                    },
-                    error: function () {
-                        console.log("error")
-                    },
-                    success: async function (data) {
-                        if(data == 'success'){
-                            document.getElementById("btnSend").onclick = null;
-                            wait = 62;
-                            setWait();
-                            document.getElementsByName("email")[0].style.border = "1px solid #ebf1f7";
-                            toastSuccess("Thành công","Đã gửi mã xác nhận tới " + email +"!")
-                        } else {
-                            document.getElementsByName("email")[0].style.border = "1px solid red";
-                            toastDanger("Lỗi", "Địa chỉ email này đã được đăng kí!");
-                        }
-                    },
-                    type: 'POST'
-                });
+                document.getElementById('loader').style.display = 'unset';
+                let data = {
+                    email: email
+                }
+                let result = await callAjax('signup/get-code', data, 'POST')
+                if (result == 'success') {
+                    document.getElementById("btnSend").onclick = null;
+                    wait = 62;
+                    setWait();
+                    document.getElementsByName("email")[0].style.border = "1px solid #ebf1f7";
+                    toastSuccess("Thành công", "Đã gửi mã xác nhận tới " + email + "!");
+                } else {
+                    document.getElementsByName("email")[0].style.border = "1px solid red";
+                    toastDanger("Lỗi", "Địa chỉ email này đã được đăng kí!");
+                }
+                document.getElementById('loader').style.display = 'none';
+
             } else {
                 toastDanger("Lỗi", "Sai định dạng email!");
             }
         }
 
-        function setWait(){
+        function setWait() {
             wait = Number(wait) - 1;
             document.getElementById("btnSend").innerText = wait - 1 + 's';
-            if(wait > 0){
-                setTimeout(setWait, 100);
+            if (wait > 0) {
+                setTimeout(setWait, 1000);
             } else {
                 document.getElementById("btnSend").onclick = sendCode;
                 document.getElementById("btnSend").innerText = 'Gửi';
             }
         }
 
-        function closeError(){
+        function closeError() {
             document.getElementsByName("username")[0].style.border = '1px solid #ebf1f7';
             document.getElementsByName("firstName")[0].style.border = '1px solid #ebf1f7';
             document.getElementsByName("lastName")[0].style.border = '1px solid #ebf1f7';
@@ -183,6 +186,7 @@
             document.getElementsByName("comfirmPassword")[0].style.border = '1px solid #ebf1f7';
             document.getElementsByName("birthDate")[0].style.border = '1px solid #ebf1f7';
         }
+
     </script>
-    </div>
+</div>
 </html>

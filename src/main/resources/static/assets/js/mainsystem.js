@@ -214,7 +214,7 @@ function onAddRoomGroup(payload) {
         "</div>" + contentUserMessage.innerHTML;
 }
 
-function onCall(payload) {
+async function onCall(payload) {
     let call = JSON.parse(payload.body);
     console.log(call.fullnameCaller + "  " + call.ImageCaller)
     if (call.status == 'SENDCALL') {
@@ -223,12 +223,22 @@ function onCall(payload) {
         document.getElementById("nameCall1").innerHTML = call.fullnameCaller + ' đang gọi cho bạn!';
         document.getElementById("avtCall1").src = call.imageCaller;
         document.getElementById("caller1").value = call.caller;
+        document.getElementById('userInCallRoom').value = call.caller;
     } else if (call.status == 'CALLRETURN') {
         document.getElementById("container2call").style.width = '90%'
         document.getElementById("container2call").style.height = '90%'
         document.getElementsByClassName("waitCall1")[0].style.display = 'none';
         document.getElementById("containerCall").style.display = 'unset';
         document.getElementById("inCall").style.display = 'unset';
+    } else if(call.status == 'REFUSE'){
+        document.getElementById('call').style.display = 'none';
+        toastWarning('Thông báo','Đối phương đã từ chối cuộc gọi của bạn!');
+        let roomId = document.getElementById('idRoomMeet').value;
+        await api.deleteRoom(roomId);
+    } else if(call.status == 'END'){
+        window.location.reload();
+    } else if(call.status == 'END2'){
+        document.getElementById('waitcall').style.display = 'none';
     }
 }
 

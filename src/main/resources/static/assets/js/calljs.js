@@ -22,10 +22,22 @@ const vm = new Vue({
         if (roomId) {
             this.roomId = roomId;
 
+
             await this.join();
         }
     },
     methods: {
+        outRoom: async function (){
+            // let roomId = document.getElementById('idRoomMeet').value;
+            // await api.deleteRoom(roomId);
+            stompClientCall.send("/app/call/" + document.getElementById("userInCallRoom").value,
+                {},
+                JSON.stringify({
+                    status: 'END'
+                })
+            );
+            window.location.reload();
+        },
         authen: function() {
             return new Promise(async resolve => {
                 const userId = `${(Math.random() * 100000).toFixed(6)}`;

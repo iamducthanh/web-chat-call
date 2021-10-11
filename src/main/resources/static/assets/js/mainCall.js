@@ -11,7 +11,7 @@ function onCallVideo(){
     let imageCaller = document.getElementById("avtMyUser").src;
     let fullnameCaller = document.getElementById("fullname").value;
     let rooomId = document.getElementById('idRoomMeet').value;
-
+    document.getElementById('userInCallRoom').value = listener;
     setTimeout(konghe, 60000);
     stompClientCall.send("/app/call/" + listener,
         {},

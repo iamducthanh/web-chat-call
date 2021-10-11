@@ -26,12 +26,13 @@
         </button>
       </div>
       <div>
-        <button class="btn btn-primary" style="display: none" id="createMeet" v-if="!room" @click="createRoom">
+        <button class="btn btn-primary" style="display: none" id="createMeet" @click="createRoom">
           Tạo Meeting
         </button>
         <input type="hidden" value="" id="idRoomMeet" onchange="onCallVideo();">
+        <input type="hidden" value="" id="userInCallRoom">
 
-        <button class="btn btn-info" style="display: none" id="joinMeet" v-if="!room" @click="joinWithId">
+        <button class="btn btn-info" style="display: none" id="joinMeet" @click="joinWithId">
           Join Meeting
         </button>
       </div>
@@ -41,6 +42,9 @@
         <button class="btn btn-info" v-if="room" @click="publish(true)">
           Chia sẻ màn hình
         </button>
+        <button class="btn btn-danger" id="outMeet" v-if="room" @click="outRoom(room)">
+          Kết thúc
+        </button>
       </div>
     </div>
 
@@ -48,5 +52,6 @@
       <div id="videos"></div>
     </div>
   </div>
+
 </div>
 </html>

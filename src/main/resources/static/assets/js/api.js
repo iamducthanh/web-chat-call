@@ -1,15 +1,18 @@
 const PROJECT_ID = "SKUHjTfneSH0s28jgt1FuYZRqloBz4o2D";
 const PROJECT_SECRET = "VFhOYnNkWmNYWW9GcXhEVWJlb0UzZGdhd0pnclFHQg==";
 const BASE_URL = "https://api.stringee.com/v1/room2";
+// let api = null;
 
 class API {
     constructor(projectId, projectSecret) {
+        console.log(11111111111111111111111)
         this.projectId = projectId;
         this.projectSecret = projectSecret;
         this.restToken = "";
     }
 
     async createRoom() {
+        console.log(22222222222222222222222222222)
         const roomName = Math.random().toFixed(4);
         const response = await axios.post(
             `${BASE_URL}/create`,
@@ -28,6 +31,7 @@ class API {
     }
 
     async listRoom() {
+        console.log(3333333333333333333333333333)
         const response = await axios.get(`${BASE_URL}/list`, {
             headers: this._authHeader()
         });
@@ -38,6 +42,7 @@ class API {
     }
 
     async deleteRoom(roomId) {
+        console.log(44444444444444444444444444444)
         const response = await axios.put(`${BASE_URL}/delete`, {
             roomId
         }, {
@@ -57,6 +62,7 @@ class API {
     }
 
     async setRestToken() {
+        console.log(5555555555555555555555555555)
         const tokens = await this._getToken({ rest: true });
         const restToken = tokens.rest_access_token;
         this.restToken = restToken;
@@ -65,16 +71,19 @@ class API {
     }
 
     async getUserToken(userId) {
+        console.log(666666666666666666666666666666666)
         const tokens = await this._getToken({ userId });
         return tokens.access_token;
     }
 
     async getRoomToken(roomId) {
+        console.log(7777777777777777777777777777)
         const tokens = await this._getToken({ roomId });
         return tokens.room_token;
     }
 
     async _getToken({ userId, roomId, rest }) {
+        console.log(8888888888888888888888888888888)
         const response = await axios.get(
             "https://v2.stringee.com/web-sdk-conference-samples/php/token_helper.php",
             {
@@ -99,10 +108,11 @@ class API {
     }
 
     _authHeader() {
+        console.log(9999999999999999999999999999999)
         return {
             "X-STRINGEE-AUTH": this.restToken
         };
     }
 }
-
-const api = new API(PROJECT_ID, PROJECT_SECRET);
+let api = null;
+ api = new API(PROJECT_ID, PROJECT_SECRET);
