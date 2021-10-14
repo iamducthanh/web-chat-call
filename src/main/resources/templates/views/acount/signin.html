@@ -17,6 +17,7 @@
                             <div class="text-center">
                                 <h3 class="fw-bold mb-2">Đăng nhập</h3>
                                 <p>Nhập bừa đi không check đâu</p>
+                                <input type="hidden" id="unlock" th:value="${unlock}">
                             </div>
                         </div>
                         <form th:action="@{'/j_spring_security_check'}" method="post">
@@ -64,14 +65,17 @@
             document.getElementById("submitLogin").click();
         }
 
-        function remember() {
+        async function remember() {
+            document.getElementById("loader").style.display = 'unset';
             let remember = document.getElementById("remember");
             $.ajax({
                 url: 'signin',
                 data: {
                     username: document.querySelector("#signin-username").value,
                     password: document.querySelector("#signin-password").value,
-                    remember: remember.checked
+                    remember: remember.checked,
+                    unlock: document.querySelector("#unlock").value,
+                    ip: await callAjax('https://iamducthanh-webchat.herokuapp.com/get-ip',null,'GET')
                 },
                 error: function () {
                     console.log("error")
@@ -80,6 +84,7 @@
                     if(data.length == 0){
                         document.getElementById("submitLogin").click();
                     } else {
+                        document.getElementById("loader").style.display = 'none';
                         document.getElementById("errorAlert").style.overflowY = 'auto';
                         document.getElementById("errorAlert").style.display = "unset";
                         document.getElementById("errormessage").innerText = data;
@@ -87,6 +92,7 @@
                 },
                 type: 'POST'
             });
+            document.getElementById("loader").style.display = 'none';
         }
     </script>
 </div>

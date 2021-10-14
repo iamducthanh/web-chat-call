@@ -2,11 +2,10 @@ package com.webchat.webchat.controller.web;
 
 import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.UserDeleteGroupDto;
+import com.webchat.webchat.entities.Location;
 import com.webchat.webchat.entities.User;
-import com.webchat.webchat.pojo.MessageUserConnectPojo;
-import com.webchat.webchat.pojo.MessageUserRealtime;
-import com.webchat.webchat.pojo.RoomGroupPojo;
-import com.webchat.webchat.pojo.UserOnline;
+import com.webchat.webchat.pojo.*;
+import com.webchat.webchat.service.impl.LocationService;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
@@ -25,6 +24,8 @@ import java.util.List;
 
 @Controller
 public class SystemController {
+    @Autowired
+    LocationService locationService;
 
     @MessageMapping("/system.adduser")
     @SendTo("/topic/system.adduser")
@@ -69,5 +70,19 @@ public class SystemController {
     @SendTo("/topic/system.deleteRoomGroup/{username}")
     public UserDeleteGroupDto deleteRoomGroup(@Payload UserDeleteGroupDto userDeleteGroupDto) {
         return userDeleteGroupDto;
+    }
+
+    @MessageMapping("/system.location/{ip}")
+    @SendTo("/topic/system.location/{ip}")
+    public LocationPojo ipFunction(@Payload LocationPojo locationPojo) {
+        System.out.println(locationPojo.toString());
+        Location location = locationService.findByUserAndIp(locationPojo.getUsername(), locationPojo.getIp());
+        if(location != null){
+            if(!location.getStatus().equals("BLOCK")){
+                location.setStatus("BLOCK");
+                locationService.saveLocation(location);
+            }
+        }
+        return locationPojo;
     }
 }

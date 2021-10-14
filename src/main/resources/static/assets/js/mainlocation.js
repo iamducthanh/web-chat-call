@@ -1,8 +1,13 @@
+'use strict';
+
+let stompClientLocation = null;
+let socketLocation = null;
+let ipAddress = null;
+
 function getLocation() {
     $.getJSON("https://ipinfo.io/", onLocationGot);
     getO()
 }
-
 function fnBrowserDetect() {
     let browserName = (function (agent) {
         switch (true) {
@@ -27,14 +32,36 @@ function fnBrowserDetect() {
 return browserName;
 }
 
+function socketLocationConnected(){
+    console.log("location connected")
+    stompClientLocation.subscribe('/topic/system.location/' + ipAddress, onLocationAction);
+}
+function onLocationAction(payload){
+    let action = JSON.parse(payload.body);
+    console.log(action)
+    window.location.href = 'signin_unlock';
+
+}
+function onErrorLocation(){
+    console.log("Lỗi socket location");
+}
+
 window.onload = async function () {
-    fnBrowserDetect();
     $.ajax({
         url: 'https://iamducthanh-webchat.herokuapp.com/get-ip',
         error: function () {
             console.log("error")
         },
         success: async function (ip) {
+            ipAddress = ip
+            socketLocation = new SockJS('/chatroom/system');
+            stompClientLocation = Stomp.over(socketLocation);
+            stompClientLocation.connect({}, socketLocationConnected, onErrorLocation);
+            let divLogout = document.getElementById(ip);
+            // divLogout.onclick = null;
+            divLogout.style.color = 'green';
+            divLogout.innerText = "Thiết bị của bạn";
+
             fetch('http://api.ipstack.com/' + ip + '?access_key=' + ACCESS_KEY, {
                 method: 'GET'
             })
@@ -52,8 +79,10 @@ window.onload = async function () {
                         error: function () {
                             console.log("error")
                         },
-                        success: async function (ip) {
-
+                        success: async function (out) {
+                            if(out == 'BLOCK'){
+                                window.location.href = 'signin_unlock';
+                            }
                         },
                         type: 'POST'
                     });
@@ -65,6 +94,18 @@ window.onload = async function () {
         type: 'GET'
     });
 
+}
+
+function logoutByIp(tag){
+    let divLogout = document.getElementById(tag.id);
+    divLogout.onclick = null;
+    divLogout.style.color = 'green';
+    divLogout.innerText = "Đã đăng xuất";
+    console.log(tag.id);
+    stompClientLocation.send("/app/system.location/" + tag.id,
+        {},
+        JSON.stringify({ip: tag.id, username: userOnline})
+    );
 }
 
 function getO() {

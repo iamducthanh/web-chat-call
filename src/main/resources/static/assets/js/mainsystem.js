@@ -19,6 +19,7 @@ let socketRoomGroup = null;
 let socketDelRoomGroup = null;
 let socketFriend = null;
 
+// ip = document.querySelector("#")
 userOnline = document.querySelector('#userOnline').value.trim();
 userIdOnline = document.querySelector('#userIdOnline').value.trim();
 

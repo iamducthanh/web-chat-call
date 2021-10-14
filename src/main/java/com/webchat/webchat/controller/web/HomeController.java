@@ -58,6 +58,7 @@ public class HomeController {
     @ResponseBody
     public String logIp(LocationDto locationDto){
         System.out.println(locationDto.toString());
+        String out = "OK";
         User user = (User) sessionUtil.getObject("USER");
         Location location = locationService.findByUserAndIp(user.getUsername(), locationDto.getIp());
         if(location == null){
@@ -70,8 +71,12 @@ public class HomeController {
                     new Date()
             );
             locationService.saveLocation(location);
+        } else {
+            if(location.getStatus().equals("BLOCK")){
+                out = "BLOCK";
+            }
         }
-        return "add";
+        return out;
     }
 
     @GetMapping(value = "/call")

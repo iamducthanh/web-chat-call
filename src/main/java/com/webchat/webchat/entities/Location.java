@@ -37,6 +37,9 @@ public class Location {
     @Column(name = "time")
     private Date time;
 
+    @Column(name = "status")
+    private String status;
+
     public Location(User user, String ip, String longitude, String latitude, String address, Date time) {
         this.user = user;
         this.ip = ip;
