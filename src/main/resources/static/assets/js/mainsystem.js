@@ -244,6 +244,8 @@ async function onCall(payload) {
 }
 
 function onMessageRealtime(payload) {
+    document.getElementById('tingting').play();
+    console.log('tinh tinh');
     let messageRealtime = JSON.parse(payload.body);
     let classname = 'messUser' + messageRealtime.reader + messageRealtime.sender;
     console.log(classname)

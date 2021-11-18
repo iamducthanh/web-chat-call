@@ -1,6 +1,8 @@
 package com.webchat.webchat.utils;
 
 import com.google.api.services.drive.Drive;
+import com.webchat.webchat.entities.User;
+import com.webchat.webchat.repository.UserRepository;
 import com.webchat.webchat.service.impl.RoomDetailService;
 import com.webchat.webchat.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.security.InvalidKeyException;
+import java.util.List;
 
 public class TestUtil {
     @Autowired
@@ -19,25 +22,13 @@ public class TestUtil {
     @Autowired
     private Drive googleDrive;
 
-
+    @Autowired
+    static UserRepository userRepository;
 
 
     public static void main(String[] args) throws InvalidKeyException, IOException, InterruptedException {
-//        UUID uuid1 = UUID.randomUUID();
-//        UUID uuid2 = UUID.randomUUID();
-//        UUID uuid3 = UUID.randomUUID();
-//        UUID uuid4 = UUID.randomUUID();
-//        System.out.println(uuid1);
-//        System.out.println(uuid2);
-//        System.out.println(uuid3);
-//        System.out.println(uuid4);
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String password = "123";
-//        String encodedPassword = passwordEncoder.encode(password);
-//        System.out.println(encodedPassword);
-//        System.out.println(userService.findByUsername("admin").getFirstName());
-//        List<RoomDetail> roomDetails = roomDetailService.findByUser(1);
-//        System.out.println(roomDetails.size());
+        List<User> list = userService.findAll();
+        System.out.println(list.size());
 
     }
 }

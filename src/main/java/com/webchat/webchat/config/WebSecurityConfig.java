@@ -1,5 +1,7 @@
 package com.webchat.webchat.config;
 
+import com.webchat.webchat.filter.CustomerAuthenticationFilter;
+import com.webchat.webchat.filter.CustomerAuthorizationFilter;
 import com.webchat.webchat.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +10,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -33,13 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomerAuthenticationFilter customerAuthenticationFilter = new CustomerAuthenticationFilter(authenticationManagerBean());
+        customerAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
-        http.authorizeRequests().antMatchers("/signin/**", "/signin_unlock/**", "/signup/**","/lock_acount","/testImage").permitAll();
+        http.authorizeRequests().antMatchers("/signin/**", "/chatroom/assets/**", "/api/login/**", "/signin_unlock/**", "/signup/**","/lock_acount","/test").permitAll();
 
         http.authorizeRequests().antMatchers("/*").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
-        http.authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/admin/**", "/api/admin/**").access("hasRole('ROLE_ADMIN')");
 
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
@@ -55,6 +62,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and() //
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60); // 24h
+
+        http.addFilter(customerAuthenticationFilter);
+        http.addFilterBefore(new CustomerAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

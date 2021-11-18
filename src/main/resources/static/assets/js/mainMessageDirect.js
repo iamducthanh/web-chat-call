@@ -222,6 +222,7 @@ async function onMessageReceived(payload) {
                 }
             }
         } else {
+            document.getElementById('tingting').play();
             addDivMessageReader(messageArea, message, timeChat);
             let classRe = document.getElementsByName(names);
             if (classRe != null) {
