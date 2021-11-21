@@ -17,9 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 /**
  * @author GMO_ThanhND
@@ -47,22 +45,31 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        String access_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 1000))
-                .withIssuer(request.getRequestURL().toString())
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .sign(algorithm);
-        String refresh_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-                .withIssuer(request.getRequestURL().toString())
-                .sign(algorithm);
-        Map<String, String> tokens = new HashMap<String, String>();
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
-        response.setContentType("application/json");
-        new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        String role = roles.get(0).toString();
+        System.out.println(role);
+        if(role.equals("ROLE_ADMIN")){
+            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+            String access_token = JWT.create()
+                    .withSubject(user.getUsername())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 1000))
+                    .withIssuer(request.getRequestURL().toString())
+                    .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                    .sign(algorithm);
+            String refresh_token = JWT.create()
+                    .withSubject(user.getUsername())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                    .withIssuer(request.getRequestURL().toString())
+                    .sign(algorithm);
+            Map<String, String> tokens = new HashMap<String, String>();
+            tokens.put("access_token", access_token);
+            tokens.put("refresh_token", refresh_token);
+            response.setContentType("application/json");
+            new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+        } else {
+            Map<String, String> tokens = new HashMap<String, String>();
+            tokens.put("access_token", "USER");
+            new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+        }
     }
 }

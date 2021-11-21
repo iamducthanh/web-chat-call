@@ -26,9 +26,9 @@ public class TestUtil {
     static UserRepository userRepository;
 
 
-    public static void main(String[] args) throws InvalidKeyException, IOException, InterruptedException {
-        List<User> list = userService.findAll();
-        System.out.println(list.size());
+    // public static void main(String[] args) throws InvalidKeyException, IOException, InterruptedException {
+    //     List<User> list = userService.findAll();
+    //     System.out.println(list.size());
 
-    }
+    // }
 }

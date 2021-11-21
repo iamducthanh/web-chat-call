@@ -159,14 +159,14 @@ public class SignUpController {
         userService.saveUser(userSignup);
     }
 
-    public static void main(String[] args) {
-        BCryptPasswordEncoder pass = new BCryptPasswordEncoder();
-        String code = "123";
-        String a = pass.encode(code);
-        String b = pass.encode(code);
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(pass.matches(code, b));
-    }
+    // public static void main(String[] args) {
+    //     BCryptPasswordEncoder pass = new BCryptPasswordEncoder();
+    //     String code = "123";
+    //     String a = pass.encode(code);
+    //     String b = pass.encode(code);
+    //     System.out.println(a);
+    //     System.out.println(b);
+    //     System.out.println(pass.matches(code, b));
+    // }
 
 }

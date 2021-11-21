@@ -6,6 +6,7 @@ import com.webchat.webchat.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.web.filter.CorsFilter;
 
 
 @Configuration
@@ -23,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private CorsFilter corsFilter;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -40,9 +44,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CustomerAuthenticationFilter customerAuthenticationFilter = new CustomerAuthenticationFilter(authenticationManagerBean());
         customerAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
+        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
-        http.authorizeRequests().antMatchers("/signin/**", "/chatroom/assets/**", "/api/login/**", "/signin_unlock/**", "/signup/**","/lock_acount","/test").permitAll();
+        http.authorizeRequests().antMatchers("/api/login").permitAll();
+        http.authorizeRequests().antMatchers("/signin/**", "/chatroom/assets/**", "/signin_unlock/**", "/signup/**", "/lock_acount", "/test").permitAll();
 
         http.authorizeRequests().antMatchers("/*").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
@@ -63,8 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60); // 24h
 
-        http.addFilter(customerAuthenticationFilter);
-        http.addFilterBefore(new CustomerAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+       http.addFilter(customerAuthenticationFilter);
+       http.addFilterBefore(new CustomerAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

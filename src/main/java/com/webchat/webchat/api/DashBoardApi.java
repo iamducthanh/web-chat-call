@@ -1,6 +1,10 @@
 package com.webchat.webchat.api;
 
+import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.CountMessageDto;
+import com.webchat.webchat.dto.ThongKeNguoiDungDto;
+import com.webchat.webchat.entities.User;
+import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.service.impl.CountMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +27,9 @@ public class DashBoardApi {
     @Autowired
     private CountMessageService countMessageService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping("/thong-ke-tin-nhan")
     public ResponseEntity<List<CountMessageDto>> thongKeTinNhan(@RequestParam String year){
         List<CountMessageDto> countMessages = new ArrayList<CountMessageDto>();
@@ -30,5 +37,15 @@ public class DashBoardApi {
             countMessages.add(new CountMessageDto("thang" + i, countMessageService.count(String.valueOf(i), year)));
         }
         return ResponseEntity.ok().body(countMessages);
+    }
+
+    @GetMapping("/thong-ke-nguoi-dung")
+    public ResponseEntity<ThongKeNguoiDungDto> thongKeNguoiDung(){
+        List<User> users = userService.findAll();
+        ThongKeNguoiDungDto thongKeNguoiDung = new ThongKeNguoiDungDto();
+        thongKeNguoiDung.setQuantity(users.size());
+        thongKeNguoiDung.setOnline(UsersOnline.usersOnline.size());
+        thongKeNguoiDung.setOffline(users.size() - UsersOnline.usersOnline.size());
+        return ResponseEntity.ok().body(thongKeNguoiDung);
     }
 }

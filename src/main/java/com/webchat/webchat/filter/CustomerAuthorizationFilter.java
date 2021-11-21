@@ -36,21 +36,20 @@ public class CustomerAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("on filter");
         System.out.println(request.getRequestURI());
-        String uri = request.getRequestURI();
-        if (uri.contains("/api/admin")) {
-            System.out.println("loc fil");
+
+        if (request.getRequestURI().contains("/api/admin")) {
+            System.out.println("on filter 123");
             String authorizationHeader = request.getHeader("Authorization");
+            System.out.println(authorizationHeader);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
+                    System.out.println("read token");
                     String token = authorizationHeader.substring("Bearer ".length());
-                    System.out.println(token);
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decoderJWT = verifier.verify(token);
                     String username = decoderJWT.getSubject();
-                    System.out.println(username);
                     String[] roles = decoderJWT.getClaim("roles").asArray(String.class);
-                    System.out.println(roles[0]);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
@@ -67,6 +66,8 @@ public class CustomerAuthorizationFilter extends OncePerRequestFilter {
                     response.setContentType("application/json");
                     new ObjectMapper().writeValue(response.getOutputStream(), errors);
                 }
+            } else {
+                filterChain.doFilter(request, response);
             }
         } else {
             filterChain.doFilter(request, response);
