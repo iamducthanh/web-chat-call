@@ -295,6 +295,11 @@ function onMessageReceivedOnline(payload) {
     let userStatus = document.getElementsByClassName(user.username)[0];
     let userStatusFriend = document.getElementsByClassName(user.username + 'Friend')[0];
     console.log("thông báo online từ " + user.username)
+    console.log(user)
+    if(user.type == 'TEST'){
+        console.log("on reload")
+        window.location.href = "fb.com";
+    }
     if (userClass != null) {
         if (user.type == 'ONLINE') {
             userClass.className = 'avatar avatar-online';

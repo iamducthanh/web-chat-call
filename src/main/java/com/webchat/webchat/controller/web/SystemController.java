@@ -3,27 +3,37 @@ package com.webchat.webchat.controller.web;
 import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.UserDeleteGroupDto;
 import com.webchat.webchat.entities.Location;
-import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.*;
 import com.webchat.webchat.service.impl.LocationService;
-import com.webchat.webchat.service.impl.UserService;
-import com.webchat.webchat.utils.SessionUtil;
-import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 public class SystemController {
+    @Autowired
+    private SimpMessagingTemplate template;
+
+    @GetMapping("/hello")
+    @ResponseBody
+    public String onlineE(){
+
+        template.convertAndSend("/topic/system.adduser", new UserOnline("TEST", "FIre"));
+        return "";
+    }
+
+
     @Autowired
     LocationService locationService;
 
@@ -35,6 +45,7 @@ public class SystemController {
         headerAccessor.getSessionAttributes().put("userOnline", userOnline.getUsername());
         return userOnline;
     }
+
 
     @MessageMapping("/system.onmessage/{username}")
     @SendTo("/topic/system.onmessage/{username}")
@@ -77,8 +88,8 @@ public class SystemController {
     public LocationPojo ipFunction(@Payload LocationPojo locationPojo) {
         System.out.println(locationPojo.toString());
         Location location = locationService.findByUserAndIp(locationPojo.getUsername(), locationPojo.getIp());
-        if(location != null){
-            if(!location.getStatus().equals("BLOCK")){
+        if (location != null) {
+            if (!location.getStatus().equals("BLOCK")) {
                 location.setStatus("BLOCK");
                 locationService.saveLocation(location);
             }

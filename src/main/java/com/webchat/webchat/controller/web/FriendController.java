@@ -43,7 +43,7 @@ public class FriendController {
 
         } else if(friendRequest.getType().equals("CANCEL")){
             deleteFriend(Integer.parseInt(friendRequest.getSenderId()), Integer.parseInt(friendRequest.getUserId()));
-        } else if(friendRequest.getType().equals("AGREE")){
+        } else if(friendRequest.getType().equals    ("AGREE")){
             agreeFriendRequest(friendRequest, Integer.parseInt(friendRequest.getSenderId()), Integer.parseInt(friendRequest.getUserId()));
         }
         return friendRequest;
