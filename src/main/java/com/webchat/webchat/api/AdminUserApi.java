@@ -7,10 +7,7 @@ import com.webchat.webchat.pojo.UserPojo;
 import com.webchat.webchat.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,7 @@ public class AdminUserApi {
         List<User> users = userService.findAll();
         List<UserPojo> userPojos = new ArrayList<>();
         users.forEach((user) -> {
+            System.out.println(user.toString());
             if(!user.getUsername().equals(username)){
                 userPojos.add(new UserPojo(
                         user.getId(),
@@ -47,10 +45,49 @@ public class AdminUserApi {
                         user.isOnline(),
                         user.getPhone(),
                         user.getDescription(),
-                        user.getBirthDayString()
+                        user.getBirthDayString(),
+                        user.isStatus()
                 ));
             }
         });
         return ResponseEntity.ok().body(userPojos);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserPojo> getUser(@PathVariable("id") String id){
+        User user = userService.findById(Integer.parseInt(id));
+        UserPojo userPojo = new UserPojo(
+                user.getId(),
+                user.getUsername(),
+                user.getFullname(),
+                user.getEmail(),
+                user.getImage(),
+                user.getLastonline(),
+                user.isGender(),
+                user.getRole(),
+                user.getBirthDate(),
+                user.getLastOnlineString(),
+                user.isOnline(),
+                user.getPhone(),
+                user.getDescription(),
+                user.getBirthDayString(),
+                user.isStatus()
+        );
+        return ResponseEntity.ok().body(userPojo);
+    }
+
+    @PostMapping("/user/save")
+    public void saveUser(@RequestBody UserPojo userPojo){
+        User user = userService.findById(userPojo.getId());
+        user.setRole(userPojo.getRole());
+        user.setStatus(userPojo.isStatus());
+//        User user = new User(
+//                userPojo.getId(),
+//                userPojo.getRole(),
+//                userPojo.isStatus()
+//        );
+        userService.saveUser(user);
+        System.out.println(user .toString());
+    }
+
 }

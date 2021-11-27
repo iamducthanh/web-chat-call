@@ -66,6 +66,9 @@ public class User {
     @Column(name = "birthdate")
     private Date birthDate;
 
+    @Column(name = "status")
+    private boolean  status;
+
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
 
@@ -145,5 +148,11 @@ public class User {
             last = "Hoạt động "+ diffSeconds + " giây trước";
         }
         return last;
+    }
+
+    public User(Integer id, String role, Boolean status) {
+        this.id = id;
+        this.role = role;
+        this.status = status;
     }
 }

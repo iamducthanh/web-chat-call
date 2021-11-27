@@ -113,6 +113,8 @@ public class SignInController {
             BCryptPasswordEncoder pass = new BCryptPasswordEncoder();
             if(!pass.matches(password, user.getPassword())){
                 message = "Thông tin tài khoản hoặc mật khẩu không chính xác!";
+            } else if(!user.isStatus()){
+                message = "Tài khoản của bạn đã bị khóa!!";
             } else {
                 if(unlock.equals("on")){
                     Location location = locationService.findByUserAndIp(user.getUsername(), ip);

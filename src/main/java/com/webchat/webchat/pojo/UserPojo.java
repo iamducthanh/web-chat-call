@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class UserPojo {
     private Integer id;
@@ -27,5 +27,41 @@ public class UserPojo {
     private String phone;
     private String descreption;
     private String birthdayString;
+    private boolean status;
 
+
+    public UserPojo(Integer id, String username, String fullName, String email, String image, Date lastonline, boolean gender, String role, Date birthDate, String friendStatus, boolean online, String phone, String descreption, String birthdayString, boolean status) {
+        this.id = id;
+        this.username = username;
+        this.fullName = fullName;
+        this.email = email;
+        this.image = image;
+        this.lastonline = lastonline;
+        this.gender = gender;
+        this.role = role;
+        this.birthDate = birthDate;
+        this.friendStatus = friendStatus;
+        this.online = online;
+        this.phone = phone;
+        this.descreption = descreption;
+        this.birthdayString = birthdayString;
+        this.status = status;
+    }
+
+    public UserPojo(Integer id, String username, String fullName, String email, String image, Date lastonline, boolean gender, String role, Date birthDate, String friendStatus, boolean online, String phone, String descreption, String birthdayString) {
+        this.id = id;
+        this.username = username;
+        this.fullName = fullName;
+        this.email = email;
+        this.image = image;
+        this.lastonline = lastonline;
+        this.gender = gender;
+        this.role = role;
+        this.birthDate = birthDate;
+        this.friendStatus = friendStatus;
+        this.online = online;
+        this.phone = phone;
+        this.descreption = descreption;
+        this.birthdayString = birthdayString;
+    }
 }
