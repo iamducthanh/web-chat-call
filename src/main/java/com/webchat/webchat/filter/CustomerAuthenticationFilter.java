@@ -3,6 +3,9 @@ package com.webchat.webchat.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webchat.webchat.dto.UserLoginDto;
+import com.webchat.webchat.utils.HttpUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,10 +35,15 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
         this.authenticationManager = authenticationManager;
     }
 
+    @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        System.out.println(request.getReader());
+        UserLoginDto userLoginDto = HttpUtil.of(request.getReader()).toModel(UserLoginDto.class);
+        System.out.println(userLoginDto.toString());
+        String username = userLoginDto.getUsername();
+        String password = userLoginDto.getPassword();
+        // request.get
         log.info("Username is: {}", username);
         log.info("Password is: {}", password);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);

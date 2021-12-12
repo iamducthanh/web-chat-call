@@ -3,7 +3,7 @@ import { loginClient } from './loginApi';
 
 const userApi = {
     getToken(data){
-        return loginClient.get(`api/login?username=${data.username}&password=${data.password}`);
+        return loginClient.post(`api/login`, data);
     },
 
     getUsers(username){
