@@ -3,14 +3,14 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <body th:fragment="message-direct">
-<div th:replace="/commons/web/modal-user-profile :: modal-user-profile"></div>
+<div th:replace="~{commons/web/modal-user-profile :: modal-user-profile}"></div>
 
 <main class="main is-visible" data-dropzone-area="" id="message-direct" style="display: none;">
     <div class="container h-100">
         <div class="d-flex flex-column h-100 position-relative">
             <!-- Chat: Header -->
-            <div th:replace="/component/web/header-message-direct :: header-message-direct"></div>
-            <div th:replace="/component/web/header-message-group :: header-message-group"></div>
+            <div th:replace="~{component/web/header-message-direct :: header-message-direct}"></div>
+            <div th:replace="~{component/web/header-message-group :: header-message-group}"></div>
             <!-- Chat: Header -->
 
             <!-- Chat: Content -->
@@ -96,9 +96,9 @@
 </main>
 <!-- Chat -->
 <!-- Chat: Info -->
-<div th:replace="/component/web/chat-direct-info :: chat-direct-info"></div>
-<div th:replace="/component/web/chat-group-info :: chat-group-info"></div>
-<div th:replace="/component/web/add-member :: add-member"></div>
+<div th:replace="~{component/web/chat-direct-info :: chat-direct-info}"></div>
+<div th:replace="~{component/web/chat-group-info :: chat-group-info}"></div>
+<div th:replace="~{component/web/add-member :: add-member}"></div>
 <div class="offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
      id="offcanvas-more">
     <!-- Offcanvas Header -->
@@ -296,7 +296,7 @@
             <!-- Profile -->
 
             <!-- Media -->
-            <div th:replace="/commons/web/modal-media :: modal-media"></div>
+            <div th:replace="~{commons/web/modal-media :: modal-media}"></div>
             <!-- Media -->
 
             <!-- Files -->

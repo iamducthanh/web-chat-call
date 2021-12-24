@@ -1,5 +1,4 @@
 package com.webchat.webchat.constant;
-
 import com.webchat.webchat.pojo.UserConnectPojo;
 
 import java.util.ArrayList;

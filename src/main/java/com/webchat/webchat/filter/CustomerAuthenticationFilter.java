@@ -38,7 +38,6 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        System.out.println(request.getReader());
         UserLoginDto userLoginDto = HttpUtil.of(request.getReader()).toModel(UserLoginDto.class);
         System.out.println(userLoginDto.toString());
         String username = userLoginDto.getUsername();
@@ -50,7 +49,7 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    @Override
+    @Override  
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
         List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());

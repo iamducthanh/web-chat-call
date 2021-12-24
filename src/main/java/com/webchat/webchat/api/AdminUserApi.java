@@ -3,10 +3,12 @@ package com.webchat.webchat.api;
 import com.webchat.webchat.dto.CountMessageDto;
 import com.webchat.webchat.dto.UserDto;
 import com.webchat.webchat.entities.User;
+import com.webchat.webchat.pojo.UserOnline;
 import com.webchat.webchat.pojo.UserPojo;
 import com.webchat.webchat.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ import java.util.List;
 public class AdminUserApi {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserPojo>> getUsers(@RequestParam("username") String username){
@@ -81,6 +86,10 @@ public class AdminUserApi {
         User user = userService.findById(userPojo.getId());
         user.setRole(userPojo.getRole());
         user.setStatus(userPojo.isStatus());
+
+        if(!userPojo.isStatus()){
+            template.convertAndSend("/topic/system.adduser", new UserOnline(userPojo.getUsername(), "BLOCK"));
+        }
 //        User user = new User(
 //                userPojo.getId(),
 //                userPojo.getRole(),
