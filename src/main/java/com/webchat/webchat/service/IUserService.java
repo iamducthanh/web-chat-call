@@ -31,4 +31,5 @@ public interface IUserService {
     List<ErrorPojo> updateProfile(UserProfileUpdateDto userProfileUpdateDto, BindingResult result);
     List<ErrorPojo> changePassword(ChangePasswordDto changePasswordDto, BindingResult result);
     List<String> getUserOnlineInRoom(String roomId);
+    UserPojo getUserByUsername(String username);
 }

@@ -13,6 +13,7 @@ import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.service.impl.FriendService;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.SessionUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,15 +28,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
 public class UserApi {
-    @Autowired
-    private IUserService userService;
-
-    @Autowired
-    private SessionUtil sessionUtil;
-
-    @Autowired
-    private IFriendService friendService;
+    private final IUserService userService;
+    private final SessionUtil sessionUtil;
+    private final IFriendService friendService;
 
     @PostMapping("/user/search")
     @ResponseBody
@@ -106,25 +103,7 @@ public class UserApi {
     @GetMapping("/user/get-by-username")
     @ResponseBody
     public UserPojo getUserByUsername(String username) {
-        User user = userService.findByUsername(username);
-        UserPojo userPojo = new UserPojo(
-                user.getId(),
-                user.getUsername(),
-                user.getFullname(),
-                user.getEmail(),
-                user.getImage(),
-                user.getLastonline(),
-                user.isGender(),
-                user.getRole(),
-                user.getBirthDate(),
-                "",
-                user.isOnline(),
-                user.getPhone(),
-                user.getDescription(),
-                user.getBirthDayString()
-        );
-
-        return userPojo;
+        return userService.getUserByUsername(username);
 
     }
 }

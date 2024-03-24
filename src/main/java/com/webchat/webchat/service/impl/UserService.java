@@ -253,6 +253,29 @@ public class UserService implements IUserService {
         return userOnline;
     }
 
+    @Override
+    public UserPojo getUserByUsername(String username) {
+        List<User> list = userRepo.findUserByUsername(username);
+        User user =  list.isEmpty() ? null : list.get(0);
+        UserPojo userPojo = new UserPojo(
+                user.getId(),
+                user.getUsername(),
+                user.getFullname(),
+                user.getEmail(),
+                user.getImage(),
+                user.getLastonline(),
+                user.isGender(),
+                user.getRole(),
+                user.getBirthDate(),
+                "",
+                user.isOnline(),
+                user.getPhone(),
+                user.getDescription(),
+                user.getBirthDayString()
+        );
+        return userPojo;
+    }
+
     public void saveUpdateUserProfile(User user, UserProfileUpdateDto userProfileUpdateDto){
         user.setPhone(userProfileUpdateDto.getPhone());
         user.setUsername(userProfileUpdateDto.getUsername());

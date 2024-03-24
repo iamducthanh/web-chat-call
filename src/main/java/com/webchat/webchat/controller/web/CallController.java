@@ -15,8 +15,6 @@ public class CallController {
     @MessageMapping("/call/{username}")
     @SendTo("/topic/call/{username}")
     public CallPojo onMessage(@Payload CallPojo callDto) {
-        System.out.println("call pojo");
-        System.out.println(callDto.toString());
         return callDto;
     }
 }
