@@ -1,17 +1,15 @@
 package com.webchat.webchat.pojo;
 
-import com.webchat.webchat.constant.UsersOnline;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
 //@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserPojo {
     private Integer id;
     private String username;

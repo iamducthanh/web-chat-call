@@ -5,6 +5,7 @@ import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.UserPojo;
 import com.webchat.webchat.service.IFriendService;
 import com.webchat.webchat.utils.SessionUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,49 +16,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class FriendApi {
-    @Autowired
-    private IFriendService friendService;
-    @Autowired
-    private SessionUtil sessionUtil;
-
+    private final IFriendService friendService;
+    private final SessionUtil sessionUtil;
 
     @PutMapping("/api/friend/delete")
     @ResponseBody
     public String deleteFriend(String userId, String friendId){
-        System.out.println(userId);
-        System.out.println(friendId);
-        Friend friend = friendService.findFriendBy2UserId(Integer.parseInt(userId), Integer.parseInt(friendId));
-        friendService.deleteFriend(friend);
-        return "";
+        return friendService.deleteFriend(userId, friendId);
     }
 
     @GetMapping("/api/friend")
     @ResponseBody
     public List<UserPojo> getAllFriend(){
-        List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
-        List<UserPojo> friendOut = new ArrayList<>();
-        if(friends != null){
-            for(User user : friends){
-                UserPojo userPojo = new UserPojo(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getFullname(),
-                        user.getEmail(),
-                        user.getImage(),
-                        user.getLastonline(),
-                        user.isGender(),
-                        user.getRole(),
-                        user.getBirthDate(),
-                        "",
-                        user.isOnline(),
-                        user.getPhone(),
-                        user.getDescription(),
-                        user.getLastOnlineString()
-                );
-                friendOut.add(userPojo);
-            }
-        }
-        return friendOut;
+        return friendService.getAllFriend();
     }
 }

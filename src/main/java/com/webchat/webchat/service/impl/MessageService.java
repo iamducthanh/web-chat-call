@@ -1,21 +1,35 @@
 package com.webchat.webchat.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webchat.webchat.constant.AttackFile;
 import com.webchat.webchat.constant.PropertiesConstant;
-import com.webchat.webchat.entities.Message;
-import com.webchat.webchat.entities.Room;
-import com.webchat.webchat.entities.User;
+import com.webchat.webchat.constant.UsersOnline;
+import com.webchat.webchat.dto.FileAttackDto;
+import com.webchat.webchat.dto.MessagePageDto;
+import com.webchat.webchat.entities.*;
+import com.webchat.webchat.pojo.MessagePojo;
+import com.webchat.webchat.pojo.UserConnectPojo;
+import com.webchat.webchat.repository.AttachRepository;
 import com.webchat.webchat.repository.MessageRepository;
+import com.webchat.webchat.repository.RoomDetailRepositoty;
 import com.webchat.webchat.service.IMessageService;
+import com.webchat.webchat.utils.SessionUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class MessageService implements IMessageService {
-    @Autowired
-    private MessageRepository messageRepo;
+    private final MessageRepository messageRepo;
+    private final SessionUtil sessionUtil;
+    private final AttachRepository attachRepo;
+    private final RoomDetailRepositoty roomDetailRepo;
 
     @Override
     public List<Message> findByRoom(String roomId, Pageable pageable) {
@@ -29,10 +43,6 @@ public class MessageService implements IMessageService {
         return list.isEmpty() ? null : list;
     }
 
-    @Override
-    public void saveMessage(Message message) {
-        messageRepo.save(message);
-    }
 
     @Override
     public void deleteMessage(List<Message> messages) {
@@ -71,5 +81,127 @@ public class MessageService implements IMessageService {
     public int countMessageSend(String roomId, String myUsername, String username) {
         List<Message> list = messageRepo.countMessageSend(roomId, myUsername, username);
         return list.isEmpty() ? 0 : list.size();
+    }
+
+    @Override
+    public List<MessagePojo> getMessage(MessagePageDto messagePageDto) {
+        List<Message> messages = messageRepo.findByRoom(messagePageDto.getRoomId(), PageRequest.of(messagePageDto.getPage(), 10));
+        List<MessagePojo> list = new ArrayList<>();
+        if (messages != null) {
+            for (int i = messages.size() - 1; i > -1; i--) {
+                List<String> listFile = new ArrayList<>();
+                List<String> contents = new ArrayList<>();
+
+                if(i < messages.size()-1){
+                    Message message = messages.get(i + 1);
+                    if(message.getUser().getUsername().equals(messages.get(i).getUser().getUsername())){
+                        long diff = messages.get(i).getTime().getTime() - message.getTime().getTime();
+                        long diffMinutes = diff / (60 * 1000) % 60;
+                        long diffHours = diff / (60 * 60 * 1000) % 24;
+                        long diffDays = diff / (24 * 60 * 60 * 1000);
+                        if(diffDays == 0 && diffHours == 0 && diffMinutes <=5){
+                            list.get(list.size()-1).getContent().add(messages.get(i).getContent());
+                            list.get(list.size()-1).setTime(messages.get(i).getTimeChat());
+                            if(messages.get(i).getAttachList().size() != 0){
+                                for(Attach attach:messages.get(i).getAttachList()){
+                                    list.get(list.size()-1).getListFile().add(attach.getFilename());
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                }
+
+                contents.add(messages.get(i).getContent());
+
+                if(messages.get(i).getAttachList().size() != 0){
+                    listFile = new ArrayList<>();
+                    for(Attach attach:messages.get(i).getAttachList()){
+                        listFile.add(attach.getFilename());
+                    }
+                }
+                list.add(new MessagePojo(
+                        messages.get(i).getId(),
+                        messages.get(i).getUser().getUsername(),
+                        contents, messages.get(i).getTimeChat(),
+                        messages.get(i).getUser().getImage(),
+                        listFile));
+            }
+        }
+        System.out.println(list.size());
+        return list;
+    }
+
+    @Override
+    public List<FileAttackDto> saveMessage(String content, String roomId, String attack) throws JsonProcessingException {
+        Message message = new Message();
+        User user = (User) sessionUtil.getObject("USER");
+        Room room = new Room(roomId, "", "", "");
+        UUID uuid = UUID.randomUUID();
+        message.setId(String.valueOf(uuid));
+        message.setUser(user);
+        message.setRoom(room);
+        message.setType("CHAT");
+        message.setTime(new Date());
+        message.setContent(content);
+        UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(roomId);
+        if (userConnectPojo != null) {
+            if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
+                message.setStatus("READ");
+            } else {
+                message.setStatus("SEND");
+            }
+        } else {
+            message.setStatus("SEND");
+        }
+        List<FileAttackDto> dataFile = new ArrayList<>();
+        List<Attach> attaches = new ArrayList<>();
+        if (!attack.equals("[]")) {
+            message.setType("ATTACK");
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<String> listAttack = new ArrayList<>();
+            attack = attack.replace("'", "\"");
+            System.out.println(attack.toString());
+            System.out.println("size attack " + attack.length());
+            listAttack = Arrays.asList(objectMapper.readValue(attack, String[].class));
+            for (String file : listAttack) {
+                System.out.println(listAttack.size());
+                String type = file.substring(file.lastIndexOf("."), file.length());
+                String id = String.valueOf(UUID.randomUUID());
+                System.out.println(AttackFile.messageAttackHashMap.get(user.getUsername()).getFilesAttack().get("file"));
+                String mulFile = AttackFile.messageAttackHashMap.get(user.getUsername()).getFilesAttack().get(file);
+                dataFile.add(new FileAttackDto(String.valueOf(uuid), id + type, mulFile));
+                attaches.add(new Attach(message, id + type));
+                AttackFile.messageAttackHashMap.get(user.getUsername()).getFilesAttack().remove(file);
+                System.out.println("file attach: " + attaches.get(0).getFilename());
+            }
+            System.out.println("Lưu thành công");
+        }
+        if (dataFile.isEmpty()) {
+            dataFile.add(new FileAttackDto(String.valueOf(uuid), null, null));
+        }
+        messageRepo.save(message);
+        if (!attack.equals("[]")) {
+            attachRepo.saveAll(attaches);
+        }
+        return dataFile;
+    }
+
+    @Override
+    public List<String> getFiles(String roomId) {
+        List<String> files = new ArrayList<>();
+        User user = (User) sessionUtil.getObject("USER");
+
+        List<RoomDetail> list = roomDetailRepo.findRoomDetailByUserAndRoom(user.getId(), roomId);
+        RoomDetail roomDetail = list.isEmpty() ? null : list.get(0);
+        if (roomDetail != null) {
+            List<Attach> attaches = attachRepo.findByRoom(roomId);
+            if (attaches != null) {
+                for (Attach attach : attaches) {
+                    files.add(attach.getFilename());
+                }
+            }
+        }
+        return files;
     }
 }
