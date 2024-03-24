@@ -6,6 +6,7 @@ import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.UserOnline;
 import com.webchat.webchat.pojo.UserPojo;
 import com.webchat.webchat.service.impl.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -21,16 +22,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminUserApi {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserPojo>> getUsers(@RequestParam("username") String username){
-        System.out.println(username);
         List<User> users = userService.findAll();
         List<UserPojo> userPojos = new ArrayList<>();
         users.forEach((user) -> {
@@ -90,13 +89,7 @@ public class AdminUserApi {
         if(!userPojo.isStatus()){
             template.convertAndSend("/topic/system.adduser", new UserOnline(userPojo.getUsername(), "BLOCK"));
         }
-//        User user = new User(
-//                userPojo.getId(),
-//                userPojo.getRole(),
-//                userPojo.isStatus()
-//        );
         userService.saveUser(user);
-        System.out.println(user .toString());
     }
 
 }

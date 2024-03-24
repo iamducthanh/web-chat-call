@@ -46,55 +46,55 @@ function onErrorLocation(){
     console.log("Lỗi socket location");
 }
 
-window.onload = async function () {
-    $.ajax({
-        url: 'https://iamducthanh-webchat.herokuapp.com/get-ip',
-        error: function () {
-            console.log("error")
-        },
-        success: async function (ip) {
-            ipAddress = ip
-            socketLocation = new SockJS('/chatroom/system');
-            stompClientLocation = Stomp.over(socketLocation);
-            stompClientLocation.connect({}, socketLocationConnected, onErrorLocation);
-            let divLogout = document.getElementById(ip);
-            // divLogout.onclick = null;
-            divLogout.style.color = 'green';
-            divLogout.innerText = "Thiết bị của bạn";
-
-            fetch('http://api.ipstack.com/' + ip + '?access_key=' + ACCESS_KEY, {
-                method: 'GET'
-            })
-                .then(response => response.json())
-                .then(out => {
-                    $.ajax({
-                        url: 'log-ip',
-                        data: {
-                            ip: ip,
-                            city: fnBrowserDetect() + " " + out.city,
-                            country: out.country_name,
-                            latitude: out.latitude,
-                            longitude: out.longitude
-                        },
-                        error: function () {
-                            console.log("error")
-                        },
-                        success: async function (out) {
-                            if(out == 'BLOCK'){
-                                window.location.href = 'signin_unlock';
-                            }
-                        },
-                        type: 'POST'
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-        },
-        type: 'GET'
-    });
-
-}
+// window.onload = async function () {
+//     $.ajax({
+//         url: 'https://iamducthanh-webchat.herokuapp.com/get-ip',
+//         error: function () {
+//             console.log("error")
+//         },
+//         success: async function (ip) {
+//             ipAddress = ip
+//             socketLocation = new SockJS('/chatroom/system');
+//             stompClientLocation = Stomp.over(socketLocation);
+//             stompClientLocation.connect({}, socketLocationConnected, onErrorLocation);
+//             let divLogout = document.getElementById(ip);
+//             // divLogout.onclick = null;
+//             divLogout.style.color = 'green';
+//             divLogout.innerText = "Thiết bị của bạn";
+//
+//             fetch('http://api.ipstack.com/' + ip + '?access_key=' + ACCESS_KEY, {
+//                 method: 'GET'
+//             })
+//                 .then(response => response.json())
+//                 .then(out => {
+//                     $.ajax({
+//                         url: 'log-ip',
+//                         data: {
+//                             ip: ip,
+//                             city: fnBrowserDetect() + " " + out.city,
+//                             country: out.country_name,
+//                             latitude: out.latitude,
+//                             longitude: out.longitude
+//                         },
+//                         error: function () {
+//                             console.log("error")
+//                         },
+//                         success: async function (out) {
+//                             if(out == 'BLOCK'){
+//                                 window.location.href = 'signin_unlock';
+//                             }
+//                         },
+//                         type: 'POST'
+//                     });
+//                 })
+//                 .catch((error) => {
+//                     console.error('Error:', error);
+//                 });
+//         },
+//         type: 'GET'
+//     });
+//
+// }
 
 function logoutByIp(tag){
     let divLogout = document.getElementById(tag.id);

@@ -43,7 +43,7 @@
                             <div class="col-12" style="margin-bottom: 20px">
                                 <div onclick="remember()" class="btn btn-block btn-lg btn-primary w-100">Đăng nhập</div>
                                 <button class="btn btn-block btn-lg btn-primary w-100 mt-1" type="submit"
-                                        style="display: unset" id="submitLogin">Đăng nhập nút này nè
+                                        style="display: none" id="submitLogin">Đăng nhập nút này nè
                                 </button>
 <!--                                <div onclick="sendmail()">send</div>-->
                             </div>
@@ -76,7 +76,8 @@
                     password: document.querySelector("#signin-password").value,
                     remember: remember.checked,
                     unlock: document.querySelector("#unlock").value,
-                    ip: await callAjax('https://iamducthanh-webchat.herokuapp.com/get-ip',null,'GET')
+                    // ip: await callAjax('https://iamducthanh-webchat.herokuapp.com/get-ip',null,'GET')
+                    ip: '10.32.3.222'
                 },
                 error: function () {
                     console.log("error")

@@ -183,7 +183,7 @@ async function onMessageReceived(payload) {
             document.getElementById('statusMessage').innerText = "Đã xem"
         }
     } else if (message.type === 'LEAVE') {
-        messageArea.innerHTML += "<div class='close-conect'><p>" + message.sender + " đã thoát!</p></div>";
+       // messageArea.innerHTML += "<div class='close-conect'><p>" + message.sender + " đã thoát!</p></div>";
     } else if (message.type === 'CHAT') {
         let username = document.querySelector('#name').value.trim();
         let names = 'messUser' + username + room;
