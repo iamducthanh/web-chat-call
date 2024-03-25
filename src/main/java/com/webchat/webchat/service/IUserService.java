@@ -7,7 +7,9 @@ import com.webchat.webchat.dto.UserProfileUpdateDto;
 import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.ErrorPojo;
 import com.webchat.webchat.pojo.UserPojo;
+import com.webchat.webchat.pojo.UserRegisterPojo;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,4 +34,9 @@ public interface IUserService {
     List<ErrorPojo> changePassword(ChangePasswordDto changePasswordDto, BindingResult result);
     List<String> getUserOnlineInRoom(String roomId);
     UserPojo getUserByUsername(String username);
+    List<UserPojo> getUserByKeyword(String keyword);
+    String signinPage(Model model);
+    String signinUnlockPage(Model model);
+    String checkSignin(String username, String password, String remember, String unlock, String ip);
+    List<ErrorPojo> signup(UserRegisterPojo user, BindingResult result);
 }

@@ -3,6 +3,7 @@ package com.webchat.webchat.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.webchat.webchat.dto.FileAttackDto;
 import com.webchat.webchat.dto.MessagePageDto;
+import com.webchat.webchat.dto.MessageUserDto;
 import com.webchat.webchat.entities.Message;
 import com.webchat.webchat.entities.Room;
 import com.webchat.webchat.entities.User;
@@ -23,4 +24,5 @@ public interface IMessageService {
     List<MessagePojo> getMessage(MessagePageDto messagePageDto);
     List<FileAttackDto> saveMessage(String content, String roomId, String attack) throws JsonProcessingException;
     List<String> getFiles(String roomId);
+    MessageUserDto checkMessage(String userId);
 }

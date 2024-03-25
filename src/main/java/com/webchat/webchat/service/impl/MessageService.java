@@ -7,14 +7,14 @@ import com.webchat.webchat.constant.PropertiesConstant;
 import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.FileAttackDto;
 import com.webchat.webchat.dto.MessagePageDto;
+import com.webchat.webchat.dto.MessageUserDto;
 import com.webchat.webchat.entities.*;
 import com.webchat.webchat.pojo.MessagePojo;
 import com.webchat.webchat.pojo.UserConnectPojo;
-import com.webchat.webchat.repository.AttachRepository;
-import com.webchat.webchat.repository.MessageRepository;
-import com.webchat.webchat.repository.RoomDetailRepositoty;
+import com.webchat.webchat.repository.*;
 import com.webchat.webchat.service.IMessageService;
 import com.webchat.webchat.utils.SessionUtil;
+import com.webchat.webchat.utils.SystemUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +30,9 @@ public class MessageService implements IMessageService {
     private final SessionUtil sessionUtil;
     private final AttachRepository attachRepo;
     private final RoomDetailRepositoty roomDetailRepo;
+    private final UserRepository userRepo;
+    private final RoomRepositoty roomRepo;
+    private final SystemUtil systemUtil;
 
     @Override
     public List<Message> findByRoom(String roomId, Pageable pageable) {
@@ -204,4 +207,46 @@ public class MessageService implements IMessageService {
         }
         return files;
     }
+
+    @Override
+    public MessageUserDto checkMessage(String userId) {
+        MessageUserDto messageUser = new MessageUserDto();
+        User user = (User) sessionUtil.getObject("USER");
+        List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
+        // tạo room
+        UUID roomId = UUID.randomUUID();
+        UUID messageId = UUID.randomUUID();
+        Room room = new Room(String.valueOf(roomId), "", "",user.getUsername());
+        roomRepo.save(room);
+
+        // tạo room detail
+        List<User> list = userRepo.findUserById(Integer.parseInt(userId));
+        User user2 =  list.isEmpty() ? null : list.get(0);
+
+        List<RoomDetail> roomDetails = new ArrayList<>();
+        roomDetails.add(new RoomDetail(user,room));
+        roomDetails.add(new RoomDetail(user2,room));
+        roomDetailRepo.saveAll(roomDetails);
+
+        // tạo tin nhắn đầu tiên
+        Message message = new Message();
+        message.setRoom(room);
+        message.setType("CREATE");
+        message.setTime(new Date());
+        message.setContent("Bắt đầu trò chuyện");
+        message.setUser(user);
+        message.setId(String.valueOf(messageId));
+        message.setStatus("CREATE");
+        messageRepo.save(message);
+
+        messageUser.setName(user2.getFullname());
+        messageUser.setUsername(user2.getUsername());
+        messageUser.setMessageLast("Bắt đầu trò chuyện.");
+        messageUser.setCountMess(0);
+        messageUser.setStatus(1);
+        messageUser.setTime(message.getTimeChat());
+        messageUser.setRoomCode(room.getId());
+        messageUser.setFriend(systemUtil.isFriend(user2, friends));
+        messageUser.setImage(user2.getImage());
+        return messageUser;    }
 }

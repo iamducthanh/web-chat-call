@@ -6,9 +6,11 @@ import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.ChatMessagePojo;
 import com.webchat.webchat.pojo.UserConnectPojo;
 import com.webchat.webchat.pojo.UserOnline;
+import com.webchat.webchat.repository.UserRepository;
 import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -23,15 +25,13 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class WebSocketEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
-
-    @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
-
-    @Autowired
-    private IUserService userService;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final IUserService userService;
+    private final UserRepository userRepo;
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
@@ -48,7 +48,7 @@ public class WebSocketEventListener {
             Date now = new Date();
             User user = userService.findByUsername(userOnline);
             user.setLastonline(now);
-            userService.saveUser(user); // lưu lại thời gian off trước
+            userRepo.save(user); // lưu lại thời gian off trước
             UserOnline userOnline1 = new UserOnline();
             userOnline1.setUsername(userOnline);
             userOnline1.setType("OFFLINE");

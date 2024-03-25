@@ -27,83 +27,38 @@ import org.springframework.web.client.RestTemplate;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserApi {
     private final IUserService userService;
-    private final SessionUtil sessionUtil;
-    private final IFriendService friendService;
 
     @PostMapping("/user/search")
-    @ResponseBody
     public List<UserPojo> getUserByKeyword(@RequestParam("keyword") String keyword) {
-        List<UserPojo> userPojos = new ArrayList<>();
-        User myUser = (User) sessionUtil.getObject("USER");
-        if (!(keyword.trim().length() == 0)) {
-            List<User> users = userService.findByKeyword(keyword, keyword);
-            if (users != null) {
-                for (User user : users) {
-                    String statusFriend = "ON"; // bật gửi lời mời kết bạn
-                    Friend friend = friendService.findFriendBy2User(myUser.getUsername(), user.getUsername());
-                    if (friend != null && friend.getStatus().equals("WAIT") && friend.getUser().getUsername().equals(myUser.getUsername())) {
-                        statusFriend = "WAIT"; // bật hủy lời mời kết bạn
-                    } else if (friend != null && friend.getStatus().equals("WAIT") && friend.getUser().getUsername().equals(user.getUsername())) {
-                        statusFriend = "AGREE"; // bật nút đồng ý kết bạn
-                    } else if (friend != null) {
-                        statusFriend = "OFF"; // tắt
-                    }
-                    userPojos.add(new UserPojo(
-                            user.getId(),
-                            user.getUsername(),
-                            user.getFullname(),
-                            user.getEmail(),
-                            user.getImage(),
-                            user.getLastonline(),
-                            user.isGender(),
-                            user.getRole(),
-                            user.getBirthDate(),
-                            statusFriend,
-                            UsersOnline.usersOnline.get(user.getUsername()) != null ? true : false,
-                            user.getPhone(),
-                            user.getDescription(),
-                            user.getBirthDayString()
-                    ));
-                }
-            }
-        }
-        return userPojos;
-
+        return userService.getUserByKeyword(keyword);
     }
 
     @PutMapping("/user/update/image")
-    @ResponseBody
     public String updateUser(@RequestParam("image") String image) {
         return userService.updateUser(image);
     }
 
     @PutMapping("/user/update/profile")
-    @ResponseBody
     public List<ErrorPojo> updateProfile(@Validated UserProfileUpdateDto userProfileUpdateDto, BindingResult result) {
         return userService.updateProfile(userProfileUpdateDto, result);
     }
 
     @PutMapping("/user/change_password")
-    @ResponseBody
     public List<ErrorPojo> changePassword(@Validated ChangePasswordDto changePasswordDto, BindingResult result) {
         return userService.changePassword(changePasswordDto, result);
     }
 
     @GetMapping("/user/user-online")
-    @ResponseBody
     public List<String> getUserOnlineInRoom(String roomId) {
         return userService.getUserOnlineInRoom(roomId);
-
     }
 
     @GetMapping("/user/get-by-username")
-    @ResponseBody
     public UserPojo getUserByUsername(String username) {
         return userService.getUserByUsername(username);
-
     }
 }

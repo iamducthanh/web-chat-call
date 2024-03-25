@@ -16,29 +16,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MessageApi {
     private final MessageService messageService;
 
     @GetMapping("/api/message")
-    @ResponseBody
     public List<MessagePojo> getMessage(MessagePageDto messagePageDto) {
         return messageService.getMessage(messagePageDto);
     }
 
     @PostMapping("/message_direct/save")
-    @ResponseBody
     public List<FileAttackDto> saveMessage(
             @RequestParam("content") String content,
             @RequestParam("room") String roomId,
@@ -47,8 +42,7 @@ public class MessageApi {
     }
 
     @GetMapping("/api/files")
-    @ResponseBody
     public List<String> getFiles(@RequestParam("room") String roomId) {
-        return getFiles(roomId);
+        return messageService.getFiles(roomId);
     }
 }
