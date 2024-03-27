@@ -47,34 +47,6 @@ public class UserService implements IUserService {
     private final CookieUtil cookieUtil;
     private final LocationService locationService;
 
-    @Override
-    public User findByUsername(String username) {
-        List<User> list = userRepo.findUserByUsername(username);
-        return list.isEmpty() ? null : list.get(0);
-    }
-
-    @Override
-    public User findById(Integer id) {
-        List<User> list = userRepo.findUserById(id);
-        return list.isEmpty() ? null : list.get(0);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return userRepo.findAll();
-    }
-
-    @Override
-    public List<User> findByGroupUserId(List<Integer> userIds) {
-        List<User> list = userRepo.findUserByGroupUserId(userIds);
-        return list.isEmpty() ? null : list;
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        List<User> list = userRepo.findUserByEmail(email);
-        return list.isEmpty() ? null : list.get(0);
-    }
 
     @Override
     public void saveUser(UserPojo userPojo) {
@@ -88,11 +60,6 @@ public class UserService implements IUserService {
         }
     }
 
-    @Override
-    public List<User> findInRoom(int userId, String roomId) {
-        List<User> list = userRepo.findUserInRoom(userId, roomId);
-        return list.isEmpty() ? null : list;
-    }
 
     @Override
     public List<User> findByKeyword(String username, String email) {
