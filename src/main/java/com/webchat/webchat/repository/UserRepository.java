@@ -6,26 +6,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Repository
 public interface UserRepository extends R2dbcRepository<User, Integer> {
     @Query("select o from User o where o.username = ?1")
-    Flux<User> findUserByUsername(String username);
+    Mono<User> findUserByUsername(String username);
 
     @Query("select o from User o where o.id = ?1")
-    Flux<User> findUserById(Integer id);
+    Mono<User> findUserById(Integer id);
 
     @Query("select o from User o where o.id in ?1")
-    Flux<List<User>> findUserByGroupUserId(List<Integer> userIds);
+    Flux<User> findUserByGroupUserId(List<Integer> userIds);
 
     @Query("select o from User o where (o.username like ?1 or o.email like ?2) and o.username <> ?3")
-    Flux<List<User>> findUserByKeyword(String username, String email, String user, Pageable pageable);
+    Flux<User> findUserByKeyword(String username, String email, String user, Pageable pageable);
 
     @Query("select o from User o where o.email = ?1")
-    Flux<User> findUserByEmail(String email);
+    Mono<User> findUserByEmail(String email);
 
     @Query("select o.user from RoomDetail o where o.user.id <> ?1 and o.room.id = ?2")
-    Flux<List<User>> findUserInRoom(Integer userId, String roomId);
+    Flux<User> findUserInRoom(Integer userId, String roomId);
 }
