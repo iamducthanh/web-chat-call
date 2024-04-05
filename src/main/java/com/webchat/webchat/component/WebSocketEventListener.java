@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.slf4j.Logger;
+import reactor.core.publisher.Mono;
 
 import java.util.Date;
 import java.util.List;
@@ -46,9 +47,11 @@ public class WebSocketEventListener {
         if(userOnline != null){
             System.out.println("-------------------------------------");
             Date now = new Date();
-            User user = userService.findByUsername(userOnline);
-            user.setLastonline(now);
-            userRepo.save(user); // lưu lại thời gian off trước
+            Mono<User> user = userRepo.findUserByUsername(userOnline);
+            user.subscribe(u -> {
+                u.setLastonline(now);
+                userRepo.save(u); // lưu lại thời gian off trước
+            });
             UserOnline userOnline1 = new UserOnline();
             userOnline1.setUsername(userOnline);
             userOnline1.setType("OFFLINE");

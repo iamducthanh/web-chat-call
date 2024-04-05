@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -24,13 +26,13 @@ public class DashBoardApi {
 
     private final IUserService userService;
 
-    @GetMapping("/thong-ke-tin-nhan")
-    public ResponseEntity<List<CountMessageDto>> thongKeTinNhan(@RequestParam String year){
-        return ResponseEntity.ok().body(userService.thongKeTinNhan(year));
-    }
+//    @GetMapping("/thong-ke-tin-nhan")
+//    public ResponseEntity<Flux<CountMessageDto>> thongKeTinNhan(@RequestParam String year){
+//        return ResponseEntity.ok().body(userService.thongKeTinNhan(year));
+//    }
 
     @GetMapping("/thong-ke-nguoi-dung")
-    public ResponseEntity<ThongKeNguoiDungDto> thongKeNguoiDung(){
+    public ResponseEntity<Mono<ThongKeNguoiDungDto>> thongKeNguoiDung(){
         return ResponseEntity.ok().body(userService.thongKeNguoiDung());
     }
 }

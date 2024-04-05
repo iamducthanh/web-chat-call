@@ -23,6 +23,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,32 +35,32 @@ public class UserApi {
     private final IUserService userService;
 
     @PostMapping("/user/search")
-    public List<UserPojo> getUserByKeyword(@RequestParam("keyword") String keyword) {
+    public Flux<UserPojo> getUserByKeyword(@RequestParam("keyword") String keyword) {
         return userService.getUserByKeyword(keyword);
     }
 
     @PutMapping("/user/update/image")
-    public String updateUser(@RequestParam("image") String image) {
+    public Mono<String> updateUser(@RequestParam("image") String image) {
         return userService.updateUser(image);
     }
 
     @PutMapping("/user/update/profile")
-    public List<ErrorPojo> updateProfile(@Validated UserProfileUpdateDto userProfileUpdateDto, BindingResult result) {
+    public Flux<ErrorPojo> updateProfile(@Validated UserProfileUpdateDto userProfileUpdateDto, BindingResult result) {
         return userService.updateProfile(userProfileUpdateDto, result);
     }
 
     @PutMapping("/user/change_password")
-    public List<ErrorPojo> changePassword(@Validated ChangePasswordDto changePasswordDto, BindingResult result) {
+    public Flux<ErrorPojo> changePassword(@Validated ChangePasswordDto changePasswordDto, BindingResult result) {
         return userService.changePassword(changePasswordDto, result);
     }
 
     @GetMapping("/user/user-online")
-    public List<String> getUserOnlineInRoom(String roomId) {
+    public Flux<String> getUserOnlineInRoom(String roomId) {
         return userService.getUserOnlineInRoom(roomId);
     }
 
     @GetMapping("/user/get-by-username")
-    public UserPojo getUserByUsername(String username) {
+    public Mono<UserPojo> getUserByUsername(String username) {
         return userService.getUserByUsername(username);
     }
 }

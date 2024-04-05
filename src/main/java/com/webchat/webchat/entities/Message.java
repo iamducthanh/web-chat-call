@@ -1,6 +1,5 @@
 package com.webchat.webchat.entities;
 
-import com.webchat.webchat.service.impl.AttachService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

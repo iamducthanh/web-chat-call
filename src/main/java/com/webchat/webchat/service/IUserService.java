@@ -19,17 +19,17 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public interface IUserService {
-    Mono<User> findByUsername(String username);
-    Mono<User> findById(Integer id);
-    Flux<User> findAll();
-    Flux<User> findByGroupUserId(List<Integer> userIds);
+  //  Mono<User> findByUsername(String username);
+  //  Mono<User> findById(Integer id);
+  //  Flux<User> findAll();
+ //   Flux<User> findByGroupUserId(List<Integer> userIds);
     Mono<User> findByEmail(String email);
     Mono<User> saveUser(UserPojo userPojo);
-    Flux<User> findInRoom(int userId, String roomId);
+ //   Flux<User> findInRoom(int userId, String roomId);
     Flux<User> findByKeyword(String username, String email);
     Flux<UserPojo> getUsers(String username);
     Mono<UserPojo> getUser(String id);
-    Flux<CountMessageDto> thongKeTinNhan(String year);
+  //  Flux<CountMessageDto> thongKeTinNhan(String year);
     Mono<ThongKeNguoiDungDto> thongKeNguoiDung();
     Mono<String> updateUser(String image);
     Flux<ErrorPojo> updateProfile(UserProfileUpdateDto userProfileUpdateDto, BindingResult result);

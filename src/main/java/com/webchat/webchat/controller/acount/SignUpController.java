@@ -7,7 +7,7 @@ import com.webchat.webchat.pojo.MailPojo;
 import com.webchat.webchat.pojo.UserRegisterPojo;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.MailerUtil;
-import com.webchat.webchat.utils.UploadUtil;
+//import com.webchat.webchat.utils.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -36,7 +38,7 @@ public class SignUpController {
 
     @PostMapping("/signup")
     @ResponseBody
-    public List<ErrorPojo> signup(@Validated UserRegisterPojo user, BindingResult result) {
+    public Flux<ErrorPojo> signup(@Validated UserRegisterPojo user, BindingResult result) {
         return userService.signup(user, result);
     }
 
@@ -44,7 +46,7 @@ public class SignUpController {
     @ResponseBody
     public String getCode(String email) throws MessagingException {
         String out = "";
-        User userCheck = userService.findByEmail(email);
+        Mono<User> userCheck = userService.findByEmail(email);
         if(userCheck != null){
             out = "exist";
         } else {
