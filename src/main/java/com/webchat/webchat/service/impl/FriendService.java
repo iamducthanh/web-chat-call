@@ -9,6 +9,7 @@ import com.webchat.webchat.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public class FriendService implements IFriendService {
     }
 
     @Override
-    public Friend findFriendBy2User(String username1, String usernam2) {
+    public Mono<Friend> findFriendBy2User(String username1, String usernam2) {
         List<Friend> list = repo.findBy2User(username1, usernam2);
-        return list.isEmpty() ? null : list.get(0);
+        return Mono.just(list.get(0));
     }
 
     @Override

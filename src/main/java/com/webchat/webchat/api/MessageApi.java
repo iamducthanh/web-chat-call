@@ -1,27 +1,17 @@
 package com.webchat.webchat.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webchat.webchat.constant.AttackFile;
-import com.webchat.webchat.constant.UsersOnline;
 import com.webchat.webchat.dto.FileAttackDto;
 import com.webchat.webchat.dto.MessagePageDto;
-import com.webchat.webchat.entities.*;
 import com.webchat.webchat.pojo.MessagePojo;
-import com.webchat.webchat.pojo.UserConnectPojo;
-import com.webchat.webchat.service.impl.AttachService;
 import com.webchat.webchat.service.impl.MessageService;
-import com.webchat.webchat.service.impl.RoomDetailService;
-import com.webchat.webchat.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

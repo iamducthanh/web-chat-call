@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestParam;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface IUserService {
     List<ErrorPojo> changePassword(ChangePasswordDto changePasswordDto, BindingResult result);
     List<String> getUserOnlineInRoom(String roomId);
     UserPojo getUserByUsername(String username);
-    List<UserPojo> getUserByKeyword(String keyword);
+    Flux<UserPojo> getUserByKeyword(String keyword);
     String signinPage(Model model);
     String signinUnlockPage(Model model);
     String checkSignin(String username, String password, String remember, String unlock, String ip);

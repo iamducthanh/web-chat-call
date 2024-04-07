@@ -13,6 +13,7 @@ import com.webchat.webchat.pojo.ErrorPojo;
 import com.webchat.webchat.pojo.UserOnline;
 import com.webchat.webchat.pojo.UserPojo;
 import com.webchat.webchat.pojo.UserRegisterPojo;
+//import com.webchat.webchat.repository.UserR2dbcRepository;
 import com.webchat.webchat.repository.UserRepository;
 import com.webchat.webchat.service.IFriendService;
 import com.webchat.webchat.service.IUserService;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,7 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepo;
+//    private final UserR2dbcRepository userR2dbcRepo;
     private final SessionUtil sessionUtil;
     private final SimpMessagingTemplate template;
     private final CountMessageService countMessageService;
@@ -288,42 +292,44 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserPojo> getUserByKeyword(String keyword) {
-        List<UserPojo> userPojos = new ArrayList<>();
+    public Flux<UserPojo> getUserByKeyword(String keyword) {
+        Flux<UserPojo> userPojos = Flux.empty();
         User myUser = (User) sessionUtil.getObject("USER");
         if (!(keyword.trim().length() == 0)) {
             keyword = "%" + keyword + "%";
             User userLogin = (User) sessionUtil.getObject("USER");
-            List<User> list = userRepo.findUserByKeyword(keyword, keyword, userLogin.getUsername(), PageRequest.of(0, 30));
-            List<User> users =  list.isEmpty() ? null : list;
+            Flux<User> users = Flux.fromStream(userRepo.findUserByKeyword(keyword, keyword, userLogin.getUsername(), PageRequest.of(0, 30)).stream());
             if (users != null) {
-                for (User user : users) {
-                    String statusFriend = "ON"; // bật gửi lời mời kết bạn
-                    Friend friend = friendService.findFriendBy2User(myUser.getUsername(), user.getUsername());
-                    if (friend != null && friend.getStatus().equals("WAIT") && friend.getUser().getUsername().equals(myUser.getUsername())) {
-                        statusFriend = "WAIT"; // bật hủy lời mời kết bạn
-                    } else if (friend != null && friend.getStatus().equals("WAIT") && friend.getUser().getUsername().equals(user.getUsername())) {
-                        statusFriend = "AGREE"; // bật nút đồng ý kết bạn
-                    } else if (friend != null) {
-                        statusFriend = "OFF"; // tắt
-                    }
-                    userPojos.add(new UserPojo(
-                            user.getId(),
-                            user.getUsername(),
-                            user.getFullname(),
-                            user.getEmail(),
-                            user.getImage(),
-                            user.getLastonline(),
-                            user.isGender(),
-                            user.getRole(),
-                            user.getBirthDate(),
-                            statusFriend,
-                            UsersOnline.usersOnline.get(user.getUsername()) != null ? true : false,
-                            user.getPhone(),
-                            user.getDescription(),
-                            user.getBirthDayString()
-                    ));
-                }
+                users.subscribe(user -> {
+                    Mono<Friend> friend = friendService.findFriendBy2User(myUser.getUsername(), user.getUsername());
+                    friend.subscribe(f -> {
+                        String statusFriend = "ON";
+                        if (f != null && f.getStatus().equals("WAIT") && f.getUser().getUsername().equals(myUser.getUsername())) {
+                            statusFriend = "WAIT"; // bật hủy lời mời kết bạn
+                        } else if (f != null && f.getStatus().equals("WAIT") && f.getUser().getUsername().equals(user.getUsername())) {
+                            statusFriend = "AGREE"; // bật nút đồng ý kết bạn
+                        } else if (f != null) {
+                            statusFriend = "OFF"; // tắt
+                        }
+                        userPojos.concatWith(Mono.just(new UserPojo(
+                                user.getId(),
+                                user.getUsername(),
+                                user.getFullname(),
+                                user.getEmail(),
+                                user.getImage(),
+                                user.getLastonline(),
+                                user.isGender(),
+                                user.getRole(),
+                                user.getBirthDate(),
+                                statusFriend,
+                                UsersOnline.usersOnline.get(user.getUsername()) != null ? true : false,
+                                user.getPhone(),
+                                user.getDescription(),
+                                user.getBirthDayString()
+                        )));
+                    });
+
+                });
             }
         }
         return userPojos;
