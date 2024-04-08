@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface RoomDetailRepositoty extends JpaRepository<RoomDetail, Integer> {
+public interface RoomDetailRepository extends JpaRepository<RoomDetail, Integer> {
     @Query("select o from RoomDetail o where o.user.id = ?1")
     List<RoomDetail> findRoomDetailByUser(Integer userId);
 

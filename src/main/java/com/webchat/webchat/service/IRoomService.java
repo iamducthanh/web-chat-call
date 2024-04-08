@@ -17,5 +17,5 @@ public interface IRoomService {
     RoomGroupDetailDto getRoomGroupDetail(String roomId);
     String addMember(String roomId, String members) throws JsonProcessingException;
     List<UserDeleteGroupPojo> deleteMember(String roomId, String userId);
-    RoomGroupPojo createRoomGroup(String users, String name, String image) throws JsonProcessingException;
+    RoomGroupPojo createRoomGroup(String users, String name, String image) throws Exception;
 }

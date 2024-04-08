@@ -2,6 +2,7 @@ package com.webchat.webchat.controller.web;
 
 import com.webchat.webchat.dto.MessageUserDto;
 import com.webchat.webchat.entities.Room;
+import com.webchat.webchat.service.impl.MessageService;
 import com.webchat.webchat.service.impl.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class MessageController {
     private final RoomService roomService;
+    private final MessageService mesageService;
 
     @PostMapping("/message/create-room")
     @ResponseBody
-    public MessageUserDto checkMessage(String userId){
-        return checkMessage(userId);
+    public MessageUserDto checkMessage(String userId) throws Exception {
+        return mesageService.checkMessage(userId);
     }
 
     @PostMapping("/message/change-status")

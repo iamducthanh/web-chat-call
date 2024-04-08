@@ -1,9 +1,6 @@
 package com.webchat.webchat.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Room {
     @Id
     @Column(name = "id")
@@ -27,6 +25,12 @@ public class Room {
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "public_key")
+    private String publicKey;
+
+    @Column(name = "private_key")
+    private String privateKey;
 
     public Room(String id, String image, String name, String username) {
         this.id = id;

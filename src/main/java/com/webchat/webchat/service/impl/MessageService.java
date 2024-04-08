@@ -13,14 +13,18 @@ import com.webchat.webchat.pojo.MessagePojo;
 import com.webchat.webchat.pojo.UserConnectPojo;
 import com.webchat.webchat.repository.*;
 import com.webchat.webchat.service.IMessageService;
+import com.webchat.webchat.utils.RSA2048Util;
+import com.webchat.webchat.utils.SecretKeyUtil;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.*;
 
 @Service
@@ -29,10 +33,12 @@ public class MessageService implements IMessageService {
     private final MessageRepository messageRepo;
     private final SessionUtil sessionUtil;
     private final AttachRepository attachRepo;
-    private final RoomDetailRepositoty roomDetailRepo;
+    private final RoomDetailRepository roomDetailRepo;
     private final UserRepository userRepo;
-    private final RoomRepositoty roomRepo;
+    private final RoomRepository roomRepo;
     private final SystemUtil systemUtil;
+    private final SecretKeyUtil secretKeyUtil;
+    private final RSA2048Util rsa2048Util;
 
     @Override
     public List<Message> findByRoom(String roomId, Pageable pageable) {
@@ -209,14 +215,30 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public MessageUserDto checkMessage(String userId) {
+    public MessageUserDto checkMessage(String userId) throws Exception {
         MessageUserDto messageUser = new MessageUserDto();
         User user = (User) sessionUtil.getObject("USER");
         List<User> friends = (List<User>) sessionUtil.getObject("FRIENDS");
         // tạo room
         UUID roomId = UUID.randomUUID();
         UUID messageId = UUID.randomUUID();
-        Room room = new Room(String.valueOf(roomId), "", "",user.getUsername());
+
+        KeyPair keyPair = rsa2048Util.generateKeyPair();
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+
+        String publicKeyString = rsa2048Util.keyToBase64(publicKey);
+        String privateKeyString = rsa2048Util.keyToBase64(privateKey);
+
+        Room room = Room.builder()
+                .id(String.valueOf(roomId))
+                .image("")
+                .name("")
+                .username(user.getUsername())
+                .publicKey(secretKeyUtil.encrypt(publicKeyString))
+                .privateKey(secretKeyUtil.encrypt(privateKeyString))
+                .build();
+
         roomRepo.save(room);
 
         // tạo room detail

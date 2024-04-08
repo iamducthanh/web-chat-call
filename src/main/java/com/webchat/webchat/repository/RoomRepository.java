@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface RoomRepositoty extends JpaRepository<Room, String> {
+public interface RoomRepository extends JpaRepository<Room, String> {
     @Query("select o from Room o where o.id = ?1")
     List<Room> findRoomById(String id);
 }

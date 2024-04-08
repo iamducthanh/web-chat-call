@@ -55,7 +55,7 @@ public class RoomApi {
     }
 
     @PostMapping("/api/room/create-room-group")
-    public RoomGroupPojo createRoomGroup(String users, String name, String image) throws JsonProcessingException {
+    public RoomGroupPojo createRoomGroup(String users, String name, String image) throws Exception {
         return roomService.createRoomGroup(users, name, image);
     }
 }

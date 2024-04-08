@@ -24,5 +24,5 @@ public interface IMessageService {
     List<MessagePojo> getMessage(MessagePageDto messagePageDto);
     List<FileAttackDto> saveMessage(String content, String roomId, String attack) throws JsonProcessingException;
     List<String> getFiles(String roomId);
-    MessageUserDto checkMessage(String userId);
+    MessageUserDto checkMessage(String userId) throws Exception;
 }

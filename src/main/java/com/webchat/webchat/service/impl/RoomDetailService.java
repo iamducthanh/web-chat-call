@@ -1,7 +1,7 @@
 package com.webchat.webchat.service.impl;
 
 import com.webchat.webchat.entities.RoomDetail;
-import com.webchat.webchat.repository.RoomDetailRepositoty;
+import com.webchat.webchat.repository.RoomDetailRepository;
 import com.webchat.webchat.service.IRoomDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class RoomDetailService implements IRoomDetailService {
     @Autowired
-    RoomDetailRepositoty roomDetailRepo;
+    RoomDetailRepository roomDetailRepo;
 
     @Override
     public List<RoomDetail> findByUser(Integer userId) {

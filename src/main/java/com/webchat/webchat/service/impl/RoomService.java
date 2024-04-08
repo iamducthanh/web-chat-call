@@ -14,47 +14,53 @@ import com.webchat.webchat.entities.User;
 import com.webchat.webchat.pojo.RoomGroupPojo;
 import com.webchat.webchat.pojo.UserDeleteGroupPojo;
 import com.webchat.webchat.repository.MessageRepository;
-import com.webchat.webchat.repository.RoomDetailRepositoty;
-import com.webchat.webchat.repository.RoomRepositoty;
+import com.webchat.webchat.repository.RoomDetailRepository;
+import com.webchat.webchat.repository.RoomRepository;
 import com.webchat.webchat.service.IMessageService;
 import com.webchat.webchat.service.IRoomService;
 import com.webchat.webchat.service.IUserService;
+import com.webchat.webchat.utils.RSA2048Util;
+import com.webchat.webchat.utils.SecretKeyUtil;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class RoomService implements IRoomService {
-    private final RoomRepositoty roomRepositoty;
+    private final RoomRepository roomRepository;
     private final SystemUtil systemUtil;
     private final SessionUtil sessionUtil;
-    private final RoomDetailRepositoty roomDetailRepo;
+    private final RoomDetailRepository roomDetailRepo;
     private final MessageRepository messageRepo;
     private final IMessageService messageService;
     private final IUserService userService;
     private final ObjectMapper objectMapper;
+    private final SecretKeyUtil secretKeyUtil;
+    private final RSA2048Util rsa2048Util;
 
 
     @Override
     public void saveRoom(Room room) {
-        roomRepositoty.save(room);
+        roomRepository.save(room);
     }
 
     @Override
     public void deleteRoom(Room room) {
-        roomRepositoty.delete(room);
+        roomRepository.delete(room);
     }
 
     @Override
     public Room findRoomById(String id) {
-        List<Room> list = roomRepositoty.findRoomById(id);
+        List<Room> list = roomRepository.findRoomById(id);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -149,7 +155,7 @@ public class RoomService implements IRoomService {
     @Override
     public RoomGroupDetailDto getRoomGroupDetail(String roomId) {
         int countOnline = 0;
-        List<Room> list = roomRepositoty.findRoomById(roomId);
+        List<Room> list = roomRepository.findRoomById(roomId);
         Room room = list.isEmpty() ? null : list.get(0);
         User user = (User) sessionUtil.getObject("USER");
         List<User> friend = (List<User>) sessionUtil.getObject("FRIENDS");
@@ -226,7 +232,7 @@ public class RoomService implements IRoomService {
             roomDetailRepo.deleteAll(roomDetails); // delete roomDetail
             Room room = new Room();
             room.setId(roomId);
-            roomRepositoty.delete(room); //delete room
+            roomRepository.delete(room); //delete room
         } else {
             List<RoomDetail> list = roomDetailRepo.findRoomDetailByUserAndRoom(Integer.parseInt(userId), roomId);
             RoomDetail roomDetail = list.isEmpty() ? null : list.get(0);
@@ -243,15 +249,30 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public RoomGroupPojo createRoomGroup(String users, String name, String image) throws JsonProcessingException {
+    public RoomGroupPojo createRoomGroup(String users, String name, String image) throws Exception {
         List<Integer> userIds = Arrays.asList(objectMapper.readValue(users, Integer[].class));
         User user = (User) sessionUtil.getObject("USER");
         String roomId = String.valueOf(UUID.randomUUID());
-        Room room = new Room(roomId, image, name, "");
+
+        KeyPair keyPair = rsa2048Util.generateKeyPair();
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+
+        String publicKeyString = rsa2048Util.keyToBase64(publicKey);
+        String privateKeyString = rsa2048Util.keyToBase64(privateKey);
+
+        Room room = Room.builder()
+                .id(roomId)
+                .image(image)
+                .name(name)
+                .username("")
+                .publicKey(secretKeyUtil.encrypt(publicKeyString))
+                .privateKey(secretKeyUtil.encrypt(privateKeyString))
+                .build();
 
         List<User> userList = userService.findByGroupUserId(userIds);
         userList.add(0, user);
-        roomRepositoty.save(room);
+        roomRepository.save(room);
         List<RoomDetail> roomDetails = new ArrayList<>();
         for (User user1 : userList) {
             roomDetails.add(new RoomDetail(user1, room));
