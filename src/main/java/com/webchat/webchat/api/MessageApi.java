@@ -29,7 +29,7 @@ public class MessageApi {
     private final MessageService messageService;
 
     @GetMapping("/api/message")
-    public List<MessagePojo> getMessage(MessagePageDto messagePageDto) {
+    public List<MessagePojo> getMessage(MessagePageDto messagePageDto) throws Exception {
         return messageService.getMessage(messagePageDto);
     }
 
@@ -37,7 +37,7 @@ public class MessageApi {
     public List<FileAttackDto> saveMessage(
             @RequestParam("content") String content,
             @RequestParam("room") String roomId,
-            @RequestParam("attack") String attack) throws IOException {
+            @RequestParam("attack") String attack) throws Exception {
         return messageService.saveMessage(content, roomId, attack);
     }
 

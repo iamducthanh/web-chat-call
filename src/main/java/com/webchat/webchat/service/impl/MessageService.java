@@ -22,9 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import javax.crypto.Cipher;
+import java.security.*;
 import java.util.*;
 
 @Service
@@ -93,7 +92,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public List<MessagePojo> getMessage(MessagePageDto messagePageDto) {
+    public List<MessagePojo> getMessage(MessagePageDto messagePageDto) throws Exception {
         List<Message> messages = messageRepo.findByRoom(messagePageDto.getRoomId(), PageRequest.of(messagePageDto.getPage(), 10));
         List<MessagePojo> list = new ArrayList<>();
         if (messages != null) {
@@ -120,8 +119,15 @@ public class MessageService implements IMessageService {
                         }
                     }
                 }
+                Room room = roomRepo.findById(messagePageDto.getRoomId()).get();
+                PrivateKey privateKey = rsa2048Util.base64ToPrivateKey(secretKeyUtil.decrypt(room.getPrivateKey()));
 
-                contents.add(messages.get(i).getContent());
+                // Khởi tạo đối tượng mã hóa và giải mã
+                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+                cipher.init(Cipher.DECRYPT_MODE, privateKey);
+                byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(messages.get(i).getContent()));
+
+                contents.add(new String(decryptedBytes));
 
                 if(messages.get(i).getAttachList().size() != 0){
                     listFile = new ArrayList<>();
@@ -142,17 +148,28 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public List<FileAttackDto> saveMessage(String content, String roomId, String attack) throws JsonProcessingException {
+    public List<FileAttackDto> saveMessage(String content, String roomId, String attack) throws Exception {
         Message message = new Message();
         User user = (User) sessionUtil.getObject("USER");
-        Room room = new Room(roomId, "", "", "");
+        Room room = roomRepo.findById(roomId).get();
         UUID uuid = UUID.randomUUID();
         message.setId(String.valueOf(uuid));
         message.setUser(user);
         message.setRoom(room);
         message.setType("CHAT");
         message.setTime(new Date());
-        message.setContent(content);
+
+        // Khởi tạo đối tượng mã hóa và giải mã
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        PublicKey publicKey = rsa2048Util.base64ToPublicKey(secretKeyUtil.decrypt(room.getPublicKey()));
+        // Mã hóa dữ liệu
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] encryptedBytes = cipher.doFinal(content.getBytes());
+
+        // Chuyển đổi dữ liệu đã mã hóa sang base64
+        String encryptedBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
+
+        message.setContent(encryptedBase64);
         UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(roomId);
         if (userConnectPojo != null) {
             if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
