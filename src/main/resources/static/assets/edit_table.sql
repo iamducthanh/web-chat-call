@@ -1,4 +1,4 @@
 ALTER TABLE room
-    ADD public_key varchar(255);
+    ADD public_key text;
 ALTER TABLE room
-    ADD private_key varchar(255);
+    ADD private_key text;

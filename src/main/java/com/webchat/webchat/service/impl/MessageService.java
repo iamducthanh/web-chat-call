@@ -13,16 +13,14 @@ import com.webchat.webchat.pojo.MessagePojo;
 import com.webchat.webchat.pojo.UserConnectPojo;
 import com.webchat.webchat.repository.*;
 import com.webchat.webchat.service.IMessageService;
-import com.webchat.webchat.utils.RSA2048Util;
-import com.webchat.webchat.utils.SecretKeyUtil;
-import com.webchat.webchat.utils.SessionUtil;
-import com.webchat.webchat.utils.SystemUtil;
+import com.webchat.webchat.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.util.*;
 
@@ -38,6 +36,7 @@ public class MessageService implements IMessageService {
     private final SystemUtil systemUtil;
     private final SecretKeyUtil secretKeyUtil;
     private final RSA2048Util rsa2048Util;
+    private final MessageUtil messageUtil;
 
     @Override
     public List<Message> findByRoom(String roomId, Pageable pageable) {
@@ -94,6 +93,7 @@ public class MessageService implements IMessageService {
     @Override
     public List<MessagePojo> getMessage(MessagePageDto messagePageDto) throws Exception {
         List<Message> messages = messageRepo.findByRoom(messagePageDto.getRoomId(), PageRequest.of(messagePageDto.getPage(), 10));
+        Room room = roomRepo.findById(messagePageDto.getRoomId()).get();
         List<MessagePojo> list = new ArrayList<>();
         if (messages != null) {
             for (int i = messages.size() - 1; i > -1; i--) {
@@ -108,7 +108,7 @@ public class MessageService implements IMessageService {
                         long diffHours = diff / (60 * 60 * 1000) % 24;
                         long diffDays = diff / (24 * 60 * 60 * 1000);
                         if(diffDays == 0 && diffHours == 0 && diffMinutes <=5){
-                            list.get(list.size()-1).getContent().add(messages.get(i).getContent());
+                            list.get(list.size()-1).getContent().add(messageUtil.decodeMessage(room.getPrivateKey(), messages.get(i)).getContent());
                             list.get(list.size()-1).setTime(messages.get(i).getTimeChat());
                             if(messages.get(i).getAttachList().size() != 0){
                                 for(Attach attach:messages.get(i).getAttachList()){
@@ -119,15 +119,8 @@ public class MessageService implements IMessageService {
                         }
                     }
                 }
-                Room room = roomRepo.findById(messagePageDto.getRoomId()).get();
-                PrivateKey privateKey = rsa2048Util.base64ToPrivateKey(secretKeyUtil.decrypt(room.getPrivateKey()));
 
-                // Khởi tạo đối tượng mã hóa và giải mã
-                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-                cipher.init(Cipher.DECRYPT_MODE, privateKey);
-                byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(messages.get(i).getContent()));
-
-                contents.add(new String(decryptedBytes));
+                contents.add(messageUtil.decodeMessage(room.getPrivateKey(), messages.get(i)).getContent());
 
                 if(messages.get(i).getAttachList().size() != 0){
                     listFile = new ArrayList<>();
@@ -159,17 +152,7 @@ public class MessageService implements IMessageService {
         message.setType("CHAT");
         message.setTime(new Date());
 
-        // Khởi tạo đối tượng mã hóa và giải mã
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        PublicKey publicKey = rsa2048Util.base64ToPublicKey(secretKeyUtil.decrypt(room.getPublicKey()));
-        // Mã hóa dữ liệu
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] encryptedBytes = cipher.doFinal(content.getBytes());
-
-        // Chuyển đổi dữ liệu đã mã hóa sang base64
-        String encryptedBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
-
-        message.setContent(encryptedBase64);
+        message.setContent(content);
         UserConnectPojo userConnectPojo = UsersOnline.userConnectPojo.get(roomId);
         if (userConnectPojo != null) {
             if (userConnectPojo.getUser1() != null && userConnectPojo.getUser2() != null) {
@@ -206,7 +189,7 @@ public class MessageService implements IMessageService {
         if (dataFile.isEmpty()) {
             dataFile.add(new FileAttackDto(String.valueOf(uuid), null, null));
         }
-        messageRepo.save(message);
+        messageUtil.saveMessageEncode(room.getPublicKey(), message);
         if (!attack.equals("[]")) {
             attachRepo.saveAll(attaches);
         }
@@ -287,5 +270,7 @@ public class MessageService implements IMessageService {
         messageUser.setRoomCode(room.getId());
         messageUser.setFriend(systemUtil.isFriend(user2, friends));
         messageUser.setImage(user2.getImage());
-        return messageUser;    }
+        return messageUser;
+    }
+    
 }

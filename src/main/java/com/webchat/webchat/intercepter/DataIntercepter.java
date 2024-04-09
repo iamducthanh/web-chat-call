@@ -6,6 +6,7 @@ import com.webchat.webchat.pojo.FriendRequestPojo;
 import com.webchat.webchat.pojo.MessageUser;
 import com.webchat.webchat.pojo.NotificationPojo;
 import com.webchat.webchat.service.*;
+import com.webchat.webchat.utils.MessageUtil;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class DataIntercepter implements HandlerInterceptor {
     private INotificationService notificationService;
     @Autowired
     private ILocationService locationService;
+    @Autowired
+    private MessageUtil messageUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
@@ -57,7 +60,7 @@ public class DataIntercepter implements HandlerInterceptor {
         req.setAttribute("userId", user.getId());
     }
 
-    public void getMessageUser(HttpServletRequest req, User user, List<User> friends) {
+    public void getMessageUser(HttpServletRequest req, User user, List<User> friends) throws Exception {
         int countMessage = 0;
         List<MessageUser> messageUsers = new ArrayList<>();
         List<RoomDetail> roomDetails = roomDetailService.findByUser(user.getId());
@@ -78,6 +81,7 @@ public class DataIntercepter implements HandlerInterceptor {
                 String time = "";
                 int countMess = 0;
                 if (messageLast != null) {
+                    messageLast.setContent(messageUtil.decodeMessage(roomDetail.getRoom().getPrivateKey(), messageLast).getContent());
                     time = messageLast.getTimeChat();
                     countMess = messageService.countMessageSend(roomDetail.getRoom().getId(), user.getUsername() ,userInRoom.get(0).getUsername());
                     if (!messageLast.getUser().getUsername().equals(user.getUsername())) {
@@ -114,7 +118,7 @@ public class DataIntercepter implements HandlerInterceptor {
         req.setAttribute("countMessage", countMessage);
     }
 
-    public void getFriendUser(HttpServletRequest req, User user) {
+    public void getFriendUser(HttpServletRequest req, User user) throws Exception {
         List<User> friends = new ArrayList<>();
         List<Friend> listFriend = friendService.getFriendByUser(user.getUsername());
         List<FriendRequestPojo> friendRequestPojos = new ArrayList<>();
