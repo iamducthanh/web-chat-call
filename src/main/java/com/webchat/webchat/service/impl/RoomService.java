@@ -19,10 +19,7 @@ import com.webchat.webchat.repository.RoomRepository;
 import com.webchat.webchat.service.IMessageService;
 import com.webchat.webchat.service.IRoomService;
 import com.webchat.webchat.service.IUserService;
-import com.webchat.webchat.utils.RSA2048Util;
-import com.webchat.webchat.utils.SecretKeyUtil;
-import com.webchat.webchat.utils.SessionUtil;
-import com.webchat.webchat.utils.SystemUtil;
+import com.webchat.webchat.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +43,7 @@ public class RoomService implements IRoomService {
     private final ObjectMapper objectMapper;
     private final SecretKeyUtil secretKeyUtil;
     private final RSA2048Util rsa2048Util;
+    private final MessageUtil messageUtil;
 
 
     @Override
@@ -286,7 +284,7 @@ public class RoomService implements IRoomService {
         message.setUser(user);
         message.setId(String.valueOf(UUID.randomUUID()));
         message.setStatus("CREATE");
-        messageRepo.save(message);
+        messageUtil.saveMessageEncode(room.getPublicKey(), message);
         List<String> userOnlines = new ArrayList<>();
         List<String> imageGroup = new ArrayList<>();
         if (!image.isEmpty()) {

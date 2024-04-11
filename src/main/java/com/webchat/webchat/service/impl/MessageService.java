@@ -259,7 +259,7 @@ public class MessageService implements IMessageService {
         message.setUser(user);
         message.setId(String.valueOf(messageId));
         message.setStatus("CREATE");
-        messageRepo.save(message);
+        messageUtil.saveMessageEncode(room.getPublicKey(), message);
 
         messageUser.setName(user2.getFullname());
         messageUser.setUsername(user2.getUsername());
