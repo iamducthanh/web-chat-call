@@ -9,6 +9,7 @@ import com.webchat.webchat.service.impl.RoomDetailService;
 import com.webchat.webchat.service.impl.UserService;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.UploadUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,21 +28,17 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class MessageDirectController {
-    @Autowired
-    private HttpServletRequest req;
+    private final HttpServletRequest req;
 
-    @Autowired
-    private RoomDetailService roomDetailService;
+    private final RoomDetailService roomDetailService;
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private SessionUtil sessionUtil;
+    private final SessionUtil sessionUtil;
 
     @RequestMapping(value = "/message_direct", method = RequestMethod.GET)
     public String messageDirectPage(Model model) {

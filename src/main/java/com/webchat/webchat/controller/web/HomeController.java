@@ -10,6 +10,7 @@ import com.webchat.webchat.service.impl.LocationService;
 import com.webchat.webchat.service.impl.RoomDetailService;
 import com.webchat.webchat.utils.SessionUtil;
 import com.webchat.webchat.utils.SystemUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -28,25 +29,20 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
-    @Autowired
-    HttpServletRequest req;
+    private final HttpServletRequest req;
 
-    @Autowired
-    private SystemUtil systemUtil;
+    private final SystemUtil systemUtil;
 
-    @Autowired
-    private SessionUtil sessionUtil;
+    private final SessionUtil sessionUtil;
 
-    @Autowired
-    private LocationService locationService;
+    private final LocationService locationService;
 
-    @Autowired
-    private RoomDetailService roomDetailService;
+    private final RoomDetailService roomDetailService;
 
-    @Autowired
-    private SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
     @GetMapping(value = "/")
     @CrossOrigin(origins = "http://localhost:8080")

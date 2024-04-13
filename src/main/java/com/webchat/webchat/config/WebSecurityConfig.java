@@ -3,6 +3,7 @@ package com.webchat.webchat.config;
 import com.webchat.webchat.filter.CustomerAuthenticationFilter;
 import com.webchat.webchat.filter.CustomerAuthorizationFilter;
 import com.webchat.webchat.service.impl.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +22,11 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private CorsFilter corsFilter;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final CorsFilter corsFilter;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

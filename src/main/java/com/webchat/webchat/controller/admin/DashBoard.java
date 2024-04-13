@@ -5,6 +5,7 @@ import com.webchat.webchat.entities.User;
 //import com.webchat.webchat.service.ICountMessageService;
 import com.webchat.webchat.service.ICountMessageService;
 import com.webchat.webchat.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class DashBoard {
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
-    @Autowired
-    ICountMessageService countMessageService;
+    private final ICountMessageService countMessageService;
 
 
     @GetMapping("/admin/trang-chu")

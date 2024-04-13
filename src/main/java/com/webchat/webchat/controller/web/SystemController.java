@@ -5,6 +5,7 @@ import com.webchat.webchat.dto.UserDeleteGroupDto;
 import com.webchat.webchat.entities.Location;
 import com.webchat.webchat.pojo.*;
 import com.webchat.webchat.service.impl.LocationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -21,9 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
+@RequiredArgsConstructor
 public class SystemController {
-    @Autowired
-    private SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
     @GetMapping("/hello")
     @ResponseBody

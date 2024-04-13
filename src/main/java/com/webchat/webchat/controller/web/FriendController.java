@@ -9,6 +9,7 @@ import com.webchat.webchat.service.IFriendService;
 import com.webchat.webchat.service.INotificationService;
 import com.webchat.webchat.service.IUserService;
 import com.webchat.webchat.utils.SessionUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -20,15 +21,13 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class FriendController {
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
-    @Autowired
-    private IFriendService friendService;
+    private final IFriendService friendService;
 
-    @Autowired
-    private INotificationService notificationService;
+    private final INotificationService notificationService;
 
     @MessageMapping("/system/friend/{id}")
     @SendTo("/topic/system/friend/{id}")
